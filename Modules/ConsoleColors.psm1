@@ -1,4 +1,7 @@
-Function Convert-HsvToRgb {
+$ErrorActionPreference = "Stop"
+. "$PSScriptRoot/Classes.ps1"
+
+function Convert-HsvToRgb {
     param(
         [double] $Hue,
         [double] $Saturation,
@@ -17,10 +20,23 @@ Function Convert-HsvToRgb {
     $rgb[$xIndex] += $X
     $rgb[$cIndex] += $chroma
 
-    return [pscustomobject]@{
+    return [Rgb]@{
         Red = [int]($rgb[0] * 255)
         Green = [int]($rgb[1] * 255)
         Blue = [int]($rgb[2] * 255)
+    }
+}
+
+Function Get-Rgb {
+    param(
+        [int] $R,
+        [int] $G,
+        [int] $B
+    )
+    return [Rgb]@{
+        Red = $R
+        Green = $G
+        Blue = $B
     }
 }
 
@@ -28,9 +44,17 @@ Function Get-ColorBlock {
     param(
         [int] $R,
         [int] $G,
-        [int] $B
+        [int] $B,
+        [Rgb] $Rgb
     )
-    return "$([Char]27)[48;2;{0};{1};{2}m  $([Char]27)[0m" -f $R, $G, $B
+    if(!$Rgb) {
+        $Rgb = @{
+            Red = $R
+            Green = $G
+            Blue = $B
+        }
+    }
+    return "$([Char]27)[48;2;{0};{1};{2}m  $([Char]27)[0m" -f $Rgb.Red, $Rgb.Green, $Rgb.Blue
 }
 
 Function Get-Plasma {

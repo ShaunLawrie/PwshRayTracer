@@ -1,3 +1,5 @@
+$ErrorActionPreference = "Stop"
+
 Import-Module "$PSScriptRoot/ConsoleColors.psm1" -Force
 Import-Module "$PSScriptRoot/ConsoleDrawing.psm1" -Force
 
