@@ -6,6 +6,7 @@ param(
 $ErrorActionPreference = "Stop"
 Import-Module "$PSScriptRoot/Modules/Plasma.psm1" -Force
 Import-Module "$PSScriptRoot/Modules/Plasma.fast.psm1" -Force
+Import-Module "$PSScriptRoot/Modules/ConsoleDrawing.psm1" -Force
 
 Clear-HostAndHideCursor
 
