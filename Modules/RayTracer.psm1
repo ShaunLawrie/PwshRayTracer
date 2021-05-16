@@ -10,26 +10,27 @@ Import-Module "$PSScriptRoot/RayVector.psm1" -Force
 Import-Module "$PSScriptRoot/RayObject.psm1" -Force
 
 function Invoke-RayTracer {
-    $width = 25
-    $height = 20
+    $global:ImageWidth = 25
+    $global:ImageHeight = 20
     $buffer = ""
     $objects = @(New-Sphere -X 10 -Y 5 -Z 0 -Radius 3)
 
-    for($y = 0; $y -lt $height; $y++) {
-        for($x = 0; $x -lt $width; $x++) {
+    for($y = 0; $y -lt $global:ImageHeight; $y++) {
+        for($x = 0; $x -lt $global:ImageWidth; $x++) {
             # This ray represents the path the light travels out through the eye through the pixel in the viewport
-            $primaryRay = Get-PrimaryRay -X $x -Y $y
+            $primaryRay = Get-PrimaryRay -PixelX $x -PixelY $y
 
             # Compute intersections and find the nearest object the primary ray has hit
             $hit = $null
             $closestObject = $null
             $closestObjectDistance = [float]::MaxValue
-            $objects | Foreach-Object {
-                $hit = Get-SphereIntersection -Sphere $_ -Ray $primaryRay
+
+            foreach($object in $Objects) {
+                $hit = Get-SphereIntersection -Sphere $object -Ray $primaryRay
                 if ($hit) { 
                     $thisObjectDistance = Get-VectorDistance -PointA $eyePosition -PointB $hit #.Point
                     if ($thisObjectDistance -le $closestObjectDistance) { 
-                        $closestObject = $_
+                        $closestObject = $object
                         $closestObjectDistance = $thisObjectDistance
                     }
                 }
@@ -37,10 +38,11 @@ function Invoke-RayTracer {
 
             # compute illumination
             $closestObjectIsInShadow = $false
-            if ($closestObject) {
+            if ($null -ne $closestObject) {
+                
                 $shadowRay = Get-VectorSubtraction -Subtract $hit.Point -From $lightPosition
-                $objects | Foreach-Object {
-                    $shadowRayHitClosestObject = Get-SphereIntersection -Object $_ -Ray $shadowRay
+                foreach($object in $objects) {
+                    $shadowRayHitClosestObject = Get-SphereIntersection -Object $object -Ray $shadowRay
                     if ($shadowRayHitClosestObject) { 
                         $closestObjectIsInShadow = $true
                         break
@@ -51,9 +53,9 @@ function Invoke-RayTracer {
                     $buffer += Get-ColorBlock -R 0 -G 0 -B 0
                 } else {
                     $litObject = [Rgb]@{
-                        Red = $object.Color.Red * $light.Brightness
-                        Green = $object.Color.Green * $light.Brightness
-                        Blue = $object.Color.Blue * $light.Brightness
+                        Red = $closestObject.Color.Red * $light.Brightness
+                        Green = $closestObject.Color.Green * $light.Brightness
+                        Blue = $closestObject.Color.Blue * $light.Brightness
                     }
                     $buffer += Get-ColorBlock -R $litObject.Red -G $litObject.Green -B $litObject.Blue
                 }
