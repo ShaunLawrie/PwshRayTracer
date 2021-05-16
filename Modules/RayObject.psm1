@@ -10,10 +10,10 @@ function New-Sphere {
         [float] $Y,
         [float] $Z,
         [float] $Radius,
-        [rgb] $Rgb
+        [object] $Rgb
     )
     if(!$Rgb) {
-        $Rgb = Get-Rgb -R 60 -G 40 -B 10
+        $Rgb = [Rgb](Get-Rgb -R 60 -G 40 -B 10)
     }
     return [sphere]@{
         X = [float] $X
@@ -26,8 +26,8 @@ function New-Sphere {
 
 function Get-SphereIntersection {
     param(
-        [Sphere] $Sphere,
-        [vec3] $Ray
+        [object] $Sphere,
+        [object] $Ray
     )
     if($Sphere.X -eq $Ray.X -and $Sphere.Y -eq $Ray.Y) {
         return $Ray

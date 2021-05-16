@@ -17,3 +17,8 @@ class Vec3 {
     [float] $Y
     [float] $Z
 }
+
+class Ray {
+    [vec3] $Origin
+    [vec3] $Direction
+}

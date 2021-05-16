@@ -45,7 +45,7 @@ Function Get-ColorBlock {
         [int] $R,
         [int] $G,
         [int] $B,
-        [Rgb] $Rgb
+        [object] $Rgb
     )
     if(!$Rgb) {
         $Rgb = @{
