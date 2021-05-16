@@ -13,13 +13,15 @@ function Invoke-RayTracer {
     $global:ImageWidth = 25
     $global:ImageHeight = 20
     $buffer = ""
-    $objects = @(New-Sphere -X 10 -Y 5 -Z 0 -Radius 3)
+    $objects = @(New-Sphere -X 0 -Y 0 -Z 2 -Radius 1.0)
+    $light = @{
+        Brightness = 1.0
+    }
 
     for($y = 0; $y -lt $global:ImageHeight; $y++) {
         for($x = 0; $x -lt $global:ImageWidth; $x++) {
             # This ray represents the path the light travels out through the eye through the pixel in the viewport
             $primaryRay = Get-PrimaryRay -PixelX $x -PixelY $y
-
             # Compute intersections and find the nearest object the primary ray has hit
             $hit = $null
             $closestObject = $null
@@ -39,7 +41,7 @@ function Invoke-RayTracer {
             # compute illumination
             $closestObjectIsInShadow = $false
             if ($null -ne $closestObject) {
-                
+                <#
                 $shadowRay = Get-VectorSubtraction -Subtract $hit.Point -From $lightPosition
                 foreach($object in $objects) {
                     $shadowRayHitClosestObject = Get-SphereIntersection -Object $object -Ray $shadowRay
@@ -48,14 +50,15 @@ function Invoke-RayTracer {
                         break
                     } 
                 }
+                #>
                 if($closestObjectIsInShadow) {
                     # draw background
                     $buffer += Get-ColorBlock -R 0 -G 0 -B 0
                 } else {
                     $litObject = [Rgb]@{
-                        Red = $closestObject.Color.Red * $light.Brightness
-                        Green = $closestObject.Color.Green * $light.Brightness
-                        Blue = $closestObject.Color.Blue * $light.Brightness
+                        Red = $closestObject.Rgb.Red * $light.Brightness
+                        Green = $closestObject.Rgb.Green * $light.Brightness
+                        Blue = $closestObject.Rgb.Blue * $light.Brightness
                     }
                     $buffer += Get-ColorBlock -R $litObject.Red -G $litObject.Green -B $litObject.Blue
                 }

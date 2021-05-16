@@ -77,4 +77,16 @@ function Get-PrimaryRay {
     }
 }
 
+function Get-VectorDotProduct {
+    param(
+        [object] $VectorA,
+        [object] $VectorB
+    )
+    return (
+        $VectorA.X * $VectorB.X +
+        $VectorA.Y * $VectorB.Y + 
+        $VectorA.Z * $VectorB.Z
+    )
+}
+
 Export-ModuleMember -Function "*-*"

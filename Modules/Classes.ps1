@@ -5,9 +5,7 @@ class Rgb {
 }
 
 class Sphere {
-    [float] $X
-    [float] $Y
-    [float] $Z
+    [vec3] $Center
     [float] $Radius
     [rgb] $Rgb
 }

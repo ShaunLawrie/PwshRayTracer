@@ -13,12 +13,14 @@ function New-Sphere {
         [object] $Rgb
     )
     if(!$Rgb) {
-        $Rgb = [Rgb](Get-Rgb -R 60 -G 40 -B 10)
+        $Rgb = Get-Rgb -R 255 -G 120 -B 120
     }
     return [sphere]@{
-        X = [float] $X
-        Y = [float] $Y
-        Z = [float] $Z
+        Center = [vec3] @{
+            X = $X
+            Y = $Y
+            Z = $Z
+        }
         Radius = [float] $Radius
         Rgb = [rgb] $Rgb
     }
@@ -29,10 +31,15 @@ function Get-SphereIntersection {
         [object] $Sphere,
         [object] $Ray
     )
-    if($Sphere.X -eq $Ray.X -and $Sphere.Y -eq $Ray.Y) {
-        return $Ray
-    } else {
+    $originCentered = Get-VectorSubtraction -Subtract $Sphere.Center -From $Ray.Origin
+    $floatA = Get-VectorDotProduct -VectorA $Ray.Direction -VectorB $Ray.Direction
+    $floatB = 2.0 * (Get-VectorDotProduct -VectorA $originCentered -VectorB $Ray.Direction)
+    $floatC = (Get-VectorDotProduct -VectorA $originCentered -VectorB $originCentered) - ($Sphere.Radius * $Sphere.Radius)
+    $discriminant = ($floatB * $floatB) - (4 * $floatA * $floatC)
+    if($discriminant -lt 0) {
         return $null
+    } else {
+        return (($floatB * -1) - [math]::Sqrt($discriminant)) / (2.0 * $floatA)
     }
 }
 
