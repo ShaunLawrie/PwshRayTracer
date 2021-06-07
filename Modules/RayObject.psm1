@@ -37,9 +37,13 @@ function Get-SphereIntersection {
     $floatC = (Get-VectorDotProduct -VectorA $originCentered -VectorB $originCentered) - ($Sphere.Radius * $Sphere.Radius)
     $discriminant = ($floatB * $floatB) - (4 * $floatA * $floatC)
     if($discriminant -lt 0) {
+        # no hit
         return $null
     } else {
-        return (($floatB * -1) - [math]::Sqrt($discriminant)) / (2.0 * $floatA)
+        $t = (($floatB * -1) - [math]::Sqrt($discriminant)) / (2.0 * $floatA)
+        $distanceInDirection = Get-VectorScalarMultiple -Vector $Ray.Direction -Multiplier $t
+        $point = Get-VectorAddition -Add $distanceInDirection -To $Ray.Origin
+        return $point
     }
 }
 

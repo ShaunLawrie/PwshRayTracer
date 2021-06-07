@@ -26,12 +26,40 @@ function Get-VectorSubtraction {
     }
 }
 
+function Get-VectorAddition {
+    param(
+        [object] $Add,
+        [object] $To
+    )
+    return [vec3]@{
+        X = $To.X + $Add.X
+        Y = $To.Y + $Add.Y
+        Z = $To.Z + $Add.Z
+    }
+}
+
+function Get-VectorScalarMultiple {
+    param(
+        [object] $Vector,
+        [object] $Multiplier
+    )
+    return [vec3]@{
+        X = $Vector.X * $Multiplier
+        Y = $Vector.Y * $Multiplier
+        Z = $Vector.Z * $Multiplier
+    }
+}
+
 function Get-VectorDistance {
     param(
         [object] $PointA,
         [object] $PointB
     )
-    return [Math]::Sqrt([Math]::Pow($A.X - $B.X, 2) + [Math]::Pow($A.Y - $B.Y, 2) + [Math]::Pow($A.Z - $B.Z, 2))
+    return [Math]::Sqrt(
+        [Math]::Pow($PointA.X - $PointB.X, 2) +
+        [Math]::Pow($PointA.Y - $PointB.Y, 2) +
+        [Math]::Pow($PointA.Z - $PointB.Z, 2)
+    )
 }
 
 function Convert-DegreesToRadians {
@@ -66,13 +94,13 @@ function Get-PrimaryRay {
     $normalizedX = ($PixelX + 0.5) / $global:ImageWidth
     $normalizedY = ($PixelY + 0.5) / $global:ImageHeight
     $screenX = ($normalizedX * 2) - 1
-    $screenY = ($normalizedY * 2) - 1
+    $screenY = 1 - ($normalizedY * 2)
     $pixelCameraX = $screenX * $aspectRatio * [math]::Tan($fieldOfViewRadians / 2)
     $pixelCameraY = $screenY * [math]::Tan($fieldOfViewRadians / 2)
     $direction = New-Vector3 -X $pixelCameraX -Y $pixelCameraY -Z -1
     $normalizedDirection = Get-NormalizedVector -Vector $direction
     return [ray]@{
-        Origin = New-Vector3 -X 0 -Y 0 -Z 0
+        Origin = New-Vector3 -X 0 -Y 0 -Z 20
         Direction = $normalizedDirection
     }
 }
