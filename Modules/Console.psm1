@@ -1,7 +1,25 @@
 $ErrorActionPreference = "Stop"
 . "$PSScriptRoot/Classes.ps1"
 
-function Convert-HsvToRgb {
+function Write-HostBuffer {
+    param(
+        [string] $Buffer
+    )
+    [Console]::SetCursorPosition(0,0)
+    Write-Host -NoNewline $Buffer
+}
+
+Function Clear-HostAndHideCursor {
+    Clear-Host
+    [Console]::CursorVisible = $false
+}
+
+Function Reset-Host {
+    Clear-Host
+    [Console]::CursorVisible = $true
+}
+
+Function Convert-HsvToRgb {
     param(
         [double] $Hue,
         [double] $Saturation,
@@ -40,12 +58,14 @@ Function Get-Rgb {
     }
 }
 
+# Two chars wide to compensate for character width vs height in a terminal window
 Function Get-ColorBlock {
     param(
         [int] $R,
         [int] $G,
         [int] $B,
-        [object] $Rgb
+        [object] $Rgb,
+        [switch] $Halfwidth
     )
     if(!$Rgb) {
         $Rgb = @{
@@ -54,7 +74,8 @@ Function Get-ColorBlock {
             Blue = $B
         }
     }
-    return "$([Char]27)[48;2;{0};{1};{2}m  $([Char]27)[0m" -f $Rgb.Red, $Rgb.Green, $Rgb.Blue
+    $spaces = if($Halfwidth) { " " } else { "  " }
+    return "$([Char]27)[48;2;{0};{1};{2}m$spaces$([Char]27)[0m" -f $Rgb.Red, $Rgb.Green, $Rgb.Blue
 }
 
 Function Get-Plasma {

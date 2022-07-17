@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
-
 . "$PSScriptRoot/Classes.ps1"
+
 function New-Vector3 {
     param(
         [float] $X,
@@ -38,10 +38,22 @@ function Get-VectorAddition {
     }
 }
 
+function Get-VectorMultiple {
+    param(
+        [object] $VectorA,
+        [object] $VectorB
+    )
+    return [vec3]@{
+        X = $VectorA.X * $VectorB.X
+        Y = $VectorA.Y * $VectorB.Y
+        Z = $VectorA.Z * $VectorB.Z
+    }
+}
+
 function Get-VectorScalarMultiple {
     param(
         [object] $Vector,
-        [object] $Multiplier
+        [float] $Multiplier
     )
     return [vec3]@{
         X = $Vector.X * $Multiplier
@@ -50,6 +62,19 @@ function Get-VectorScalarMultiple {
     }
 }
 
+function Get-VectorScalarDivision {
+    param(
+        [object] $Vector,
+        [float] $Divisor
+    )
+    return [vec3]@{
+        X = $Vector.X / $Divisor
+        Y = $Vector.Y / $Divisor
+        Z = $Vector.Z / $Divisor
+    }
+}
+
+# https://www.calculatorsoup.com/calculators/geometry-solids/distance-two-points.php
 function Get-VectorDistance {
     param(
         [object] $PointA,
@@ -62,20 +87,12 @@ function Get-VectorDistance {
     )
 }
 
-function Convert-DegreesToRadians {
-    param(
-        [float] $Degrees
-    )
-    return $Degrees * ([math]::PI / 180)
-}
-
-function Get-NormalizedVector {
+# https://www.cuemath.com/calculus/unit-vector/
+function Get-VectorUnit {
     param(
         [object] $Vector
     )
-    $length = [math]::Sqrt(
-        ($Vector.X * $Vector.X) + ($Vector.Y * $Vector.Y) + ($Vector.Z * $Vector.Z)
-    )
+    $length = Get-VectorLength -Vector $Vector
     return [vec3]@{
         X = $Vector.X / $length
         Y = $Vector.Y / $length
@@ -83,28 +100,21 @@ function Get-NormalizedVector {
     }
 }
 
-function Get-PrimaryRay {
+# https://www.storyofmathematics.com/length-of-a-vector/
+function Get-VectorLength {
     param(
-        [float] $PixelX,
-        [float] $PixelY
+        [object] $Vector
     )
-    $fieldOfViewdegrees = 90
-    $fieldOfViewRadians = Convert-DegreesToRadians -Degrees $fieldOfViewdegrees
-    $aspectRatio = $global:ImageWidth / $global:ImageHeight
-    $normalizedX = ($PixelX + 0.5) / $global:ImageWidth
-    $normalizedY = ($PixelY + 0.5) / $global:ImageHeight
-    $screenX = ($normalizedX * 2) - 1
-    $screenY = 1 - ($normalizedY * 2)
-    $pixelCameraX = $screenX * $aspectRatio * [math]::Tan($fieldOfViewRadians / 2)
-    $pixelCameraY = $screenY * [math]::Tan($fieldOfViewRadians / 2)
-    $direction = New-Vector3 -X $pixelCameraX -Y $pixelCameraY -Z -1
-    $normalizedDirection = Get-NormalizedVector -Vector $direction
-    return [ray]@{
-        Origin = New-Vector3 -X 0 -Y 0 -Z 20
-        Direction = $normalizedDirection
-    }
+    return (
+        [math]::Sqrt(
+            ($Vector.X * $Vector.X) +
+            ($Vector.Y * $Vector.Y) + 
+            ($Vector.Z * $Vector.Z)
+        )
+    )
 }
 
+# https://www.mathsisfun.com/algebra/vectors-dot-product.html
 function Get-VectorDotProduct {
     param(
         [object] $VectorA,
@@ -115,6 +125,19 @@ function Get-VectorDotProduct {
         $VectorA.Y * $VectorB.Y + 
         $VectorA.Z * $VectorB.Z
     )
+}
+
+# https://www.mathsisfun.com/algebra/vectors-cross-product.html
+function Get-VectorCrossProduct {
+    param(
+        [object] $VectorA,
+        [object] $VectorB
+    )
+    return [vec3]@{
+        X = $VectorA.Y * $VectorB.Z - $VectorA.Z * $VectorB.Y
+        Y = $VectorA.Z * $VectorB.X - $VectorA.X * $VectorB.Z
+        Z = $VectorA.X * $VectorB.Y - $VectorA.Y * $VectorB.X
+    }
 }
 
 Export-ModuleMember -Function "*-*"
