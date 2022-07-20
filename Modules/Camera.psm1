@@ -35,8 +35,13 @@ function Initialize-Camera {
 
 function Get-RandomInUnitDisk {
     while($true) {
-        $x = (Get-Random -Minimum -100 -Maximum 100) / 100.0
-        $y = (Get-Random -Minimum -100 -Maximum 100) / 100.0
+        if($global:FastRandomEnabled -or $global:FastRandomEnabledParallel) {
+            $x = ($global:Random.Next(200) - 100) / 100.0
+            $y = ($global:Random.Next(200) - 100) / 100.0
+        } else {
+            $x = (Get-Random -Minimum -100 -Maximum 100) / 100.0
+            $y = (Get-Random -Minimum -100 -Maximum 100) / 100.0
+        }
         $p = [System.Numerics.Vector3]::new($x, $y, 0)
         if($p.LengthSquared() -ge 1) {
             continue
@@ -50,8 +55,34 @@ function Get-CameraRay {
         [float] $S,
         [float] $T
     )
-    $rd = $script:LensRadius * (Get-RandomInUnitDisk)
+
+    if($global:InlinedRayTracingEnabled -or $global:InlinedRayTracingEnabledParallel) {
+        $rd = $null
+        while($null -eq $rd) {
+            if($global:FastRandomEnabled -or $global:FastRandomEnabledParallel) {
+                $x = ($global:Random.Next(200) - 100) / 100.0
+                $y = ($global:Random.Next(200) - 100) / 100.0
+            } else {
+                $x = (Get-Random -Minimum -100 -Maximum 100) / 100.0
+                $y = (Get-Random -Minimum -100 -Maximum 100) / 100.0
+            }
+            $p = [System.Numerics.Vector3]::new($x, $y, 0)
+            if($p.LengthSquared() -ge 1) {
+                continue
+            }
+            $rd = $script:LensRadius * $p
+        }
+    } else {
+        $rd = $script:LensRadius * (Get-RandomInUnitDisk)
+    }
     $offset = ($script:U * $rd.X) + ($script:V * $rd.Y)
 
-    return New-Ray -Origin ($script:Origin + $offset) -Direction ($script:LowerLeftCorner + ($S * $script:Horizontal) + ($T * $script:Vertical) - $script:Origin - $offset)
+    if($global:InlinedRayTracingEnabled -or $global:InlinedRayTracingEnabledParallel) {
+        return [Ray]@{
+            Origin = ($script:Origin + $offset)
+            Direction = ($script:LowerLeftCorner + ($S * $script:Horizontal) + ($T * $script:Vertical) - $script:Origin - $offset)
+        }
+    } else {
+        return New-Ray -Origin ($script:Origin + $offset) -Direction ($script:LowerLeftCorner + ($S * $script:Horizontal) + ($T * $script:Vertical) - $script:Origin - $offset)
+    }
 }

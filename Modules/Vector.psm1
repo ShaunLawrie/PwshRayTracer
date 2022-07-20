@@ -142,9 +142,15 @@ function Get-VectorCrossProduct {
 
 function Get-VectorRandomInUnitSphere {
     while ($True) {
-        $x = (Get-Random -Minimum 0 -Maximum 100) / 100.0
-        $y = (Get-Random -Minimum 0 -Maximum 100) / 100.0
-        $z = (Get-Random -Minimum 0 -Maximum 100) / 100.0
+        if($global:FastRandomEnabled -or $global:FastRandomEnabledParallel) {
+            $x = $global:Random.Next(100) / 100.0
+            $y = $global:Random.Next(100) / 100.0
+            $z = $global:Random.Next(100) / 100.0
+        } else {
+            $x = (Get-Random -Minimum 0 -Maximum 100) / 100.0
+            $y = (Get-Random -Minimum 0 -Maximum 100) / 100.0
+            $z = (Get-Random -Minimum 0 -Maximum 100) / 100.0
+        }
         $p = [System.Numerics.Vector3]::new($x, $y, $z)
         if($p.LengthSquared() -ge 1) {
             continue

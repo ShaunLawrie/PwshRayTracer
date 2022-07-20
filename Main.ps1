@@ -1,3 +1,6 @@
+param (
+    [string] $Note
+)
 $ErrorActionPreference = "Stop"
 . "$PSScriptRoot/Modules/Classes.ps1"
 Get-ChildItem -Path "$PSScriptRoot/Modules" -Filter "*.psm1" | Foreach-Object { Import-Module $_.PsPath -Force }
@@ -42,13 +45,13 @@ while ($true) {
                 }
             }
         )
-        <#
-        for($a = -11; $a -lt 11; $a++) {
-            for($b = -11; $b -lt 11; $b++) {
-                $chooseMaterial = (Get-Random -Minimum -100 -Maximum 100) / 100.0
-                $r1 = (Get-Random -Minimum 0 -Maximum 100) / 100.0
-                $r2 = (Get-Random -Minimum 0 -Maximum 100) / 100.0
-                $r3 = (Get-Random -Minimum 0 -Maximum 100) / 100.0
+        
+        for($a = -5; $a -lt 5; $a++) {
+            for($b = -5; $b -lt 5; $b++) {
+                $chooseMaterial = (Get-Random -Minimum -100 -Maximum 100 -SetSeed ($a * $b * 1)) / 100.0
+                $r1 = (Get-Random -Minimum 0 -Maximum 100 -SetSeed ($a * $b * 2)) / 100.0
+                $r2 = (Get-Random -Minimum 0 -Maximum 100 -SetSeed ($a * $b * 3)) / 100.0
+                $r3 = (Get-Random -Minimum 0 -Maximum 100 -SetSeed ($a * $b * 4)) / 100.0
                 $center = [System.Numerics.Vector3]::new(($a + 0.9 * $r1), 0.2, ($b + 0.9 * $r2))
 
                 $p2 = [System.Numerics.Vector3]::new(4, 0.2, 0)
@@ -88,14 +91,13 @@ while ($true) {
                 }
             }
         }
-        #>
 
         $lookFrom = [System.Numerics.Vector3]::new(13, 2, 3)
         $lookAt = [System.Numerics.Vector3]::new(0, 0, 0)
         $distToFocus = 10.0
         $aperture = 0.1
 
-        Invoke-Renderer -ImageWidth 80 `
+        Invoke-Renderer -ImageWidth 320 `
             -Diffuse "scattered" `
             -LeftPadding 0 `
             -Scene $scene `
@@ -105,7 +107,12 @@ while ($true) {
             -LookAt $lookAt `
             -FieldOfView 20 `
             -Aperture $aperture `
-            -FocusDistance $distToFocus
+            -FocusDistance $distToFocus `
+            -Progressive $false `
+            -FastRandom $true `
+            -InlinedRayTracing $true `
+            -Parallel $true `
+            -Note $Note
 
         exit 0
     } catch {
@@ -113,4 +120,4 @@ while ($true) {
     } finally {
         Start-Sleep -Seconds 1
     }
-}
+#}
