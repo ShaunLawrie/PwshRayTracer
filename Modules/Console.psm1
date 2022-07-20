@@ -9,6 +9,29 @@ function Write-HostBuffer {
     Write-Host -NoNewline $Buffer
 }
 
+Function Write-ScanProgress {
+    param(
+        [int] $TitleLength,
+        [int] $Sample,
+        [int] $MaxSamples,
+        [int] $Scan,
+        [int] $Line,
+        [int] $ImageHeight,
+        [int] $LeftPadding
+    )
+    $currentCursorPosition = $Host.UI.RawUI.CursorPosition
+    [Console]::SetCursorPosition($LeftPadding + $TitleLength + 1,0)
+    $currentSample = $Sample + 1
+    $currentScanPercent = $Line / $ImageHeight * 100
+    $totalSamplePercent = if($Scan -gt 0) { 50.0 + ($currentScanPercent / 2.0) } else { $currentScanPercent / 2.0 }
+    $totalRenderPercent = [Math]::Min([Math]::Round(((100.0 * $Sample) + $totalSamplePercent) / $MaxSamples, 1), 100).ToString("0.0")
+
+    Write-Host -ForegroundColor DarkGray -NoNewline "[Sample = $currentSample/$MaxSamples, Scan = $($Scan + 1)/2, Completion = $totalRenderPercent%]    "
+    [Console]::SetCursorPosition($currentCursorPosition.X, [Math]::Max($currentCursorPosition.Y - 1, 0))
+    Write-Host (" ")
+    [Console]::SetCursorPosition($currentCursorPosition.X, $currentCursorPosition.Y)
+}
+
 Function Clear-HostAndHideCursor {
     Clear-Host
     [Console]::CursorVisible = $false

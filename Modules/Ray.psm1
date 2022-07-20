@@ -63,6 +63,7 @@ function Test-RayHitSphere {
         Normal = $normal
         T = $root
         FrontFace = $frontFace
+        Material = $Sphere.Material
     }
 
     return $hitRecord
@@ -95,17 +96,56 @@ function Get-RayColor {
     param (
         [object] $Ray,
         [array] $Scene,
-        [switch] $Halfwidth
+        [int] $Depth,
+        [string] $Diffuse
     )
 
-    $hitRecord = Get-RayClosestHit -Ray $Ray -TMin 0 -TMax ([float]::PositiveInfinity) -Objects $Scene
+    if ($Depth -le 0) {
+        return [Rgb]@{
+            Red = 0
+            Green = 0
+            Blue = 0
+        }
+    }
+
+    $hitRecord = Get-RayClosestHit -Ray $Ray -TMin 0.001 -TMax ([float]::PositiveInfinity) -Objects $Scene
+
+    $result = [Rgb]@{
+        Red = 0
+        Green = 0
+        Blue = 0
+    }
 
     # Fallback to generated background
     if($hitRecord) {
-        $result = [Rgb]@{
-            Red = [Math]::Min(0.5 * ($hitRecord.Normal.X * 255 + 255), 255)
-            Green = [Math]::Min(0.5 * ($hitRecord.Normal.Y * 255 + 255), 255)
-            Blue = [Math]::Min(0.5 * ($hitRecord.Normal.Z * 255 + 255), 255)
+        if($Diffuse -eq "scattered") {
+            # Material simulation
+            $scattered = Get-VectorScattered -Ray $Ray -HitRecord $hitRecord
+            if($scattered) {
+                $color = Get-RayColor -Ray $scattered.Direction -Scene $Scene -Depth ($Depth - 1) -Diffuse $Diffuse
+                $result = [Rgb]@{
+                    Red = [Math]::Min($scattered.Attenuation.Red * $color.Red, 255)
+                    Green = [Math]::Min($scattered.Attenuation.Green * $color.Green, 255)
+                    Blue = [Math]::Min($scattered.Attenuation.Blue * $color.Blue, 255)
+                }
+            }
+        } else {
+            # Simple tracing
+            $diffuseDirection = switch($Diffuse) {
+                "simple" { Get-VectorRandomInUnitSphere }
+                "lambertian" { Get-VectorRandomUnit }
+                "hemispherical" { Get-VectorRandomInHemisphere -Normal $hitRecord.Normal }
+                default { throw "Unknown diffuse type '$Diffuse'" }
+            }
+
+            $target = $hitRecord.Point + $hitRecord.Normal + $diffuseDirection
+            $reflectedRay = New-Ray -Origin $hitRecord.Point -Direction ($target - $hitRecord.Point)
+            $color = Get-RayColor -Ray $reflectedRay -Scene $Scene -Depth ($Depth - 1) -Diffuse $Diffuse
+            $result = [Rgb]@{
+                Red = [Math]::Min(0.5 * ($color.Red), 255)
+                Green = [Math]::Min(0.5 * ($color.Green), 255)
+                Blue = [Math]::Min(0.5 * ($color.Blue), 255)
+            }
         }
     } else {
         $unitDirection = [System.Numerics.Vector3]::Normalize($Ray.Direction)

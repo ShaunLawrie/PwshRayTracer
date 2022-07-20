@@ -1,29 +1,57 @@
-# Camera
-$script:ViewportHeight
-$script:ViewportWidth
-$script:FocalLength
 $script:Origin
 $script:Horizontal
 $script:Vertical
 $script:LowerLeftCorner
+$script:LensRadius
+$script:W
+$script:U
+$script:V
 
 function Initialize-Camera {
     param (
-        [float] $AspectRatio
+        [float] $FieldOfView,
+        [float] $AspectRatio,
+        [System.Numerics.Vector3] $LookFrom,
+        [System.Numerics.Vector3] $LookAt,
+        [System.Numerics.Vector3] $CameraUp,
+        [float] $Aperture,
+        [float] $FocusDistance
     )
-    $script:ViewportHeight = 2.0
-    $script:ViewportWidth = $AspectRatio * $ViewportHeight
-    $script:FocalLength = 1.0
-    $script:Origin = [System.Numerics.Vector3]::Zero
-    $script:Horizontal = [System.Numerics.Vector3]::new($ViewportWidth, 0, 0)
-    $script:Vertical = [System.Numerics.Vector3]::new(0, $ViewportHeight, 0)
-    $script:LowerLeftCorner = $Origin - ($Horizontal / 2) - ($Vertical / 2) - [System.Numerics.Vector3]::new(0, 0, $FocalLength)
+    $theta = Convert-DegreesToRadians -Degrees $FieldOfView
+    $h = [Math]::Tan($theta / 2.0)
+    $viewportHeight = 2.0 * $h
+    $viewportWidth = $AspectRatio * $viewportHeight
+
+    $script:W = [System.Numerics.Vector3]::Normalize($LookFrom - $LookAt)
+    $script:U = [System.Numerics.Vector3]::Normalize([System.Numerics.Vector3]::Cross($CameraUp, $script:W))
+    $script:V = [System.Numerics.Vector3]::Cross($script:W, $script:U)
+
+    $script:Origin = $LookFrom
+    $script:Horizontal = $FocusDistance * $viewportWidth * $script:U
+    $script:Vertical = $FocusDistance * $viewportHeight * $script:V
+    $script:LowerLeftCorner = $script:Origin - ($script:Horizontal / 2.0) - ($script:Vertical / 2.0) - ($FocusDistance * $script:W)
+    $script:LensRadius = $Aperture / 2.0
+}
+
+function Get-RandomInUnitDisk {
+    while($true) {
+        $x = (Get-Random -Minimum -100 -Maximum 100) / 100.0
+        $y = (Get-Random -Minimum -100 -Maximum 100) / 100.0
+        $p = [System.Numerics.Vector3]::new($x, $y, 0)
+        if($p.LengthSquared() -ge 1) {
+            continue
+        }
+        return $p
+    }
 }
 
 function Get-CameraRay {
     param (
-        [float] $U,
-        [float] $V
+        [float] $S,
+        [float] $T
     )
-    return New-Ray -Origin $script:Origin -Direction ($script:LowerLeftCorner + ($U * $script:Horizontal) + ($V * $script:Vertical) - $script:Origin)
+    $rd = $script:LensRadius * (Get-RandomInUnitDisk)
+    $offset = ($script:U * $rd.X) + ($script:V * $rd.Y)
+
+    return New-Ray -Origin ($script:Origin + $offset) -Direction ($script:LowerLeftCorner + ($S * $script:Horizontal) + ($T * $script:Vertical) - $script:Origin - $offset)
 }

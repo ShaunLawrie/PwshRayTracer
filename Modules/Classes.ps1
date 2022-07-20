@@ -24,7 +24,7 @@ class Ray {
 class Sphere {
     [System.Numerics.Vector3] $Center
     [float] $Radius
-    [rgb] $Rgb
+    [Material] $Material
 }
 
 # https://raytracing.github.io/books/RayTracingInOneWeekend.html#surfacenormalsandmultipleobjects/anabstractionforhittableobjects
@@ -33,4 +33,14 @@ class HitRecord {
     [System.Numerics.Vector3] $Normal
     [float] $T
     [bool] $FrontFace
+    [Material] $Material
+}
+
+# https://raytracing.github.io/books/RayTracingInOneWeekend.html#metal/modelinglightscatterandreflectance
+class Material {
+    [bool] $Reflective = $False
+    [bool] $Refractive = $False
+    [float] $RefractiveIndex = -1
+    [float] $Fuzz = 0.0
+    [rgb] $Rgb
 }

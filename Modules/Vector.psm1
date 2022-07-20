@@ -140,4 +140,143 @@ function Get-VectorCrossProduct {
     }
 }
 
+function Get-VectorRandomInUnitSphere {
+    while ($True) {
+        $x = (Get-Random -Minimum 0 -Maximum 100) / 100.0
+        $y = (Get-Random -Minimum 0 -Maximum 100) / 100.0
+        $z = (Get-Random -Minimum 0 -Maximum 100) / 100.0
+        $p = [System.Numerics.Vector3]::new($x, $y, $z)
+        if($p.LengthSquared() -ge 1) {
+            continue
+        }
+        return $p
+    }
+}
+
+function Get-VectorRandomUnit {
+    return [System.Numerics.Vector3]::Normalize((Get-VectorRandomInUnitSphere))
+}
+
+function Get-VectorRandomInHemisphere {
+    param (
+        [object] $Normal
+    )
+    $inUnitSphere = Get-VectorRandomInUnitSphere
+    if([System.Numerics.Vector3]::Dot($inUnitSphere, $Normal) -gt 0.0) {
+        return $inUnitSphere
+    } else {
+        return -$inUnitSphere
+    }
+}
+
+# https://raytracing.github.io/books/RayTracingInOneWeekend.html#dielectrics/snell'slaw
+function Get-VectorRefracted {
+    param (
+        [object] $Vector,
+        [object] $Normal,
+        [float] $RefractionRatio
+    )
+    $dotProduct = [System.Numerics.Vector3]::Dot(-$Vector, $Normal)
+    $cosTheta = [Math]::Min($dotProduct, 1.0)
+
+    $perpendicularRay = $RefractionRatio * ($Vector + ($cosTheta * $Normal))
+    $parallelRay = -[Math]::Sqrt([Math]::Abs(1.0 - $perpendicularRay.LengthSquared())) * $Normal
+
+    return $perpendicularRay + $parallelRay
+}
+
+# https://raytracing.github.io/books/RayTracingInOneWeekend.html#metal/mirroredlightreflection
+function Get-VectorReflected {
+    param (
+        $Vector,
+        $Normal
+    )
+    return $Vector - (2 * [System.Numerics.Vector3]::Dot($Vector, $Normal) * $Normal)
+}
+
+# https://raytracing.github.io/books/RayTracingInOneWeekend.html#dielectrics/schlickapproximation
+function Get-VectorReflectance {
+    param (
+        [float] $CosineTheta,
+        [float] $RefractionRatio
+    )
+    # TODO: something is broken with this
+    $rZero = (1-$RefractionRatio) / (1+$RefractionRatio)
+    $rZeroSquared = $rZero * $rZero
+    return $rZeroSquared + (1-$rZeroSquared)*[Math]::Pow((1 - $CosineTheta), 5)
+}
+
+# https://raytracing.github.io/books/RayTracingInOneWeekend.html#metal/modelinglightscatterandreflectance
+function Test-VectorNearZero {
+    param (
+        [object] $Vector
+    )
+    $nearZero = 1e-8
+    return [Math]::Abs($Vector.X) -lt $nearZero -and [Math]::Abs($Vector.Y) -lt $nearZero -and [Math]::Abs($Vector.Z) -lt $nearZero
+}
+
+function Get-VectorScattered {
+    param (
+        [object] $Ray,
+        [object] $HitRecord
+    )
+
+    $scattered = $null
+    if($HitRecord.Material.Reflective) {
+        $directionUnit = [System.Numerics.Vector3]::Normalize($Ray.Direction)
+        $reflected = Get-VectorReflected -Vector $directionUnit -Normal $HitRecord.Normal
+        $fuzzedReflected = $reflected + ($HitRecord.Material.Fuzz * (Get-VectorRandomInUnitSphere))
+        $scattered = New-Ray -Origin $HitRecord.Point -Direction $fuzzedReflected
+        if([System.Numerics.Vector3]::Dot($scattered.Direction, $HitRecord.Normal) -le 0) {
+            return $null
+        } else {
+            return @{
+                Direction = $scattered
+                Attenuation = @{
+                    Red = $HitRecord.Material.Rgb.Red / 255.0
+                    Green = $HitRecord.Material.Rgb.Green / 255.0
+                    Blue = $HitRecord.Material.Rgb.Blue / 255.0
+                }
+            }
+        }
+    } elseif($HitRecord.Material.Refractive) {
+        $refractionRatio = if($HitRecord.FrontFace) { 1.0 / $HitRecord.Material.RefractiveIndex } else { $HitRecord.Material.RefractiveIndex }
+        $directionUnit = [System.Numerics.Vector3]::Normalize($Ray.Direction)
+
+        $cosTheta = [Math]::Min([System.Numerics.Vector3]::Dot(-$directionUnit, $HitRecord.Normal), 1.0)
+        $sinTheta = [Math]::Sqrt(1.0 - ($cosTheta * $cosTheta))
+
+        $cannotRefract = $refractionRatio * $sinTheta -gt 1.0
+
+        $direction = $null
+        if($cannotRefract -or (Get-VectorReflectance -CosineTheta $cosTheta -RefractionRatio $refractionRatio) -gt ((Get-Random -Minimum 0 -Maximum 100) / 100.0)) {
+            $direction = Get-VectorReflected -Vector $directionUnit -Normal $HitRecord.Normal
+        } else {
+            $direction = Get-VectorRefracted -Vector $directionUnit -Normal $HitRecord.Normal -RefractionRatio $refractionRatio
+        }
+
+        return @{
+            Direction = New-Ray -Origin $HitRecord.Point -Direction $direction
+            Attenuation = @{
+                Red = 1.0
+                Green = 1.0
+                Blue = 1.0
+            }
+        }
+    } else {
+        $scatterDirection = $HitRecord.Normal + (Get-VectorRandomUnit)
+        if(Test-VectorNearZero -Vector $scatterDirection) {
+            $scatterDirection = $HitRecord.Normal
+        }
+        return @{
+            Direction = New-Ray -Origin $HitRecord.Point -Direction $scatterDirection
+            Attenuation = @{
+                Red = $HitRecord.Material.Rgb.Red / 255.0
+                Green = $HitRecord.Material.Rgb.Green / 255.0
+                Blue = $HitRecord.Material.Rgb.Blue / 255.0
+            }
+        }
+    }
+}
+
 Export-ModuleMember -Function "*-*"
