@@ -30,6 +30,7 @@ function Invoke-Renderer {
         [bool] $FastRandom = $false,
         [bool] $InlinedRayTracing = $false,
         [bool] $Parallel = $false,
+        [bool] $Testing = $false,
         [string] $Note
     )
     
@@ -96,6 +97,8 @@ function Invoke-Renderer {
             $localPixels = @{}
             
             $rayTiming = Measure-Command {
+                $start = Get-Date
+                Add-Content -Path "renderprogress.thread$($_.Index).txt" -Value "[$(Get-Date)] Thread rendering started"
                 for ($sample = 0; $sample -lt $using:SamplesPerPixel; $sample++) {
                     for ($j = ($using:imageHeight - $_.StartLine); $j -ge ($using:imageHeight - $_.EndLine); $j = $j - 1) {
                         for ($i = 0; $i -le $using:ImageWidth; $i++) {
@@ -137,13 +140,89 @@ function Invoke-Renderer {
                             $null = $localSyncBuffer[$_.Index].AppendLine()
                         }
                     }
+                    $percentComplete = ($sample + 1) / $using:SamplesPerPixel
+                    $elapsedSeconds = (New-Timespan -Start $start -End (Get-Date)).TotalSeconds
+                    $estimateSeconds = (1.0 / $percentComplete) * $elapsedSeconds
+                    $remainingSeconds = $estimateSeconds - $elapsedSeconds
+                    if($remainingSeconds -lt 60) {
+                        $eta = "$([Math]::Round($remainingSeconds,1)) seconds"
+                    } else {
+                        $eta = "$([Math]::Round(($remainingSeconds / 60.0))) minutes"
+                    }
+                    Add-Content -Path "renderprogress.thread$($_.Index).txt" -Value "[$(Get-Date)] Thread $($_.Index) sample completed [$($sample + 1)/$using:SamplesPerPixel] eta [$eta remaining]"
                 }
+                Add-Content -Path "renderprogress.thread$($_.Index).txt" -Value "[$(Get-Date)] Thread rendering complete"
             }
             return $rayTiming
         }
         $rayTiming = @{
-            TotalMilliseconds = ($parallelTiming | Measure-Object -Min -Property TotalMilliseconds).Minimum
-            TotalSeconds = ($parallelTiming | Measure-Object -Min -Property TotalSeconds).Minimum
+            TotalMilliseconds = ($parallelTiming | Measure-Object -Maximum -Property TotalMilliseconds).Maximum
+            TotalSeconds = ($parallelTiming | Measure-Object -Maximum -Property TotalSeconds).Maximum
+        }
+    } elseif($Testing) {
+        # setup camera inline
+        $theta = $FieldOfView * ([math]::PI / 180)
+        $h = [Math]::Tan($theta / 2.0)
+        $viewportHeight = 2.0 * $h
+        $viewportWidth = $aspectRatio * $viewportHeight
+
+        $cameraW = [System.Numerics.Vector3]::Normalize($LookFrom - $LookAt)
+        $cameraU = [System.Numerics.Vector3]::Normalize([System.Numerics.Vector3]::Cross($CameraUp, $cameraW))
+        $cameraV = [System.Numerics.Vector3]::Cross($cameraW, $cameraU)
+
+        $cameraOrigin = $LookFrom
+        $cameraHorizontal = $FocusDistance * $viewportWidth * $cameraU
+        $cameraVertical = $FocusDistance * $viewportHeight * $cameraV
+        $cameraLowerLeftCorner = $cameraOrigin - ($cameraHorizontal / 2.0) - ($cameraVertical / 2.0) - ($FocusDistance * $cameraW)
+        $cameraLensRadius = $Aperture / 2.0
+
+        $buffer = New-Object -TypeName "System.Text.StringBuilder" -ArgumentList ([int]((($ImageWidth * $imageHeight) + $imageHeight)))
+        $localPixels = @{}
+        for($j = 0; $j -le ($imageHeight); $j++) {
+            $localPixels[$j] = @{}
+            for($i = 0; $i -le ($ImageWidth); $i++) {
+                $localPixels[$j][$i] = @{
+                    0 = 0 # red
+                    1 = 0 # green
+                    2 = 0 # blue
+                }
+            }
+        }
+
+        $global:Scene = $scene
+        $rayTiming = Measure-Command {
+            for ($j = ($imageHeight); $j -ge 0; $j--) {
+                $jPixels = $localPixels[$j]
+                for ($i = 0; $i -le $ImageWidth; $i++) {
+                    $currentPixel = $jPixels[$i]
+                    for ($sample = 0; $sample -lt $SamplesPerPixel; $sample++) {
+                        $u = ($i + ($global:Random.Next($SampleFuzziness) / 100.0)) / ($ImageWidth - 1.0)
+                        $v = ($j + ($global:Random.Next($SampleFuzziness) / 100.0)) / ($imageHeight - 1.0)
+                        $rd = $null
+                        while($null -eq $rd) {
+                            $x = ($global:Random.Next(200) - 100) / 100.0
+                            $y = ($global:Random.Next(200) - 100) / 100.0
+                            $p = [System.Numerics.Vector3]::new($x, $y, 0)
+                            if($p.LengthSquared() -ge 1) {
+                                continue
+                            }
+                            $rd = $cameraLensRadius * $p
+                        }
+                        $offset = ($cameraU * $rd.X) + ($cameraV * $rd.Y)
+
+                        $newColor = Get-TestingRayColor -Point ($cameraOrigin + $offset) -Direction ($cameraLowerLeftCorner + ($u * $cameraHorizontal) + ($v * $cameraVertical) - $cameraOrigin - $offset) -Depth $MaxRayRecursionDepth
+                        $currentPixel[0] += $newColor[0]
+                        $currentPixel[1] += $newColor[1]
+                        $currentPixel[2] += $newColor[2]
+                    }
+
+                    $r = [Math]::Clamp($currentPixel[0] / $SamplesPerPixel, 0, 255)
+                    $g = [Math]::Clamp($currentPixel[1] / $SamplesPerPixel, 0, 255)
+                    $b = [Math]::Clamp($currentPixel[2] / $SamplesPerPixel, 0, 255)
+                    $null = $buffer.Append("$([Char]27)[48;2;${r};${g};${b}m  $([Char]27)[0m")
+                }
+                $null = $buffer.AppendLine()
+            }
         }
     } else {
         $rayTiming = Measure-Command {
@@ -184,7 +263,12 @@ function Invoke-Renderer {
                                 $v = ($j + ((Get-Random -Minimum 0 -Maximum $SampleFuzziness) / 100.0)) / ($imageHeight - 1.0)
                             }
                             $r = Get-CameraRay -S $u -T $v
-                            $newColor = Get-RayColor -Ray $r -Scene $Scene -Depth $MaxRayRecursionDepth -Diffuse $Diffuse
+                            #$newColor = Get-RayColor -Ray $r -Scene $Scene -Depth $MaxRayRecursionDepth -Diffuse $Diffuse
+                            $newColor = @{
+                                Red = 97
+                                Green = 97
+                                Blue = 170
+                            }
                             $pixels["$j.$i"] = @{
                                 Rgb = [Rgb]@{
                                     Red = $pixels["$j.$i"].Rgb.Red + $newColor.Red
@@ -239,6 +323,13 @@ function Invoke-Renderer {
                     }
                 }
             }
+        } elseif($Testing) {
+            $lines = $buffer.ToString().Split("`n")
+            for($i = 0; $i -lt $lines.Count; $i++) {
+                if(![string]::IsNullOrWhiteSpace($lines[$i])) {
+                    Write-Host "$(' ' * $leftPadding) $($lines[$i])"
+                }
+            }
         } else {
             $linesEven = $buffer[0].ToString().Split("`n")
             $linesOdd = $buffer[1].ToString().Split("`n")
@@ -267,16 +358,18 @@ function Invoke-Renderer {
         }
     }
 
-    $stringAsStream = [System.IO.MemoryStream]::new()
-    $writer = [System.IO.StreamWriter]::new($stringAsStream)
-    $writer.write(($Scene | ConvertTo-Json -Depth 5))
-    $writer.Flush()
-    $stringAsStream.Position = 0
-    $sceneHash = (Get-FileHash -InputStream $stringAsStream -Algorithm MD5).Hash
-    if(Test-Path "$sceneHash.scene.txt") {
-        Write-Verbose "Scene $sceneHash already dumped"
-    } else {
-        Set-Content -Path "$sceneHash.scene.txt" -Value ($Scene | ConvertTo-Json -Depth 5)
+    if(!$Testing) {
+        $stringAsStream = [System.IO.MemoryStream]::new()
+        $writer = [System.IO.StreamWriter]::new($stringAsStream)
+        $writer.write(($Scene | ConvertTo-Json -Depth 5))
+        $writer.Flush()
+        $stringAsStream.Position = 0
+        $sceneHash = (Get-FileHash -InputStream $stringAsStream -Algorithm MD5).Hash
+        if(Test-Path "$sceneHash.scene.txt") {
+            Write-Verbose "Scene $sceneHash already dumped"
+        } else {
+            Set-Content -Path "$sceneHash.scene.txt" -Value ($Scene | ConvertTo-Json -Depth 5)
+        }
     }
     $statsOutput = @"
 ===========================================================
