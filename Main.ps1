@@ -3,13 +3,9 @@ param (
     [string] $Note
 )
 
-$global:Random = New-Object -TypeName System.Random
-
 function Invoke-Renderer {
     param (
         [int] $ImageWidth = 136,
-        # simple, lambertian, or hemispherical
-        [string] $Diffuse = "lambertian",
         [int] $LeftPadding = 0,
         [object] $Scene,
         [int] $SamplesPerPixel = 15,
@@ -21,12 +17,6 @@ function Invoke-Renderer {
         [object] $CameraUp = [System.Numerics.Vector3]::new(0, 1, 0),
         [float] $Aperture = 1.0,
         [float] $FocusDistance = ($LookFrom - $LookAt).Length(),
-        # performance options
-        [bool] $Progressive = $true,
-        [bool] $FastRandom = $false,
-        [bool] $InlinedRayTracing = $false,
-        [bool] $Parallel = $false,
-        [bool] $Testing = $false,
         [string] $Note
     )
 
@@ -42,7 +32,7 @@ function Invoke-Renderer {
 
     # Left terminal padding
     $leftPadding = [int](([Console]::WindowWidth / 2) - $ImageWidth)
-    $title = " Powershell Ray Tracer 0.1a"
+    $title = "Powershell Ray Tracer 0.1a (speed)"
 
     Write-Host $title
 
@@ -66,7 +56,7 @@ function Invoke-Renderer {
     $ProgressPreference = "SilentlyContinue"
     $info = Get-ComputerInfo
     $ProgressPreference = $previousProgressPreference
-    $threads = $info.CsProcessors.NumberOfLogicalProcessors
+    $threads = $info.CsProcessors.NumberOfLogicalProcessors + 4
     $streams = [System.Collections.ArrayList]::new()
     $linesPerThread = [int]($imageHeight / $threads)
     for($i = 0; $i -lt $threads; $i++) {
@@ -78,7 +68,6 @@ function Invoke-Renderer {
             }
         ) | Out-Null
     }
-    $global:Scene = $scene
 
     $parallelResults = $streams | Foreach-Object -ThrottleLimit $threads -Parallel {
 
@@ -263,6 +252,7 @@ function Invoke-Renderer {
         }
 
         $localBuffer = New-Object -TypeName "System.Text.StringBuilder" -ArgumentList ([int]((($using:ImageWidth * $using:imageHeight) + $using:imageHeight) / $using:threads))
+        $localPpmBuffer = New-Object -TypeName "System.Text.StringBuilder" -ArgumentList ([int]((($using:ImageWidth * $using:imageHeight) + $using:imageHeight) / $using:threads))
         $localPixels = @{}
         $global:Random = New-Object -TypeName System.Random
         $global:Scene = $using:Scene
@@ -278,7 +268,8 @@ function Invoke-Renderer {
         }
 
         $rayTiming = Measure-Command {
-            for ($j = ($using:imageHeight - $_.StartLine); $j -ge ($using:imageHeight - $_.EndLine); $j--) {
+            $lines = 0
+            for ($j = ($using:imageHeight - $_.StartLine); $j -gt ($using:imageHeight - $_.EndLine); $j--) {
                 $jPixels = $localPixels[$j]
                 for ($i = 0; $i -le $using:ImageWidth; $i++) {
                     $currentPixel = $jPixels[$i]
@@ -308,14 +299,18 @@ function Invoke-Renderer {
                     $g = [Math]::Clamp($currentPixel[1] / ($using:SamplesPerPixel - 1), 0, 255)
                     $b = [Math]::Clamp($currentPixel[2] / ($using:SamplesPerPixel - 1), 0, 255)
                     $null = $localBuffer.Append("$([Char]27)[48;2;${r};${g};${b}m  $([Char]27)[0m")
+                    $null = $localPpmBuffer.AppendLine("${r} ${g} ${b}")
                 }
                 $null = $localBuffer.AppendLine()
+                $lines++
+                Write-Host "Thread $($_.Index) row $lines/$($using:linesPerThread) complete"
             }
         }
 
         return @{
             Index = $_.Index
             Buffer = $localBuffer
+            PpmBuffer = $localPpmBuffer
             Timing = $rayTiming
         }
     }
@@ -325,6 +320,7 @@ function Invoke-Renderer {
         TotalSeconds = ($parallelResults.Timing | Measure-Object -Maximum -Property TotalSeconds).Maximum
     }
     $buffers = $parallelResults | Sort-Object { $_.Index } | Select-Object -ExpandProperty Buffer
+    $ppmBuffers = $parallelResults | Sort-Object { $_.Index } | Select-Object -ExpandProperty PpmBuffer
     foreach($buffer in $buffers) {
         $lines = $buffer.ToString().Split("`n")
         foreach($line in $lines) {
@@ -333,6 +329,21 @@ function Invoke-Renderer {
             }
         }
     }
+    $ppm = "$PSScriptRoot\output.$((Get-Date).ToFileTime()).ppm"
+    $ppmFileBuffer = New-Object -TypeName "System.Text.StringBuilder" -ArgumentList ([int]($ImageWidth * $imageHeight))
+    $null = $ppmFileBuffer.AppendLine("P3")
+    $null = $ppmFileBuffer.AppendLine("$($ImageWidth + 1) $imageHeight")
+    $null = $ppmFileBuffer.AppendLine("255")
+    
+    foreach($ppmBuffer in $ppmBuffers) {
+        $ppmData = $ppmBuffer.ToString().Split("`n")
+        foreach($rgb in $ppmData) {
+            if(![string]::IsNullOrWhiteSpace($rgb)) {
+                $null = $ppmFileBuffer.Append("$($rgb.Trim()) ")
+            }
+        }
+    }
+    Set-Content -Path $ppm -NoNewline $ppmFileBuffer.ToString()
 
     $raysPerSecond = [Math]::Round(($ImageWidth * $imageHeight * $SamplesPerPixel) / $rayTiming.TotalSeconds, 1)
     $pixelsPerSecond = [Math]::Round(($ImageWidth * $imageHeight) / $rayTiming.TotalSeconds, 1)
@@ -346,7 +357,7 @@ function Invoke-Renderer {
 
     $statsOutput = @"
 ===========================================================
-Note                 = $Note
+Note                 = $(if($Note) { $Note } else { "None" })
 Date                 = $(Get-Date)
 Scene                = MD5 $sceneHash
 Aspect ratio         = ${aspectWidth}:$aspectHeight
@@ -364,7 +375,7 @@ Render               = $($rayTiming.TotalMilliseconds)ms
     Add-Content "benchmarks.txt" -Value $statsOutput
 }
 
-$scene2 = @(
+$scene = @(
     # ground sphere
     @{
         0 = [System.Numerics.Vector3]::new(0, -1000.0, 0)
@@ -421,7 +432,7 @@ for($a = -11; $a -lt 11; $a++) {
                 # nothing
             } elseif($chooseMaterial -lt 0.934) {
                 # diffuse
-                $scene2 += @{
+                $scene += @{
                     0 = $center
                     1 = $r
                     2 = @{
@@ -431,7 +442,7 @@ for($a = -11; $a -lt 11; $a++) {
                 }
             } elseif($chooseMaterial -lt 0.965) {
                 # reflective
-                $scene2 += @{
+                $scene += @{
                     0 = $center
                     1 = $r
                     2 = @{
@@ -444,7 +455,7 @@ for($a = -11; $a -lt 11; $a++) {
                 }
             } else {
                 # refractive
-                $scene2 += @{
+                $scene += @{
                     0 = $center
                     1 = $r
                     2 = @{
@@ -464,11 +475,11 @@ $lookAt = [System.Numerics.Vector3]::new(0, 0, 0)
 $distToFocus = 10.0
 $aperture = 0.1
 # 540
-Invoke-Renderer -ImageWidth 154 `
+Invoke-Renderer -ImageWidth 180 `
     -Diffuse "scattered" `
     -LeftPadding 0 `
-    -Scene $scene2 `
-    -SamplesPerPixel 15 `
+    -Scene $scene `
+    -SamplesPerPixel 5 `
     -SampleFuzziness 100 `
     -MaxRayRecursionDepth 50 `
     -LookFrom $lookFrom `
@@ -476,9 +487,4 @@ Invoke-Renderer -ImageWidth 154 `
     -FieldOfView 20 `
     -Aperture $aperture `
     -FocusDistance $distToFocus `
-    -Progressive $false `
-    -FastRandom $true `
-    -InlinedRayTracing $true `
-    -Parallel $false `
-    -Testing $true `
     -Note $Note
