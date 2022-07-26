@@ -34,7 +34,7 @@ function Invoke-Renderer {
     $leftPadding = [int](([Console]::WindowWidth / 2) - $ImageWidth)
     $title = "Powershell Ray Tracer 0.1a (speed)"
 
-    Write-Host $title
+    Write-Host "$(' ' * $LeftPadding) $title"
 
     # setup camera inline
     $theta = $FieldOfView * ([math]::PI / 180)
@@ -59,6 +59,7 @@ function Invoke-Renderer {
     $threads = $info.CsProcessors.NumberOfLogicalProcessors + 4
     $streams = [System.Collections.ArrayList]::new()
     $linesPerThread = [int]($imageHeight / $threads)
+    $progressChunks = 100 / $linesPerThread
     for($i = 0; $i -lt $threads; $i++) {
         $streams.Add(
             @{
@@ -67,7 +68,13 @@ function Invoke-Renderer {
                 EndLine = (($i + 1) * $linesPerThread)
             }
         ) | Out-Null
+        [Console]::WriteLine(("$(' ' * $LeftPadding) [" + (" " * 100) + "] thread $($i.ToString("00")) 0%"))
     }
+    Start-Sleep -Seconds 1
+
+    $mutex = New-Object System.Threading.Mutex($false, "ProgressUpdateMutex")
+    $currentCursorPosition = $Host.UI.RawUI.CursorPosition
+    $currentCursorPosition.Y = $currentCursorPosition.Y - $threads
 
     $parallelResults = $streams | Foreach-Object -ThrottleLimit $threads -Parallel {
 
@@ -75,6 +82,7 @@ function Invoke-Renderer {
             param (
                 $Point,
                 $Direction,
+                $RayBouncedOff = $null,
                 [int] $Depth
             )
         
@@ -92,45 +100,95 @@ function Invoke-Renderer {
             $hitRecordNormal = $null
             $hitRecordFrontFace = $true
             $hitRecordMaterial = $null
+            $hitRecordObject = $null
             $closestSoFar = ([float]::PositiveInfinity)
         
             $a = $Direction.LengthSquared()
-<# THIS IS THE HOT PATH #>
-            foreach($object in $Scene) {
-                $oc = $Point - $object[0]
-                $halfB = [System.Numerics.Vector3]::Dot($oc, $Direction)
-                $c = $oc.LengthSquared() - $object[3]
-                $discriminant = ($halfB * $halfB) - ($a * $c)
-        
-                if($discriminant -lt 0) {
-                    continue
+            <# THIS IS THE HOT PATH #>
+            if($RayBouncedOff -and $false) {
+                if($Direction.X -gt $TMin) {
+                    $targets = $RayBouncedOff.Righties
+                } elseif($Direction.X -lt $TMin) {
+                    $targets = $RayBouncedOff.Lefties
+                } else {
+                    $targets = $RayBouncedOff.Lefties + $RayBouncedOff.Righties
                 }
-<# THIS IS THE END OF THE HOT PATH #>
-        
-                $sqrtd = [Math]::Sqrt($discriminant)
-        
-                $root = (-$halfB - $sqrtd) / $a;
-                if ($root -lt $TMin -or $closestSoFar -lt $root) {
-                    $root = (-$halfB + $sqrtd) / $a
-                    if ($root -lt $TMin -or $closestSoFar -lt $root) {
+                foreach($object in $targets) {
+                    $oc = $Point - $object[0]
+                    $halfB = [System.Numerics.Vector3]::Dot($oc, $Direction)
+                    $c = $oc.LengthSquared() - $object[3]
+                    $discriminant = ($halfB * $halfB) - ($a * $c)
+            
+                    if($discriminant -lt 0) {
                         continue
                     }
+                    <# THIS IS THE END OF THE HOT PATH #>
+            
+                    $sqrtd = [Math]::Sqrt($discriminant)
+            
+                    $root = (-$halfB - $sqrtd) / $a;
+                    if ($root -lt $TMin -or $closestSoFar -lt $root) {
+                        $root = (-$halfB + $sqrtd) / $a
+                        if ($root -lt $TMin -or $closestSoFar -lt $root) {
+                            continue
+                        }
+                    }
+            
+                    $distance = $Direction * $root 
+                    $hitPoint = $Point + $distance
+            
+                    $outwardNormal = ($hitPoint - $object[0]) / $object[1];
+            
+                    $frontFace = [System.Numerics.Vector3]::Dot($Direction, $outwardNormal) -lt 0
+                    $normal = if($frontFace) { $outwardNormal } else { -$outwardNormal }
+            
+                    $hitRecordHitPoint = $hitPoint
+                    $hitRecordNormal = $normal
+                    $hitRecordFrontFace = $frontFace
+                    $hitRecordMaterial = $object[2]
+                    $hitRecordObject = $object
+                    
+                    $closestSoFar = $root
                 }
-        
-                $distance = $Direction * $root 
-                $hitPoint = $Point + $distance
-        
-                $outwardNormal = ($hitPoint - $object[0]) / $object[1];
-        
-                $frontFace = [System.Numerics.Vector3]::Dot($Direction, $outwardNormal) -lt 0
-                $normal = if($frontFace) { $outwardNormal } else { -$outwardNormal }
-        
-                $hitRecordHitPoint = $hitPoint
-                $hitRecordNormal = $normal
-                $hitRecordFrontFace = $frontFace
-                $hitRecordMaterial = $object[2]
-                
-                $closestSoFar = $root
+            } else {
+                # Exhaustive search
+                foreach($object in $Scene) {
+                    $oc = $Point - $object[0]
+                    $halfB = [System.Numerics.Vector3]::Dot($oc, $Direction)
+                    $c = $oc.LengthSquared() - $object[3]
+                    $discriminant = ($halfB * $halfB) - ($a * $c)
+            
+                    if($discriminant -lt 0) {
+                        continue
+                    }
+                    <# THIS IS THE END OF THE HOT PATH #>
+            
+                    $sqrtd = [Math]::Sqrt($discriminant)
+            
+                    $root = (-$halfB - $sqrtd) / $a;
+                    if ($root -lt $TMin -or $closestSoFar -lt $root) {
+                        $root = (-$halfB + $sqrtd) / $a
+                        if ($root -lt $TMin -or $closestSoFar -lt $root) {
+                            continue
+                        }
+                    }
+            
+                    $distance = $Direction * $root 
+                    $hitPoint = $Point + $distance
+            
+                    $outwardNormal = ($hitPoint - $object[0]) / $object[1];
+            
+                    $frontFace = [System.Numerics.Vector3]::Dot($Direction, $outwardNormal) -lt 0
+                    $normal = if($frontFace) { $outwardNormal } else { -$outwardNormal }
+            
+                    $hitRecordHitPoint = $hitPoint
+                    $hitRecordNormal = $normal
+                    $hitRecordFrontFace = $frontFace
+                    $hitRecordMaterial = $object[2]
+                    $hitRecordObject = $object
+                    
+                    $closestSoFar = $root
+                }
             }
         
             if($hitRecordHitPoint) {
@@ -230,7 +288,7 @@ function Invoke-Renderer {
                     $scatteredAttenuationB = $hitRecordMaterialColor[2] / 255.0
                 }
                 
-                $color = Get-RayColor -Point $scatteredDirectionPoint -Direction $scatteredDirectionDirection -Depth ($Depth - 1)
+                $color = Get-RayColor -Point $scatteredDirectionPoint -Direction $scatteredDirectionDirection -RayBouncedOff $hitRecordObject -Depth ($Depth - 1)
                 return @{
                     0 = [Math]::Min($scatteredAttenuationR * $color[0], 255)
                     1 = [Math]::Min($scatteredAttenuationG * $color[1], 255)
@@ -256,6 +314,7 @@ function Invoke-Renderer {
         $localPixels = @{}
         $global:Random = New-Object -TypeName System.Random
         $global:Scene = $using:Scene
+        $localMutex = $using:mutex
         for ($j = ($using:imageHeight - $_.StartLine); $j -ge ($using:imageHeight - $_.EndLine); $j--) {
             $localPixels[$j] = @{}
             for($i = 0; $i -le ($using:ImageWidth); $i++) {
@@ -300,10 +359,15 @@ function Invoke-Renderer {
                     $b = [Math]::Clamp($currentPixel[2] / ($using:SamplesPerPixel - 1), 0, 255)
                     $null = $localBuffer.Append("$([Char]27)[48;2;${r};${g};${b}m  $([Char]27)[0m")
                     $null = $localPpmBuffer.AppendLine("${r} ${g} ${b}")
+                    
+                    $percent = [Math]::Round(($lines * $using:progressChunks) + ($i / $using:ImageWidth * $using:progressChunks))
+                    $localMutex.WaitOne()
+                    [Console]::SetCursorPosition($using:currentCursorPosition.X, ($using:currentCursorPosition.Y + $_.Index))
+                    [Console]::Write(("$(' ' * $using:LeftPadding) [" + ("#" * $percent) + (" " * (100 - $percent)) + "] thread $($_.Index.ToString("00")) $([Math]::Round($percent, 1))%"))
+                    $localMutex.ReleaseMutex()
                 }
                 $null = $localBuffer.AppendLine()
                 $lines++
-                Write-Host "Thread $($_.Index) row $lines/$($using:linesPerThread) complete"
             }
         }
 
@@ -319,8 +383,10 @@ function Invoke-Renderer {
         TotalMilliseconds = ($parallelResults.Timing | Measure-Object -Maximum -Property TotalMilliseconds).Maximum
         TotalSeconds = ($parallelResults.Timing | Measure-Object -Maximum -Property TotalSeconds).Maximum
     }
+
     $buffers = $parallelResults | Sort-Object { $_.Index } | Select-Object -ExpandProperty Buffer
     $ppmBuffers = $parallelResults | Sort-Object { $_.Index } | Select-Object -ExpandProperty PpmBuffer
+    [Console]::SetCursorPosition($currentCursorPosition.X, $currentCursorPosition.Y)
     foreach($buffer in $buffers) {
         $lines = $buffer.ToString().Split("`n")
         foreach($line in $lines) {
@@ -348,7 +414,7 @@ function Invoke-Renderer {
     $raysPerSecond = [Math]::Round(($ImageWidth * $imageHeight * $SamplesPerPixel) / $rayTiming.TotalSeconds, 1)
     $pixelsPerSecond = [Math]::Round(($ImageWidth * $imageHeight) / $rayTiming.TotalSeconds, 1)
 
-    $stats = "[Aspect ratio = ${aspectWidth}:$aspectHeight, Image width = $ImageWidth, Antialiasing samples = $SamplesPerPixel, Sample fuzziness = $SampleFuzziness, Diffuse = $Diffuse, Max ray recursion = $MaxRayRecursionDepth, Rays traced/sec = $raysPerSecond, Pixels/sec = $pixelsPerSecond, Render = $($rayTiming.TotalMilliseconds)ms]            "
+    $stats = "[Aspect ratio = ${aspectWidth}:$aspectHeight, Image width = $ImageWidth, Antialiasing samples = $SamplesPerPixel, Sample fuzziness = $SampleFuzziness, Max ray recursion = $MaxRayRecursionDepth, Rays traced/sec = $raysPerSecond, Pixels/sec = $pixelsPerSecond, Render = $($rayTiming.TotalMilliseconds)ms]            "
     $statsSplit = (Select-String ".{1,$($ImageWidth * 2)}(\s|$)" -Input $stats -AllMatches).Matches.Value
 
     foreach($stat in $statsSplit) {
@@ -384,8 +450,11 @@ $scene = @(
             0 = @{0 = 128; 1 = 128; 2 = 128}
         }
         3 = 1000.0 * 1000.0
+        Lefties = @()
+        Righties = @()
+        Label = "Ground"
     },
-    # Three large spheres
+    # Refractive sphere
     @{
         0 = [System.Numerics.Vector3]::new(0, 1, 0)
         1 = 1.0
@@ -395,7 +464,11 @@ $scene = @(
             0 = @{0 = 128; 1 = 145; 2 = 128}
         }
         3 = 1.0 * 1.0
+        Lefties = @()
+        Righties = @()
+        Label = "Glass"
     },
+    # Colored sphere
     @{
         0 = [System.Numerics.Vector3]::new(-4, 1, 0)
         1 = 1.0
@@ -403,6 +476,9 @@ $scene = @(
             0 = @{0 = 102; 1 = 51; 2 = 26}
         }
         3 = 1.0 * 1.0
+        Lefties = @()
+        Righties = @()
+        Label = "Colored"
     },
     # reflective
     @{
@@ -414,6 +490,9 @@ $scene = @(
             0 = @{0 = 179; 1 = 153; 2 = 128}
         }
         3 = 1.0 * 1.0
+        Lefties = @()
+        Righties = @()
+        Label = "Mirrow"
 })
 
 Get-Random -SetSeed 3423 | Out-Null
@@ -439,6 +518,8 @@ for($a = -11; $a -lt 11; $a++) {
                         0 = @{0 = (220 * $r1); 1 = (220 * $r2); 2 = (220 * $r3)}
                     }
                     3 = $r * $r
+                    Lefties = @()
+                    Righties = @()
                 }
             } elseif($chooseMaterial -lt 0.965) {
                 # reflective
@@ -452,6 +533,8 @@ for($a = -11; $a -lt 11; $a++) {
                         #0 = @{0 = 255; 1 = 0; 2 = 0}
                     }
                     3 = $r * $r
+                    Lefties = @()
+                    Righties = @()
                 }
             } else {
                 # refractive
@@ -464,22 +547,77 @@ for($a = -11; $a -lt 11; $a++) {
                         0 = @{0 = (220 * $r1); 1 = (220 * $r2); 2 = (220 * $r3)}
                     }
                     3 = $r * $r
+                    Lefties = @()
+                    Righties = @()
                 }
             }
         }
     }
 }
 
+$scene += @{
+    0 = [System.Numerics.Vector3]::new(4, 0.7, 2.2)
+    1 = 0.4
+    2 = @{
+        0 = @{0 = 255; 1 = 255; 2 = 0}
+    }
+    3 = 0.4 * 0.4
+    Lefties = @()
+    Righties = @()
+    Label = "Tennis"
+}
+
 $lookFrom = [System.Numerics.Vector3]::new(12, 1.9, 3)
 $lookAt = [System.Numerics.Vector3]::new(0, 0, 0)
 $distToFocus = 10.0
 $aperture = 0.1
-# 540
-Invoke-Renderer -ImageWidth 180 `
+
+$counter = 0
+# Populate the lefties and righties
+foreach($outerObject in $scene) {
+    $left = 0
+    $right = 0
+    $both = 0
+    $center = $outerObject[0]
+    $radius = $outerObject[1]
+    $leftExtremity = [System.Numerics.Vector3]::new($center.X - $radius, $center.Y, $center.Z)
+    $rightExtremity = [System.Numerics.Vector3]::new($center.X + $radius, $center.Y, $center.Z)
+    #Write-Host "$($outerObject.Label) center $center leftEx $leftExtremity rightEx $rightExtremity"
+    foreach($innerObject in $scene) {
+        $innerCenter = $innerObject[0]
+        $innerRadius = $innerObject[1]
+        $innerLeftExtremity = [System.Numerics.Vector3]::new($innerCenter.X - $innerRadius, $innerCenter.Y, $innerCenter.Z)
+        $innerRightExtremity = [System.Numerics.Vector3]::new($innerCenter.X + $innerRadius, $innerCenter.Y, $innerCenter.Z)
+        $rightRelative = $rightExtremity - $innerLeftExtremity
+        $leftRelative = $leftExtremity - $innerRightExtremity
+        if($rightRelative.X -ge 0 -and $leftRelative.X -le 0) {
+            #Write-Host "  $($innerObject.Label) BOTH center $($innerObject[0]) lr $leftRelative rr $rightRelative"
+            $outerObject.Righties += $innerObject
+            $outerObject.Lefties += $innerObject
+            $both++
+        } elseif($rightRelative.X -ge 0) {
+            #Write-Host "  $($innerObject.Label) RIGHT center $($innerObject[0]) lr $leftRelative rr $rightRelative"
+            $outerObject.Righties += $innerObject
+            $right++
+        } elseif($leftRelative.X -le 0) {
+            #Write-Host "  $($innerObject.Label) LEFT center $($innerObject[0]) lr $leftRelative rr $rightRelative"
+            $outerObject.Lefties += $innerObject
+            $left++
+        } else {
+            throw "Fuck"
+        }
+    }
+    $counter++
+    Write-Host "  Object $($counter.ToString("000")) [left: $left, right: $right, both: $both, total: $($left + $right + $both)]"
+}
+
+[Console]::CursorVisible = $false
+
+Invoke-Renderer -ImageWidth 120 `
     -Diffuse "scattered" `
     -LeftPadding 0 `
     -Scene $scene `
-    -SamplesPerPixel 5 `
+    -SamplesPerPixel 50 `
     -SampleFuzziness 100 `
     -MaxRayRecursionDepth 50 `
     -LookFrom $lookFrom `
@@ -488,3 +626,5 @@ Invoke-Renderer -ImageWidth 180 `
     -Aperture $aperture `
     -FocusDistance $distToFocus `
     -Note $Note
+
+[Console]::CursorVisible = $true
