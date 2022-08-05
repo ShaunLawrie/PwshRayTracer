@@ -7,7 +7,7 @@ if(!$gitInstalled) {
 }
 
 Write-Host -ForegroundColor Green "Clean up the artifacts folder"
-Remove-Item "$PSScriptRoot/artifacts/*"
+Get-ChildItem "$PSScriptRoot/artifacts/" -Exclude ".gitkeep" | Remove-Item
 if(!(Test-Path "$PSScriptRoot/aws-lambda-powershell-runtime")) {
     Write-Host -ForegroundColor Green "Cloning the awslabs powershell runtime repository so we can build the powershell runtime"
     git clone git@github.com:awslabs/aws-lambda-powershell-runtime.git "$PSScriptRoot/aws-lambda-powershell-runtime"
