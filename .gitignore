@@ -1,0 +1,5 @@
+aws-lambda-powershell-runtime/
+artifacts/
+.terraform/
+.terraform.lock.hcl
+*tfstate*
