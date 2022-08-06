@@ -2,11 +2,17 @@
 
 https://aws.amazon.com/blogs/compute/introducing-the-powershell-custom-runtime-for-aws-lambda/
 
-```
-# Clone the awslabs powershell runtime repository so we can build the powershell runtime
-git clone git@github.com:awslabs/aws-lambda-powershell-runtime.git
-# Build the layer (this downloads the microsoft provided powershell binaries into the layer source folder)
-.\aws-lambda-powershell-runtime\powershell-runtime\build-PwshRuntimeLayer.ps1
-# Build a zip for terraform to upload as a custom layer
-Compress-Archive -Path .\aws-lambda-powershell-runtime\powershell-runtime\pwsh-runtime\* -DestinationPath ".\artifacts\pwsh_lambda_layer_payload.zip"
+## Pre-requisites
+ - Terraform installed and available in your PATH with version greater than or equal to 1.2
+ - Git installed and available in your PATH
+ - AWS credentials configured for your current shell session via environment variables or default aws cli credential managers
+
+## Run
+
+```pwsh
+# Build the lambda powershell base layer
+.\Build.ps1
+# Deploy the lambda and the underlying infrastructure to a new VPC in ap-southeast-2 (Terraform will confirm before applying changes)
+.\Deploy.ps1
+# 
 ```

@@ -1,7 +1,21 @@
+/* Deploys the foundational infrastructure for the project:
+
+    AWS Acccount (existing)
+     ├─ VPC for the project to be deployed into to segment it from other AWS account resources
+     |   ├─ Internet Gateway for the lambda to use to get to AWS services, not using VPC endpoints because this is a toy project
+     |   ├─ Subnet for the lambda to be deployed into
+     |   ├─ Route Table routing everything to the internet that isn't part of the subnet
+     |   └─ Security Group allowing egress and no ingress
+     ├─ S3 bucket (private) for lambda layers because they're rather large
+     |   └─ Lambda Layer for the custom PowerShell runtime
+     └─ IAM role for lambda execution
+
+*/
+
 resource "aws_vpc" "pwshraytracer" {
   tags = {
     Name        = "PwshRayTracer"
-    Environment = "PwshRayTracer"
+    Environment = var.environment_tag
   }
   cidr_block = "10.0.0.0/16"
 
@@ -12,7 +26,7 @@ resource "aws_internet_gateway" "pwshraytracer_gw" {
 
   tags = {
     Name        = "Pwsh Raytracer IGW"
-    Environment = "PwshRayTracer"
+    Environment = var.environment_tag
   }
 }
 
@@ -22,7 +36,7 @@ resource "aws_subnet" "pwshraytracer_main" {
 
   tags = {
     Name        = "Pwsh Raytracer Subnet"
-    Environment = "PwshRayTracer"
+    Environment = var.environment_tag
   }
 }
 
@@ -36,7 +50,7 @@ resource "aws_default_route_table" "pwshraytracer_default_rtb" {
 
   tags = {
     Name        = "Pwsh Raytracer Default RTB"
-    Environment = "PwshRayTracer"
+    Environment = var.environment_tag
   }
 }
 
@@ -57,7 +71,7 @@ resource "aws_security_group" "pwshraytracer_sg" {
 
   tags = {
     Name        = "Pwsh Raytracer Lambda SG"
-    Environment = "PwshRayTracer"
+    Environment = var.environment_tag
   }
 }
 
@@ -65,7 +79,7 @@ resource "aws_s3_bucket" "pwshraytracer_lambda_layers" {
   bucket = "pwsh-raytracer-layers"
   tags = {
     Name        = "Pwsh Raytracer Lambda Layers"
-    Environment = "PwshRayTracer"
+    Environment = var.environment_tag
   }
 }
 
@@ -77,7 +91,7 @@ resource "aws_s3_bucket_acl" "pwshraytracer_lambda_layers_acl" {
 resource "aws_iam_role" "iam_for_pwshraytracer_lambda" {
   name = "iam_for_pwshraytracer_lambda"
   tags = {
-    Environment = "PwshRayTracer"
+    Environment = var.environment_tag
   }
   assume_role_policy = <<EOF
 {
@@ -95,39 +109,3 @@ resource "aws_iam_role" "iam_for_pwshraytracer_lambda" {
 }
 EOF
 }
-
-/*
-resource "aws_cloudwatch_log_group" "example" {
-  name              = "/aws/lambda/${var.lambda_function_name}"
-  retention_in_days = 14
-}
-
-# See also the following AWS managed policy: AWSLambdaBasicExecutionRole
-resource "aws_iam_policy" "lambda_logging" {
-  name        = "lambda_logging"
-  path        = "/"
-  description = "IAM policy for logging from a lambda"
-
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
-      ],
-      "Resource": "arn:aws:logs:*:*:*",
-      "Effect": "Allow"
-    }
-  ]
-}
-EOF
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_logs" {
-  role       = aws_iam_role.iam_for_lambda.name
-  policy_arn = aws_iam_policy.lambda_logging.arn
-}
-*/
