@@ -1,5 +1,6 @@
 param (
-    [string] $Region = "ap-southeast-2"
+    [string] $Region = "ap-southeast-2",
+    [switch] $SkipOpeningAwsConsole
 )
 
 $ErrorActionPreference = "Stop"
@@ -18,8 +19,10 @@ try {
         if($LASTEXITCODE -ne 0) {
             Write-Error "Terraform apply failed"
         }
-        Write-Host -ForegroundColor Green "Opening resource group view in the AWS console"
-        Start-Process "https://$Region.console.aws.amazon.com/resource-groups/group/rg-pwshraytracer?region=$Region"
+        if(!$SkipOpeningAwsConsole) {
+            Write-Host -ForegroundColor Green "Opening resource group view in the AWS console"
+            Start-Process "https://$Region.console.aws.amazon.com/resource-groups/group/rg-pwshraytracer?region=$Region"
+        }
     } else {
         Write-Warning "Terraform is not installed so this cannot apply the changes to your AWS account"
     }

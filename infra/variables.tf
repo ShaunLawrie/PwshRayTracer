@@ -1,9 +1,9 @@
 variable "region" {
-  type = string
+  type    = string
   default = "ap-southeast-2"
 }
 
 variable "environment_tag" {
-  type = string
+  type    = string
   default = "pwshraytracer"
 }

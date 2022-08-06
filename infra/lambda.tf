@@ -1,7 +1,7 @@
 resource "aws_sns_topic" "raytracing_jobs_topic" {
   name = "topic-raytracingjobs"
   tags = {
-    Name = "PwshRaytracer SNS Topic for Jobs"
+    Name        = "PwshRaytracer SNS Topic for Jobs"
     Environment = var.environment_tag
   }
 }
@@ -13,11 +13,11 @@ resource "aws_sns_topic_subscription" "raytracing_jobs_subscription" {
 }
 
 resource "aws_lambda_permission" "allow_sns_to_call_lambda" {
-    statement_id = "permission-pwshraytracer-sns-to-lambda"
-    action = "lambda:InvokeFunction"
-    function_name = aws_lambda_function.pwshraytracer_lambda.function_name
-    principal = "sns.amazonaws.com"
-    source_arn = aws_sns_topic.raytracing_jobs_topic.arn
+  statement_id  = "permission-pwshraytracer-sns-to-lambda"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.pwshraytracer_lambda.function_name
+  principal     = "sns.amazonaws.com"
+  source_arn    = aws_sns_topic.raytracing_jobs_topic.arn
 }
 
 resource "aws_s3_object" "pwsh_custom_runtime_layer" {
@@ -26,7 +26,7 @@ resource "aws_s3_object" "pwsh_custom_runtime_layer" {
   source = "../artifacts/pwsh_lambda_layer_payload.zip"
   etag   = filemd5("../artifacts/pwsh_lambda_layer_payload.zip")
   tags = {
-    Name = "PwshRaytracer Lambda Layer for Powershell Runtime"
+    Name        = "PwshRaytracer Lambda Layer for Powershell Runtime"
     Environment = var.environment_tag
   }
   lifecycle {
@@ -44,15 +44,15 @@ resource "aws_lambda_layer_version" "pwsh_lambda_layer" {
 }
 
 resource "aws_lambda_function" "pwshraytracer_lambda" {
-  layers        = [aws_lambda_layer_version.pwsh_lambda_layer.arn]
-  filename      = "../artifacts/pwsh_lambda_function_payload.zip"
-  handler       = "HelloWorld.ps1::Invoke-Handler"
-  function_name = "lambda-pwshraytracer"
-  memory_size   = 250
-  timeout       = 15
-  role          = aws_iam_role.iam_for_pwshraytracer_lambda.arn
+  layers           = [aws_lambda_layer_version.pwsh_lambda_layer.arn]
+  filename         = "../artifacts/pwsh_lambda_function_payload.zip"
+  handler          = "Renderer.ps1::Invoke-Handler"
+  function_name    = "lambda-pwshraytracer"
+  memory_size      = 250
+  timeout          = 15
+  role             = aws_iam_role.iam_for_pwshraytracer_lambda.arn
   source_code_hash = filebase64sha256("../artifacts/pwsh_lambda_function_payload.zip")
-  runtime = "provided.al2"
+  runtime          = "provided.al2"
 
   tags = {
     Name        = "PwshRaytracer Lambda Function"
@@ -93,4 +93,47 @@ EOF
 resource "aws_iam_role_policy_attachment" "pwshraytracer_lambda_logs" {
   role       = aws_iam_role.iam_for_pwshraytracer_lambda.name
   policy_arn = aws_iam_policy.pwshraytracer_lambda_logging.arn
+}
+
+resource "aws_lambda_function_event_invoke_config" "pwshraytracer_lambda_notifications" {
+  function_name = aws_lambda_function.pwshraytracer_lambda.function_name
+
+  destination_config {
+    on_failure {
+      destination = aws_sqs_queue.pwshraytracer_notifications_queue.arn
+    }
+
+    on_success {
+      destination = aws_sqs_queue.pwshraytracer_notifications_queue.arn
+    }
+  }
+}
+
+resource "aws_iam_policy" "pwshraytracer_lambda_send_to_sqs" {
+  name        = "policy-pwshraytracer-lambda-to-sqs"
+  path        = "/"
+  description = "IAM policy for sending to SQS from the lambda"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "sqs:SendMessage"
+      ],
+      "Resource": "${aws_sqs_queue.pwshraytracer_notifications_queue.arn}",
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+  tags = {
+    Environment = var.environment_tag
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "pwshraytracer_lambda_sqs" {
+  role       = aws_iam_role.iam_for_pwshraytracer_lambda.name
+  policy_arn = aws_iam_policy.pwshraytracer_lambda_send_to_sqs.arn
 }

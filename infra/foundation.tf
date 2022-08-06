@@ -126,7 +126,7 @@ resource "aws_resourcegroups_group" "pwshraytracer_rg" {
 JSON
   }
   tags = {
-    Name = "PwshRayTracer Resource Group"
+    Name        = "PwshRayTracer Resource Group"
     Environment = var.environment_tag
   }
 }
@@ -137,7 +137,41 @@ resource "aws_sqs_queue" "pwshraytracer_notifications_queue" {
   receive_wait_time_seconds = 5
 
   tags = {
-    Name = "PwshRaytracer SQS Notifications"
+    Name        = "PwshRaytracer SQS Notifications"
+    Environment = var.environment_tag
+  }
+}
+
+resource "aws_sqs_queue" "pwshraytracer_persistence_queue" {
+  name                      = "sqs-pwshraytracer-persistence"
+  message_retention_seconds = 900
+  receive_wait_time_seconds = 5
+
+  tags = {
+    Name        = "PwshRaytracer SQS Persistence Queue for Saving to RDS"
+    Environment = var.environment_tag
+  }
+}
+
+resource "aws_dynamodb_table" "pwshraytracer_renders" {
+  name           = "db-pwshraytracer-renderings"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 5
+  write_capacity = 5
+  hash_key       = "RenderId"
+
+  attribute {
+    name = "RenderId"
+    type = "S"
+  }
+
+  ttl {
+    attribute_name = ""
+    enabled        = false
+  }
+
+  tags = {
+    Name        = "PwshRaytracer Image Persistance Database"
     Environment = var.environment_tag
   }
 }
