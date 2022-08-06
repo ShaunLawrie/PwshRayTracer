@@ -192,7 +192,9 @@ function Get-RayColor {
 function Invoke-RayTracer {
     param (
         [object] $Scene,
-        [int] $Line
+        [int] $Line,
+        [int] $Start,
+        [int] $End
     )
     # Setup Image
     $imageWidth = $Scene.Camera.ImageWidth
@@ -219,7 +221,7 @@ function Invoke-RayTracer {
     $localPixels = [System.Collections.ArrayList]::new()
     
     $j = $imageHeight - $Line
-    for ($i = 0; $i -le $imageWidth; $i++) {
+    for ($i = $Start; $i -le $End; $i++) {
         $currentPixel = @{
             R = 0
             G = 0
@@ -277,35 +279,14 @@ function Invoke-Handler {
     }
 
     $scene = Resolve-SceneData -Scene $snsMessage.Scene
-    $pixels = Invoke-RayTracer -Scene $scene -Line $snsMessage.Line
+    $pixels = Invoke-RayTracer -Scene $scene -Line $snsMessage.Line -Start $snsMessage.Start -End $snsMessage.End
     
     $response = @{
         Line = $snsMessage.Line
+        Start = $snsMessage.Start
         Pixels = $pixels
         Messages = $messages
     }
 
     Write-Output ($response | ConvertTo-Json -Depth 5)
 }
-
-<#
-$cores = 1
-try {
-    $cores = Invoke-Expression "nproc"
-    $messages += "Found $cores CPU cores"
-} catch {
-    $messages += "Failed to get number of CPUs $_"
-}
-
-$parallelResults = 1..$cores | ForEach-Object -ThrottleLimit $cores -Parallel {
-    $pixels = @()
-    for($i = 0; $i -lt 5; $i++) {
-        $pixels += @{
-            R = (Get-Random -Maximum 255)
-            G = (Get-Random -Maximum 255)
-            B = (Get-Random -Maximum 255)
-        }
-    }
-    return $pixels
-}
-#>

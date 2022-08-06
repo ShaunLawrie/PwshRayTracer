@@ -1397,7 +1397,7 @@
       "Z": 0.0
     },
     "Aperture": 0.1,
-    "SamplesPerPixel": 15,
+    "SamplesPerPixel": 100,
     "MaxRayRecursionDepth": 50
   }
 }

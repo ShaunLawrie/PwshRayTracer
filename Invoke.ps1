@@ -23,5 +23,7 @@ Write-Host -ForegroundColor DarkGray ($data.Objects.Count)
 $jobs = Split-RenderingJobs -Scene $data
 
 Send-JobsToSNS -Jobs $jobs
+$start = Get-Date
 $results = Wait-ForLambdaResults -Jobs $jobs
 Invoke-RenderToConsole -Results $results
+Write-Host "Lambda total time $((New-TimeSpan -Start $start -End (Get-Date)).Seconds) seconds"

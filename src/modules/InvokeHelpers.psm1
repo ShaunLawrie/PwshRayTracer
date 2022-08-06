@@ -1,6 +1,7 @@
 function Split-RenderingJobs {
     param (
-        [object] $Scene
+        [object] $Scene,
+        [int] $PixelsPerLambda = 10
     )
 
     $imageWidth = $Scene.Camera.ImageWidth
@@ -18,9 +19,13 @@ function Split-RenderingJobs {
 
     $jobs = @()
     for($i = 0; $i -lt $imageHeight; $i++) {
-        $jobs += @{
-            Line = $i
-            Scene = $Scene
+        for($j = 0; $j -lt $imageWidth; $j += $PixelsPerLambda) {
+            $jobs += @{
+                Line = $i
+                Start = $j
+                End = [Math]::Min($j, $imageWidth)
+                Scene = $Scene
+            }
         }
     }
 
@@ -79,7 +84,12 @@ function Wait-ForLambdaResults {
                 Write-Host -ForegroundColor Red ($body.responsePayload | ConvertTo-Json -Depth 25)
             } else {
                 Write-Verbose ($body.responsePayload | ConvertTo-Json -Depth 25)
-                $results[[int]$body.responsePayload.Line] = $body.responsePayload.Pixels
+                $key = [int]$body.responsePayload.Line
+                $start = [int]$body.responsePayload.Start
+                if(!$results.ContainsKey($key)) {
+                    $results[$key] = @{}
+                }
+                $results[$key][$start] = $body.responsePayload.Pixels
             }
             Remove-SQSMessage -QueueUrl $sqsQueueUrl -ReceiptHandle $message.ReceiptHandle -Force | Out-Null
         }
@@ -94,8 +104,8 @@ function Invoke-RenderToConsole {
     )
 
     for($i = 0; $i -lt $Results.Count; $i += 2) {
-        $fgLine = $Results.($i+1)
-        $bgLine = $Results.$i
+        $fgLine = $Results[$i+1].GetEnumerator() | Sort-Object { $_.Key } | Select-Object -ExpandProperty Value
+        $bgLine = $Results[$i].GetEnumerator() | Sort-Object { $_.Key } | Select-Object -ExpandProperty Value
         for($x = 0; $x -lt $fgLine.Count; $x++) {
             $fg = $fgLine[$x]
             $bg = $bgLine[$x]
