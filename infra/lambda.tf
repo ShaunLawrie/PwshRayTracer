@@ -1,6 +1,7 @@
 resource "aws_sns_topic" "raytracing_jobs_topic" {
-  name = "raytracingjobs"
+  name = "topic-raytracingjobs"
   tags = {
+    Name = "PwshRaytracer SNS Topic for Jobs"
     Environment = var.environment_tag
   }
 }
@@ -12,7 +13,7 @@ resource "aws_sns_topic_subscription" "raytracing_jobs_subscription" {
 }
 
 resource "aws_lambda_permission" "allow_sns_to_call_lambda" {
-    statement_id = "AllowExecutionFromSNS"
+    statement_id = "permission-pwshraytracer-sns-to-lambda"
     action = "lambda:InvokeFunction"
     function_name = aws_lambda_function.pwshraytracer_lambda.function_name
     principal = "sns.amazonaws.com"
@@ -25,6 +26,7 @@ resource "aws_s3_object" "pwsh_custom_runtime_layer" {
   source = "../artifacts/pwsh_lambda_layer_payload.zip"
   etag   = filemd5("../artifacts/pwsh_lambda_layer_payload.zip")
   tags = {
+    Name = "PwshRaytracer Lambda Layer for Powershell Runtime"
     Environment = var.environment_tag
   }
   lifecycle {
@@ -35,7 +37,7 @@ resource "aws_s3_object" "pwsh_custom_runtime_layer" {
 resource "aws_lambda_layer_version" "pwsh_lambda_layer" {
   s3_bucket                = aws_s3_object.pwsh_custom_runtime_layer.bucket
   s3_key                   = aws_s3_object.pwsh_custom_runtime_layer.key
-  layer_name               = "PowerShell-Runtime"
+  layer_name               = "runtime-pwsh"
   compatible_architectures = ["x86_64"]
   compatible_runtimes      = ["provided.al2"]
   description              = var.environment_tag
@@ -45,7 +47,7 @@ resource "aws_lambda_function" "pwshraytracer_lambda" {
   layers        = [aws_lambda_layer_version.pwsh_lambda_layer.arn]
   filename      = "../artifacts/pwsh_lambda_function_payload.zip"
   handler       = "HelloWorld.ps1::Invoke-Handler"
-  function_name = "PwshRayTracer"
+  function_name = "lambda-pwshraytracer"
   memory_size   = 250
   timeout       = 15
   role          = aws_iam_role.iam_for_pwshraytracer_lambda.arn
@@ -53,7 +55,7 @@ resource "aws_lambda_function" "pwshraytracer_lambda" {
   runtime = "provided.al2"
 
   tags = {
-    Name        = "Pwsh Raytracer Lambda Function"
+    Name        = "PwshRaytracer Lambda Function"
     Environment = var.environment_tag
   }
 }
@@ -64,7 +66,7 @@ resource "aws_cloudwatch_log_group" "pwshraytracer_lambda_loggroup" {
 }
 
 resource "aws_iam_policy" "pwshraytracer_lambda_logging" {
-  name        = "PwshRayTracerLambdaLogging"
+  name        = "policy-pwshraytracer-lambda-logging"
   path        = "/"
   description = "IAM policy for logging from the lambda"
 
@@ -74,11 +76,10 @@ resource "aws_iam_policy" "pwshraytracer_lambda_logging" {
   "Statement": [
     {
       "Action": [
-        "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents"
       ],
-      "Resource": "${aws_cloudwatch_log_group.pwshraytracer_lambda_loggroup.arn}",
+      "Resource": "${aws_cloudwatch_log_group.pwshraytracer_lambda_loggroup.arn}:*",
       "Effect": "Allow"
     }
   ]

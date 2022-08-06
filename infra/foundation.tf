@@ -14,18 +14,17 @@
 
 resource "aws_vpc" "pwshraytracer" {
   tags = {
-    Name        = "PwshRayTracer"
+    Name        = "PwshRaytracer VPC"
     Environment = var.environment_tag
   }
   cidr_block = "10.0.0.0/16"
-
 }
 
 resource "aws_internet_gateway" "pwshraytracer_gw" {
   vpc_id = aws_vpc.pwshraytracer.id
 
   tags = {
-    Name        = "Pwsh Raytracer IGW"
+    Name        = "PwshRaytracer Internet Gateway"
     Environment = var.environment_tag
   }
 }
@@ -35,7 +34,7 @@ resource "aws_subnet" "pwshraytracer_main" {
   cidr_block = "10.0.1.0/24"
 
   tags = {
-    Name        = "Pwsh Raytracer Subnet"
+    Name        = "PwshRaytracer Private Subnet"
     Environment = var.environment_tag
   }
 }
@@ -49,13 +48,13 @@ resource "aws_default_route_table" "pwshraytracer_default_rtb" {
   }
 
   tags = {
-    Name        = "Pwsh Raytracer Default RTB"
+    Name        = "PwshRaytracer Default Route Table"
     Environment = var.environment_tag
   }
 }
 
 resource "aws_security_group" "pwshraytracer_sg" {
-  name        = "Pwsh Raytracer Lambda SG"
+  name        = "PwshRaytracer Lambda Security Group"
   description = "No inbound"
   vpc_id      = aws_vpc.pwshraytracer.id
 
@@ -70,15 +69,15 @@ resource "aws_security_group" "pwshraytracer_sg" {
   }
 
   tags = {
-    Name        = "Pwsh Raytracer Lambda SG"
+    Name        = "PwshRaytracer Lambda Security Group"
     Environment = var.environment_tag
   }
 }
 
 resource "aws_s3_bucket" "pwshraytracer_lambda_layers" {
-  bucket = "pwsh-raytracer-layers"
+  bucket = "s3-pwshraytracer-layers"
   tags = {
-    Name        = "Pwsh Raytracer Lambda Layers"
+    Name        = "PwshRaytracer Lambda Layers Bucket"
     Environment = var.environment_tag
   }
 }
@@ -89,7 +88,7 @@ resource "aws_s3_bucket_acl" "pwshraytracer_lambda_layers_acl" {
 }
 
 resource "aws_iam_role" "iam_for_pwshraytracer_lambda" {
-  name = "iam_for_pwshraytracer_lambda"
+  name = "role-lambda-pwshraytracer"
   tags = {
     Environment = var.environment_tag
   }
@@ -108,4 +107,37 @@ resource "aws_iam_role" "iam_for_pwshraytracer_lambda" {
   ]
 }
 EOF
+}
+
+resource "aws_resourcegroups_group" "pwshraytracer_rg" {
+  name = "rg-pwshraytracer"
+
+  resource_query {
+    query = <<JSON
+{
+  "ResourceTypeFilters": ["AWS::AllSupported"],
+  "TagFilters": [
+    {
+      "Key": "Environment",
+      "Values": ["${var.environment_tag}"]
+    }
+  ]
+}
+JSON
+  }
+  tags = {
+    Name = "PwshRayTracer Resource Group"
+    Environment = var.environment_tag
+  }
+}
+
+resource "aws_sqs_queue" "pwshraytracer_notifications_queue" {
+  name                      = "sqs-pwshraytracer-notifications"
+  message_retention_seconds = 900
+  receive_wait_time_seconds = 5
+
+  tags = {
+    Name = "PwshRaytracer SQS Notifications"
+    Environment = var.environment_tag
+  }
 }

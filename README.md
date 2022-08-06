@@ -6,7 +6,7 @@ https://aws.amazon.com/blogs/compute/introducing-the-powershell-custom-runtime-f
  - Terraform installed and available in your PATH with version greater than or equal to 1.2
  - Git installed and available in your PATH
  - AWS credentials configured for your current shell session via environment variables or default aws cli credential managers
- - Installed Powershell AWS commandlets or the aws cli v2 for publishing events to AWS SNS
+ - [Installed Powershell AWS.Tools.SimpleNotificationService, AWS.Tools.SQS](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-getting-set-up-windows.html) for sending messages to SNS
 
 ## Run
 
