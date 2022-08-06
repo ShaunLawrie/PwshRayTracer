@@ -46,10 +46,10 @@ resource "aws_lambda_layer_version" "pwsh_lambda_layer" {
 resource "aws_lambda_function" "pwshraytracer_lambda" {
   layers           = [aws_lambda_layer_version.pwsh_lambda_layer.arn]
   filename         = "../artifacts/pwsh_lambda_function_payload.zip"
-  handler          = "Renderer.ps1::Invoke-Handler"
+  handler          = "Handler.ps1::Invoke-Handler"
   function_name    = "lambda-pwshraytracer"
   memory_size      = 250
-  timeout          = 15
+  timeout          = 120
   role             = aws_iam_role.iam_for_pwshraytracer_lambda.arn
   source_code_hash = filebase64sha256("../artifacts/pwsh_lambda_function_payload.zip")
   runtime          = "provided.al2"
@@ -97,7 +97,7 @@ resource "aws_iam_role_policy_attachment" "pwshraytracer_lambda_logs" {
 
 resource "aws_lambda_function_event_invoke_config" "pwshraytracer_lambda_notifications" {
   function_name = aws_lambda_function.pwshraytracer_lambda.function_name
-
+  maximum_retry_attempts = 0
   destination_config {
     on_failure {
       destination = aws_sqs_queue.pwshraytracer_notifications_queue.arn

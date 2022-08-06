@@ -30,5 +30,5 @@ $functionPayloadLocation = "$PSScriptRoot/artifacts/pwsh_lambda_function_payload
 if(Test-Path $functionPayloadLocation) {
     Remove-Item $functionPayloadLocation
 }
-Write-Host "Build a zip for terraform to upload as the lambda function from the code in src/*"
-Compress-Archive -Path "$PSScriptRoot/src/*" -DestinationPath $functionPayloadLocation
+Write-Host "Build a zip for terraform to upload as the lambda function from the code in src/lambda/*"
+Compress-Archive -Path "$PSScriptRoot/src/lambda/*" -DestinationPath $functionPayloadLocation
