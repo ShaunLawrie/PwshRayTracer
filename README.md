@@ -6,6 +6,7 @@ https://aws.amazon.com/blogs/compute/introducing-the-powershell-custom-runtime-f
  - Terraform installed and available in your PATH with version greater than or equal to 1.2
  - Git installed and available in your PATH
  - AWS credentials configured for your current shell session via environment variables or default aws cli credential managers
+ - Installed Powershell AWS commandlets or the aws cli v2 for publishing events to AWS SNS
 
 ## Run
 
@@ -14,5 +15,6 @@ https://aws.amazon.com/blogs/compute/introducing-the-powershell-custom-runtime-f
 .\Build.ps1
 # Deploy the lambda and the underlying infrastructure to a new VPC in ap-southeast-2 (Terraform will confirm before applying changes)
 .\Deploy.ps1
-# 
+# Run a raytracer with the default scene from raytracing in a weekend
+.\Invoke.ps1
 ```
