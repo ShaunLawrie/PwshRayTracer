@@ -21,9 +21,16 @@ Write-Host -NoNewline "Objects: "
 Write-Host -ForegroundColor DarkGray ($data.Objects.Count)
 
 $jobs = Split-RenderingJobs -Scene $data
-
-Send-JobsToSNS -Jobs $jobs
 $start = Get-Date
+
+# Invoke lambda
+Send-JobsToSNS -Jobs $jobs
 $results = Wait-ForLambdaResults -Jobs $jobs
 Invoke-RenderToConsole -Results $results
-Write-Host "Lambda total time $((New-TimeSpan -Start $start -End (Get-Date)).Seconds) seconds"
+
+$end = Get-Date
+$imageHeight = Get-ImageHeight -Scene $data
+$secondsDuration = (New-TimeSpan -Start $start -End $end).TotalSeconds
+$cameraRaysTracedPerSecond = ($data.Camera.ImageWidth * $imageHeight * $data.Camera.SamplesPerPixel) / $secondsDuration
+$pixelsPerSecond = ($data.Camera.ImageWidth * $imageHeight) / $secondsDuration
+Write-Host "Lambda completed at $end in $([int]$secondsDuration) seconds, $cameraRaysTracedPerSecond camera rays traced/sec, $pixelsPerSecond pixels/sec"
