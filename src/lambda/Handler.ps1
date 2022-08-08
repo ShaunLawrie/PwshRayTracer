@@ -78,7 +78,7 @@ function Invoke-Handler {
             $localPixels = [System.Collections.ArrayList]::new()
             
             $j = $imageHeight - $Line
-            for ($i = $Start; $i -le $End; $i++) {
+            for ($i = $Start; $i -lt $End; $i++) {
                 $currentPixel = @{
                     R = 0
                     G = 0
@@ -291,7 +291,7 @@ function Invoke-Handler {
 
         $offset = $_ - 1
         $localStart = $using:snsMessage.Start + ($offset * $using:chunkSize)
-        $localEnd = [Math]::Min(($localStart + $using:chunkSize - 1), $using:snsMessage.End)
+        $localEnd = [Math]::Min(($localStart + $using:chunkSize), $using:snsMessage.End)
         $localPixels = Invoke-RayTracer -Scene $using:scene -Line $using:snsMessage.Line -Start $localStart -End $localEnd
         return @{
             Start = $localStart

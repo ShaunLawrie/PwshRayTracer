@@ -16,12 +16,18 @@ function Get-ImageHeight {
 
 function Split-RenderingJobs {
     param (
-        [object] $Scene,
-        [int] $PixelsPerLambda = 48
+        [object] $Scene
     )
+
+    $minimumPixelsPerLambda = 8
+    $maximumConcurrentLambdas = 600
 
     $imageWidth = $Scene.Camera.ImageWidth
     $imageHeight = Get-ImageHeight -Scene $Scene
+
+    $pixelsPerLambda = [Math]::Max($minimumPixelsPerLambda, [int](($imageWidth * $imageHeight) / $maximumConcurrentLambdas))
+    Write-Host -NoNewline "Lambda optimising: "
+    Write-Host -ForegroundColor DarkGray "$pixelsPerLambda pixels/lambda at a target maximum concurrency of $maximumConcurrentLambdas"
     
     $windowWidthLimit = [Console]::WindowWidth - 2
     if($imageWidth -ge $windowWidthLimit) {
@@ -34,15 +40,23 @@ function Split-RenderingJobs {
     
     $jobs = @()
     for($i = 0; $i -le $imageHeight; $i++) {
-        for($j = 0; $j -lt $imageWidth; $j += $PixelsPerLambda) {
+        for($j = 0; $j -lt $imageWidth; $j += $pixelsPerLambda) {
+            $start = $j
+            $end = $j + $pixelsPerLambda
+            if(($imageWidth - $end) -lt ($pixelsPerLambda / 2) -or $end -gt $imageWidth) {
+                $end = $imageWidth
+                $j = $imageWidth
+            }
             $jobs += @{
                 Line = $i
-                Start = $j
-                End = [Math]::Min(($j + $PixelsPerLambda - 1), $imageWidth - 1)
+                Start = $start
+                End = $end
                 Scene = $Scene
             }
         }
     }
+
+    Set-Content -Path "tracingjobs.json" -Value ($jobs | ConvertTo-Json -Depth 2 -WarningAction "SilentlyContinue")
 
     return $jobs
 }
@@ -59,24 +73,53 @@ function Send-JobsToSNS {
         Write-Error "SNS topic for '*raytracingjobs' could not be found. Expected a single ARN but found '$snsTopicArn'"
     }
 
+    $sharedData = [hashtable]::Synchronized(@{ JobsSent = 0 })
+
     [Console]::CursorVisible = $false
+    
     try {
-        $limit = 8
-        $jobsSent = 0
-        for($i = 0; $i -lt $Jobs.Count; $i += $limit) {
-            $batch = @()
-            for($j = 0; $j -lt $limit -and ($i + $j) -lt $Jobs.Count; $j++) {
-                $entry = New-Object Amazon.SimpleNotificationService.Model.PublishBatchRequestEntry
-                $entry.Id = (New-Guid).Guid.ToString()
-                $entry.Message = $Jobs[($i + $j)] | ConvertTo-Json -Depth 25
-                $batch += $entry
-                $jobsSent++
+        @(0, 1) | ForEach-Object -Parallel {
+            $data = $using:sharedData
+            $jobs = $using:Jobs
+            $limit = 8
+            $retries = 0
+            $maxRetries = 10
+            for($i = 0; $i -lt $jobs.Count; $i += $limit) {
+                $batch = @()
+                for($j = 0; $j -lt $limit -and ($i + $j) -lt $jobs.Count; $j++) {
+                    if($j % 2 -eq $_) {
+                        $entry = New-Object Amazon.SimpleNotificationService.Model.PublishBatchRequestEntry
+                        $entry.Id = (New-Guid).Guid.ToString()
+                        $entry.Message = $jobs[($i + $j)] | ConvertTo-Json -Depth 25
+                        $batch += $entry
+                        $data["JobsSent"]++
+                    }
+                }
+                try {
+                    if($batch.Count -gt 0) {
+                        Publish-SNSBatch -TopicArn $using:snsTopicArn -PublishBatchRequestEntry $batch | Out-Null
+                    }
+                } catch {
+                    if($retries -lt $maxRetries) {
+                        Write-Warning "Publishing to SNS is failing, waiting 3 seconds before retry"
+                        Start-Sleep -Seconds 3
+                        $data["JobsSent"] = $data["JobsSent"] - $batch.Count
+                        $retries++
+                        $i -= $limit
+                    } else {
+                        Write-Warning "Failed to send to SNS after $maxRetries retries"
+                        throw $_
+                    }
+                }
+                if($j % 2 -eq $_) {
+                    [Console]::SetCursorPosition($using:currentPosition.X, $using:currentPosition.Y)
+                    Write-Host -ForegroundColor DarkGray "$($data["JobsSent"])/$($jobs.Count)    "
+                }
             }
-            Publish-SNSBatch -TopicArn $snsTopicArn -PublishBatchRequestEntry $batch | Out-Null
-            [Console]::SetCursorPosition($currentPosition.X, $currentPosition.Y)
-            Write-Host -ForegroundColor DarkGray "$jobsSent/$($Jobs.Count)    "
         }
     } finally {
+        [Console]::SetCursorPosition($currentPosition.X, $currentPosition.Y)
+        Write-Host -ForegroundColor DarkGray "$($sharedData["JobsSent"])/$($Jobs.Count)    "
         [Console]::CursorVisible = $true
     }
 }
@@ -99,14 +142,14 @@ function Wait-ForLambdaResults {
     $receipts = @()
     $liveRenderResults = @{}
 
-    Write-Host "Waiting for lambda results: "
+    Write-Host "Waiting for lambda results:                                                              "
     for($y = 0; $y -lt $ImageHeight; $y++) {
         $liveRenderResults[$y] = @{
             Top = @{}
             Bottom = @{}
         }
     }
-    $yOffset = ($ImageHeight / 2) + 2
+    $yOffset = [int]($ImageHeight / 2) + 2
     0..([int]($ImageHeight / 2)) | Foreach-Object {
         $line = $_ * 2
         if($line -eq $ImageHeight) {

@@ -1,0 +1,974 @@
+[
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 0,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 0,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 0,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 0,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 0,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 0,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 1,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 1,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 1,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 1,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 1,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 1,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 2,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 2,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 2,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 2,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 2,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 2,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 3,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 3,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 3,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 3,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 3,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 3,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 4,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 4,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 4,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 4,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 4,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 4,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 5,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 5,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 5,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 5,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 5,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 5,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 6,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 6,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 6,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 6,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 6,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 6,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 7,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 7,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 7,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 7,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 7,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 7,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 8,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 8,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 8,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 8,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 8,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 8,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 9,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 9,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 9,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 9,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 9,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 9,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 10,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 10,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 10,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 10,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 10,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 10,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 11,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 11,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 11,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 11,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 11,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 11,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 12,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 12,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 12,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 12,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 12,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 12,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 13,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 13,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 13,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 13,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 13,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 13,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 14,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 14,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 14,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 14,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 14,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 14,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 15,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 15,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 15,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 15,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 15,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 15,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 16,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 16,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 16,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 16,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 16,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 16,
+    "Start": 40
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 8,
+    "Line": 17,
+    "Start": 0
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 16,
+    "Line": 17,
+    "Start": 8
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 24,
+    "Line": 17,
+    "Start": 16
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 32,
+    "Line": 17,
+    "Start": 24
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 40,
+    "Line": 17,
+    "Start": 32
+  },
+  {
+    "Scene": {
+      "Camera": "@{Aperture=0.1; LookFrom=; FieldOfView=20; SamplesPerPixel=50; FocusDistance=5; CameraUp=; MaxRayRecursionDepth=50; LookAt=; ImageWidth=50; AspectRatio=26:9}",
+      "Objects": "                                                                                                           "
+    },
+    "End": 50,
+    "Line": 17,
+    "Start": 40
+  }
+]
