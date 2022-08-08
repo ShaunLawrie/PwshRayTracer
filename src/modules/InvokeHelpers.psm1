@@ -17,26 +17,28 @@ function Get-ImageHeight {
 function Split-RenderingJobs {
     param (
         [object] $Scene,
-        [int] $PixelsPerLambda = 10
+        [int] $PixelsPerLambda = 48
     )
 
     $imageWidth = $Scene.Camera.ImageWidth
     $imageHeight = Get-ImageHeight -Scene $Scene
     
-    if($imageWidth -ge ([Console]::WindowWidth - 2)) {
-        throw "Image width of $imageWidth is trying to render wider than the terminal window, try zooming out"
+    $windowWidthLimit = [Console]::WindowWidth - 2
+    if($imageWidth -ge $windowWidthLimit) {
+        throw "Image width of $imageWidth is trying to render wider than the terminal window ($windowWidthLimit), try zooming out"
     }
-    if($imageHeight -ge (([Console]::WindowHeight * 2) - 2)) {
-        throw "Image height of $imageHeight is trying to render taller than the terminal window, try zooming out"
+    $windowHeightLimit = ([Console]::WindowHeight * 2) - 2
+    if($imageHeight -ge $windowHeightLimit) {
+        throw "Image height of $imageHeight is trying to render taller than the terminal window ($windowHeightLimit), try zooming out"
     }
-
+    
     $jobs = @()
-    for($i = 0; $i -lt $imageHeight; $i++) {
+    for($i = 0; $i -le $imageHeight; $i++) {
         for($j = 0; $j -lt $imageWidth; $j += $PixelsPerLambda) {
             $jobs += @{
                 Line = $i
                 Start = $j
-                End = [Math]::Min(($j + $PixelsPerLambda), $imageWidth)
+                End = [Math]::Min(($j + $PixelsPerLambda - 1), $imageWidth - 1)
                 Scene = $Scene
             }
         }
@@ -59,11 +61,11 @@ function Send-JobsToSNS {
 
     [Console]::CursorVisible = $false
     try {
-        $limit = 5
+        $limit = 8
         $jobsSent = 0
         for($i = 0; $i -lt $Jobs.Count; $i += $limit) {
             $batch = @()
-            for($j = 0; $j -lt $limit -and ($i + $j) -le $Jobs.Count; $j++) {
+            for($j = 0; $j -lt $limit -and ($i + $j) -lt $Jobs.Count; $j++) {
                 $entry = New-Object Amazon.SimpleNotificationService.Model.PublishBatchRequestEntry
                 $entry.Id = (New-Guid).Guid.ToString()
                 $entry.Message = $Jobs[($i + $j)] | ConvertTo-Json -Depth 25
@@ -82,61 +84,91 @@ function Send-JobsToSNS {
 function Wait-ForLambdaResults {
     param (
         [array] $Jobs,
+        [switch] $LiveRender,
+        [int] $ImageHeight,
+        [int] $ImageWidth,
         [int] $TimeoutMinutes = 10
     )
 
+    [Console]::CursorVisible = $false
+
+    if($LiveRender -and (!$ImageHeight -or !$ImageWidth)) {
+        Write-Error "ImageHeight and ImageWidth are required for live rendering"
+    }
+
+    $receipts = @()
+    $liveRenderResults = @{}
+
     Write-Host "Waiting for lambda results: "
-    $currentPosition = @{ X = $Host.UI.RawUI.CursorPosition.X + 28; Y = $Host.UI.RawUI.CursorPosition.Y - 1 }
+    for($y = 0; $y -lt $ImageHeight; $y++) {
+        $liveRenderResults[$y] = @{
+            Top = @{}
+            Bottom = @{}
+        }
+    }
+    $yOffset = ($ImageHeight / 2) + 2
+    0..([int]($ImageHeight / 2)) | Foreach-Object {
+        $line = $_ * 2
+        if($line -eq $ImageHeight) {
+            Write-Host -NoNewline -ForegroundColor DarkGray "  $(($line+1).ToString('000'))   "
+        } else {
+            Write-Host -NoNewline -ForegroundColor DarkGray "$(($line+1).ToString('000'))-$(($line+2).ToString('000')) "
+        }
+        Write-Host ("$([Char]27)[38;2;25;25;25m$([Char]27)[48;2;25;25;25m" + ("x" * $ImageWidth) + "$([Char]27)[0m")
+    }
+    $endPosition = $Host.UI.RawUI.CursorPosition
+    $currentPosition = @{ X = $Host.UI.RawUI.CursorPosition.X + 28; Y = $Host.UI.RawUI.CursorPosition.Y - $yOffset }
+    $canvasTopLeft = @{ X = $Host.UI.RawUI.CursorPosition.X + 8; Y = $Host.UI.RawUI.CursorPosition.Y - $yOffset + 1 }
     $sqsQueueUrl = Get-SQSQueue | Where-Object { $_ -like "*/sqs-pwshraytracer-notifications" }
     $timeout = (Get-Date).AddMinutes($TimeoutMinutes)
     $jobsReceived = 0
-    $results = @{}
     
     while($jobsReceived -lt $jobs.Count) {
         if((Get-Date) -ge $timeout) {
             Write-Warning "Timed out waiting for all jobs to complete after $TimeoutMinutes minutes"
             break
         }
-        $message = Receive-SQSMessage -QueueUrl $sqsQueueUrl
-        if($message) {
-            $jobsReceived++
-            $body = ($message.Body | ConvertFrom-Json -Depth 25)
-            Write-Verbose "$($body.requestPayload.Records[0].Sns.Message) "
-            if($body.deliveryError) {
-                Write-Host -ForegroundColor Red $body.deliveryError.errorMessage
-            } elseif($body.responsePayload.errorMessage) {
-                Write-Host -ForegroundColor Red ($body.responsePayload | ConvertTo-Json -Depth 25)
-            } else {
-                Write-Verbose ($body.responsePayload | ConvertTo-Json -Depth 25)
-                $key = [int]$body.responsePayload.Line
-                $start = [int]$body.responsePayload.Start
-                if(!$results.ContainsKey($key)) {
-                    $results[$key] = @{}
+        $messages = Receive-SQSMessage -QueueUrl $sqsQueueUrl -MessageCount 10 -VisibilityTimeout 600
+        if($messages) {
+            foreach($message in $messages) {
+                $jobsReceived++
+                $body = ($message.Body | ConvertFrom-Json -Depth 25)
+                if($body.deliveryError) {
+                    Write-Host -ForegroundColor Red $body.deliveryError.errorMessage
+                } elseif($body.responsePayload.errorMessage) {
+                    Write-Host -ForegroundColor Red ($body.responsePayload | ConvertTo-Json -Depth 25)
+                } else {
+                    $key = [int]$body.responsePayload.Line
+                    $start = [int]$body.responsePayload.Start
+                    $terminalLine = [int][Math]::Floor($key/2)
+                    $thisPixelGroupLinePosition = if($key % 2 -eq 0) { "Top" } else { "Bottom" }
+                    $liveRenderResults[$terminalLine][$thisPixelGroupLinePosition][$start] = $body.responsePayload.Pixels
+                    $existingPixelGroupLinePosition = if($key % 2 -eq 0) { "Bottom" } else { "Top" }
+                    $existingPixelGroup = $liveRenderResults[$terminalLine][$existingPixelGroupLinePosition][$start]
+                    [Console]::SetCursorPosition($canvasTopLeft.X + $start, $canvasTopLeft.Y + $terminalLine)
+                    $thisPixelGroup = $liveRenderResults[$terminalLine][$thisPixelGroupLinePosition][$start]
+                    for($p = 0; $p -lt $thisPixelGroup.Count; $p++) {
+                        $existingPixel = @{ R = 25; G = 25; B = 25 }
+                        if($existingPixelGroup) {
+                            $existingPixel = $existingPixelGroup[$p]
+                        }
+                        $thisPixel = $thisPixelGroup[$p]
+                        if($thisPixelGroupLinePosition -eq "Bottom") {
+                            Write-Host -NoNewline "$([Char]27)[38;2;$($thisPixel.R);$($thisPixel.G);$($thisPixel.B)m$([Char]27)[48;2;$($existingPixel.R);$($existingPixel.G);$($existingPixel.B)m$([Char]0x2584)$([Char]27)[0m"
+                        } else {
+                            Write-Host -NoNewline "$([Char]27)[38;2;$($existingPixel.R);$($existingPixel.G);$($existingPixel.B)m$([Char]27)[48;2;$($thisPixel.R);$($thisPixel.G);$($thisPixel.B)m$([Char]0x2584)$([Char]27)[0m"
+                        }
+                    }
+                    [Console]::SetCursorPosition($canvasTopLeft.X + $start, $canvasTopLeft.Y + $terminalLine)
                 }
-                $results[$key][$start] = $body.responsePayload.Pixels
+                $receipts += $message.ReceiptHandle
             }
-            Remove-SQSMessage -QueueUrl $sqsQueueUrl -ReceiptHandle $message.ReceiptHandle -Force | Out-Null
             [Console]::SetCursorPosition($currentPosition.X, $currentPosition.Y)
             Write-Host -ForegroundColor DarkGray "$jobsReceived/$($Jobs.Count)    "
         }
     }
+    [Console]::SetCursorPosition($endPosition.X, $endPosition.Y)
+    [Console]::CursorVisible = $true
 
-    return $results
-}
-
-function Invoke-RenderToConsole {
-    param (
-        [object] $Results
-    )
-
-    for($i = 0; $i -lt $Results.Count; $i += 2) {
-        $fgLine = $Results[$i+1].GetEnumerator() | Sort-Object { $_.Key } | Select-Object -ExpandProperty Value
-        $bgLine = $Results[$i].GetEnumerator() | Sort-Object { $_.Key } | Select-Object -ExpandProperty Value
-        for($x = 0; $x -lt $fgLine.Count; $x++) {
-            $fg = $fgLine[$x]
-            $bg = $bgLine[$x]
-            Write-Host -NoNewline "$([Char]27)[38;2;$($fg.R);$($fg.G);$($fg.B)m$([Char]27)[48;2;$($bg.R);$($bg.G);$($bg.B)m$([Char]0x2584)$([Char]27)[0m"
-        }
-        Write-Host ""
-    }
+    return $receipts
 }
