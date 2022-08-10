@@ -1,12 +1,12 @@
 {
   "Camera": {
-    "ImageWidth": 200,
+    "ImageWidth": 64,
     "LookAt": {
       "X": 0.0,
       "Y": 0.0,
       "Z": 0.0
     },
-    "SamplesPerPixel": 1000,
+    "SamplesPerPixel": 3,
     "FieldOfView": 20,
     "Aperture": 0.1,
     "AspectRatio": "16:9",

@@ -232,14 +232,43 @@ for($i = 0; $i -lt 4; $i++) {
     $sceneObjects += $sceneObject
 }
 
+for($i = 0; $i -lt 30; $i++) {
+    $radius = 0.04
+    $sceneObject = @{
+        Center = [System.Numerics.Vector3]::new(-0.45 + (0.019 * $i), 0.2 - (0.004 * $i), 5.523 + (0.007 * $i))
+        Radius = $radius
+        Material = @{
+            Color = @{R = 255; G = 255; B = 255}
+        }
+        RadiusSquared = $radius * $radius
+        Label = "Symbol"
+    }
+    $lastObject = $sceneObject
+    $sceneObjects += $sceneObject
+}
+
+for($i = 0; $i -lt 40; $i++) {
+    $radius = 0.04
+    $sceneObject = @{
+        Center = [System.Numerics.Vector3]::new(0.15 - (0.012 * $i), -0.3 - (0.004 * $i), 5.683)
+        Radius = $radius
+        Material = @{
+            Color = @{R = 255; G = 255; B = 255}
+        }
+        RadiusSquared = $radius * $radius
+        Label = "Symbol"
+    }
+    $sceneObjects += $sceneObject
+}
+
 $scene = @{
     Camera = @{
         LookFrom = [System.Numerics.Vector3]::new(0, 0, 10)
         LookAt = [System.Numerics.Vector3]::new(0, 0, 0)
         CameraUp = [System.Numerics.Vector3]::new(0, 1, 0)
-        ImageWidth = 350
+        ImageWidth = 100
         AspectRatio = "26:9"
-        SamplesPerPixel = 500
+        SamplesPerPixel = 40
         MaxRayRecursionDepth = 50
         FieldOfView = 20
         Aperture = 0.1
