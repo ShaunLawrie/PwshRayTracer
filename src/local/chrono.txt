@@ -1,0 +1,188 @@
+
+Script: C:\Users\shaun\Dev\PwshRayTracer\Main.ps1
+Execution Time: 00:06:43.8541251
+[0001ms,001,001ms]    0:#Requires -Version 7
+[0000ms,001,000ms]    1:param (
+[0000ms,000,000ms]    2:    [string] $Note
+[0000ms,000,000ms]    3:)
+[0000ms,001,000ms]    4:
+[0001ms,001,001ms]    5:$global:FastRandomEnabled = $false
+[0002ms,001,002ms]    6:$global:InlinedRayTracingEnabled = $false
+[0001ms,001,001ms]    7:$global:Random = New-Object -TypeName System.Random
+[0001ms,001,001ms]    8:$script:TMin = 0.001
+[0000ms,001,000ms]    9:
+[0001ms,149,000ms]   10:function Get-TestingRayColor {
+[0124ms,149,001ms]   11:    param (
+[0000ms,000,000ms]   12:        $Point,
+[0000ms,000,000ms]   13:        $Direction,
+[0000ms,000,000ms]   14:        [int] $Depth
+[0000ms,000,000ms]   15:    )
+[0000ms,149,000ms]   16:
+[0131ms,149,001ms]   17:    if ($Depth -le 0) {
+[0000ms,015,000ms]   18:        return @{
+[0000ms,015,000ms]   19:            0 = 0
+[0000ms,015,000ms]   20:            1 = 0
+[0000ms,015,000ms]   21:            2 = 0
+[0000ms,015,000ms]   22:        }
+[0000ms,015,000ms]   23:    }
+[0000ms,134,000ms]   24:
+[0127ms,134,001ms]   25:    $hitRecordHitPoint = $null
+[0119ms,134,001ms]   26:    $hitRecordNormal = $null
+[0113ms,134,001ms]   27:    $hitRecordFrontFace = $true
+[0107ms,134,001ms]   28:    $hitRecordMaterial = $null
+[0108ms,134,001ms]   29:    $closestSoFar = ([float]::PositiveInfinity)
+[0000ms,134,000ms]   30:
+[0099ms,134,001ms]   31:    $a = $Direction.LengthSquared()
+[0246ms,134,002ms]   32:    foreach($object in $global:Scene) {
+[56797ms,65258,001ms]   33:        $oc = $Point - $object[0]
+[56093ms,65258,001ms]   34:        $halfB = [System.Numerics.Vector3]::Dot($oc, $Direction)
+[56117ms,65258,001ms]   35:        $c = $oc.LengthSquared() - ($object[1] * $object[1])
+[56359ms,65258,001ms]   36:        $discriminant = ($halfB * $halfB) - ($a * $c)
+[0000ms,65258,000ms]   37:
+[56189ms,65258,001ms]   38:        if($discriminant -lt 0) {
+[109092ms,65055,002ms]   39:            continue
+[0000ms,65055,000ms]   40:        }
+[0000ms,203,000ms]   41:
+[0178ms,203,001ms]   42:        $sqrtd = [Math]::Sqrt($discriminant)
+[0000ms,203,000ms]   43:
+[0160ms,203,001ms]   44:        $root = (-$halfB - $sqrtd) / $a;
+[0169ms,203,001ms]   45:        if ($root -lt $script:TMin -or $closestSoFar -lt $root) {
+[0088ms,109,001ms]   46:            $root = (-$halfB + $sqrtd) / $a
+[0083ms,109,001ms]   47:            if ($root -lt $script:TMin -or $closestSoFar -lt $root) {
+[0183ms,107,002ms]   48:                continue
+[0000ms,107,000ms]   49:            }
+[0000ms,107,000ms]   50:        }
+[0000ms,096,000ms]   51:
+[0097ms,096,001ms]   52:        $distance = $Direction * $root 
+[0095ms,096,001ms]   53:        $hitPoint = $Point + $distance
+[0000ms,096,000ms]   54:
+[0086ms,096,001ms]   55:        $outwardNormal = ($hitPoint - $object[0]) / $object[1];
+[0000ms,096,000ms]   56:
+[0152ms,096,002ms]   57:        $frontFace = [System.Numerics.Vector3]::Dot($Direction, $outwardNormal) -lt 0
+[0157ms,096,002ms]   58:        $normal = if($frontFace) { $outwardNormal } else { -$outwardNormal }
+[0000ms,096,000ms]   59:
+[0089ms,096,001ms]   60:        $hitRecordHitPoint = $hitPoint
+[0090ms,096,001ms]   61:        $hitRecordNormal = $normal
+[0080ms,096,001ms]   62:        $hitRecordFrontFace = $frontFace
+[0083ms,096,001ms]   63:        $hitRecordMaterial = $object[2]
+[0000ms,096,000ms]   64:        
+[0168ms,096,002ms]   65:        $closestSoFar = $root
+[0000ms,096,000ms]   66:    }
+[0000ms,134,000ms]   67:
+[0105ms,134,001ms]   68:    if($hitRecordHitPoint) {
+[0047ms,060,001ms]   69:        $scatteredDirectionPoint = $null
+[0055ms,060,001ms]   70:        $scatteredDirectionDirection = $null
+[0044ms,060,001ms]   71:        $scatteredAttenuationR = $null
+[0060ms,060,001ms]   72:        $scatteredAttenuationG = $null
+[0059ms,060,001ms]   73:        $scatteredAttenuationB = $null
+[0000ms,060,000ms]   74:        
+[0054ms,060,001ms]   75:        if($hitRecordMaterial[3]) {
+[0006ms,010,001ms]   76:            $directionUnit = [System.Numerics.Vector3]::Normalize($Direction)
+[0011ms,010,001ms]   77:            $reflected = $directionUnit - (2 * [System.Numerics.Vector3]::Dot($directionUnit, $hitRecordNormal) * $hitRecordNormal)
+[0007ms,012,001ms]   78:            while ($True) {
+[0011ms,012,001ms]   79:                $x = $global:Random.Next(100) / 100.0
+[0012ms,012,001ms]   80:                $y = $global:Random.Next(100) / 100.0
+[0007ms,012,001ms]   81:                $z = $global:Random.Next(100) / 100.0
+[0010ms,012,001ms]   82:                $p = [System.Numerics.Vector3]::new($x, $y, $z)
+[0007ms,012,001ms]   83:                if($p.LengthSquared() -ge 1) {
+[0001ms,002,001ms]   84:                    continue
+[0000ms,010,000ms]   85:                }
+[0011ms,010,001ms]   86:                $randomVectorInUnitSphere = $p
+[0007ms,010,001ms]   87:                break
+[0000ms,010,000ms]   88:            }
+[0009ms,010,001ms]   89:            $fuzzedReflected = $reflected + ($hitRecordMaterial[4] * $randomVectorInUnitSphere)
+[0000ms,010,000ms]   90:            $scatterDirection = @{
+[0000ms,010,000ms]   91:                0 = $hitRecordHitPoint
+[0000ms,010,000ms]   92:                1 = $fuzzedReflected
+[0000ms,010,000ms]   93:            }
+[0006ms,010,001ms]   94:            if([System.Numerics.Vector3]::Dot($scatterDirection[0], $hitRecordNormal) -gt 0) {
+[0008ms,009,001ms]   95:                $hitRecordMaterialColor = $hitRecordMaterial[0]
+[0008ms,009,001ms]   96:                $scatteredDirectionPoint = $hitRecordHitPoint
+[0006ms,009,001ms]   97:                $scatteredDirectionDirection = $fuzzedReflected
+[0009ms,009,001ms]   98:                $scatteredAttenuationR = $hitRecordMaterialColor[0] / 255.0
+[0011ms,009,001ms]   99:                $scatteredAttenuationG = $hitRecordMaterialColor[1] / 255.0
+[0006ms,009,001ms]  100:                $scatteredAttenuationB = $hitRecordMaterialColor[2] / 255.0
+[0000ms,001,000ms]  101:            } else {
+[0000ms,001,000ms]  102:                return @{
+[0000ms,001,000ms]  103:                    0 = 0
+[0000ms,001,000ms]  104:                    1 = 0
+[0000ms,001,000ms]  105:                    2 = 0
+[0000ms,001,000ms]  106:                }
+[0000ms,050,000ms]  107:            }
+[0050ms,050,001ms]  108:        } elseif($hitRecordMaterial[1]) {
+[0009ms,004,002ms]  109:            $refractionRatio = if($hitRecordFrontFace) { 1.0 / $hitRecordMaterial[2] } else { $hitRecordMaterial[2] }
+[0005ms,004,001ms]  110:            $directionUnit = [System.Numerics.Vector3]::Normalize($Direction)
+[0000ms,004,000ms]  111:
+[0005ms,004,001ms]  112:            $cosTheta = [Math]::Min([System.Numerics.Vector3]::Dot(-$directionUnit, $hitRecordNormal), 1.0)
+[0005ms,004,001ms]  113:            $sinTheta = [Math]::Sqrt(1.0 - ($cosTheta * $cosTheta))
+[0000ms,004,000ms]  114:
+[0002ms,004,001ms]  115:            $cannotRefract = $refractionRatio * $sinTheta -gt 1.0
+[0000ms,004,000ms]  116:
+[0005ms,004,001ms]  117:            $direction = $null
+[0002ms,004,001ms]  118:            $randomProb = $global:Random.Next(100) / 100.0
+[0002ms,004,001ms]  119:            $rZero = (1-$refractionRatio) / (1+$refractionRatio)
+[0002ms,004,001ms]  120:            $rZeroSquared = $rZero * $rZero
+[0005ms,004,001ms]  121:            $reflectance = $rZeroSquared + (1-$rZeroSquared)*[Math]::Pow((1 - $cosTheta), 5)
+[0005ms,004,001ms]  122:            if($cannotRefract -or $reflectance -gt $randomProb) {
+[0001ms,001,001ms]  123:                $direction = $directionUnit - (2 * [System.Numerics.Vector3]::Dot($directionUnit, $hitRecordNormal) * $hitRecordNormal)
+[0000ms,003,000ms]  124:            } else {
+[0005ms,003,002ms]  125:                $dotProduct = [System.Numerics.Vector3]::Dot(-$directionUnit, $hitRecordNormal)
+[0002ms,003,001ms]  126:                $cosTheta = [Math]::Min($dotProduct, 1.0)
+[0002ms,003,001ms]  127:                $perpendicularRay = $refractionRatio * ($directionUnit + ($cosTheta * $hitRecordNormal))
+[0002ms,003,001ms]  128:                $parallelRay = -[Math]::Sqrt([Math]::Abs(1.0 - $perpendicularRay.LengthSquared())) * $hitRecordNormal
+[0002ms,003,001ms]  129:                $direction = $perpendicularRay + $parallelRay
+[0000ms,003,000ms]  130:            }
+[0000ms,004,000ms]  131:
+[0004ms,004,001ms]  132:            $scatteredDirectionPoint = $hitRecordHitPoint
+[0003ms,004,001ms]  133:            $scatteredDirectionDirection = $direction
+[0002ms,004,001ms]  134:            $scatteredAttenuationR = 1.0
+[0008ms,004,002ms]  135:            $scatteredAttenuationG = 1.0
+[0005ms,004,001ms]  136:            $scatteredAttenuationB = 1.0
+[0001ms,078,000ms]  137:        } else {
+[0064ms,078,001ms]  138:            while ($True) {
+[0068ms,078,001ms]  139:                $x = $global:Random.Next(100) / 100.0
+[0053ms,078,001ms]  140:                $y = $global:Random.Next(100) / 100.0
+[0078ms,078,001ms]  141:                $z = $global:Random.Next(100) / 100.0
+[0073ms,078,001ms]  142:                $p = [System.Numerics.Vector3]::new($x, $y, $z)
+[0065ms,078,001ms]  143:                if($p.LengthSquared() -ge 1) {
+[0026ms,032,001ms]  144:                    continue
+[0000ms,046,000ms]  145:                }
+[0038ms,046,001ms]  146:                $randomInUnitSphere = $p
+[0037ms,046,001ms]  147:                break
+[0000ms,046,000ms]  148:            }
+[0040ms,046,001ms]  149:            $randomUnit = [System.Numerics.Vector3]::Normalize($randomInUnitSphere)
+[0047ms,046,001ms]  150:            $scatterDirection = $hitRecordNormal + $randomUnit
+[0046ms,046,001ms]  151:            $nearZero = 1e-8
+[0033ms,046,001ms]  152:            $vectorNearZero = [Math]::Abs($scatterDirection.X) -lt $nearZero -and [Math]::Abs($scatterDirection.Y) -lt $nearZero -and [Math]::Abs($scatterDirection.Z) -lt $nearZero
+[0040ms,046,001ms]  153:            if($vectorNearZero) {
+[0000ms,000,000ms]  154:                $scatterDirection = $hitRecordNormal
+[0000ms,000,000ms]  155:            }
+[0000ms,046,000ms]  156:
+[0036ms,046,001ms]  157:            $scatteredDirectionPoint = $hitRecordHitPoint
+[0033ms,046,001ms]  158:            $scatteredDirectionDirection = $scatterDirection
+[0038ms,046,001ms]  159:            $hitRecordMaterialColor = $hitRecordMaterial[0]
+[0037ms,046,001ms]  160:            $scatteredAttenuationR = $hitRecordMaterialColor[0] / 255.0
+[0047ms,046,001ms]  161:            $scatteredAttenuationG = $hitRecordMaterialColor[1] / 255.0
+[0039ms,046,001ms]  162:            $scatteredAttenuationB = $hitRecordMaterialColor[2] / 255.0
+[0000ms,046,000ms]  163:        }
+[0000ms,059,000ms]  164:        
+[0099ms,059,002ms]  165:        $color = Get-TestingRayColor -Point $scatteredDirectionPoint -Direction $scatteredDirectionDirection -Depth ($Depth - 1)
+[0000ms,059,000ms]  166:        return @{
+[0000ms,059,000ms]  167:            0 = [Math]::Min($scatteredAttenuationR * $color[0], 255)
+[0000ms,059,000ms]  168:            1 = [Math]::Min($scatteredAttenuationG * $color[1], 255)
+[0000ms,059,000ms]  169:            2 = [Math]::Min($scatteredAttenuationB * $color[2], 255)
+[0000ms,059,000ms]  170:        }
+[0001ms,074,000ms]  171:    } else {
+[0066ms,074,001ms]  172:        $unitDirection = [System.Numerics.Vector3]::Normalize($Direction)
+[0061ms,074,001ms]  173:        $t = 0.5 * ($unitDirection.Y + 1.0)
+[0066ms,074,001ms]  174:        $startV = 255 * (1.0 - $t)
+[0066ms,074,001ms]  175:        $endR = 127 * $t
+[0052ms,074,001ms]  176:        $endG = 178 * $t
+[0056ms,074,001ms]  177:        $endB = 255 * $t
+[0000ms,074,000ms]  178:        return @{
+[0000ms,074,000ms]  179:            0 = [Math]::Min($startV + $endR, 255)
+[0001ms,074,000ms]  180:            1 = [Math]::Min($startV + $endG, 255)
+[0000ms,074,000ms]  181:            2 = [Math]::Min($startV + $endB, 255)
+[0000ms,074,000ms]  182:        }
+[0000ms,149,000ms]  183:    }
+[0000ms,149,000ms]  184:}
