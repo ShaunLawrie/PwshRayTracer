@@ -1,6 +1,6 @@
 
 $sceneObjects = @(
-    @{
+<#    @{
         Center = [System.Numerics.Vector3]::new(0, -1, -1000)
         Radius = 1000.0
         Material = @{
@@ -17,7 +17,7 @@ $sceneObjects = @(
         }
         RadiusSquared = 15.0 * 15.0
         Label = "Hidden diffuse"
-    },
+    },#>
     @{
         Center = [System.Numerics.Vector3]::new(0, 0, 5)
         Radius = 0.7
@@ -26,7 +26,7 @@ $sceneObjects = @(
         }
         RadiusSquared = 0.7 * 0.7
         Label = "Face"
-    },
+    }<#,
     @{
         Center = [System.Numerics.Vector3]::new(0, 0.597, 5.39)
         Radius = 0.45
@@ -47,7 +47,7 @@ $sceneObjects = @(
     },
     @{
         Center = [System.Numerics.Vector3]::new(0.162, -0.02, 5.384)
-        Radius = 0.305
+        Radius = 0.3
         Material = @{
             Color = @{R = 88; G = 206; B = 249}
         }
@@ -56,7 +56,7 @@ $sceneObjects = @(
     },
     @{
         Center = [System.Numerics.Vector3]::new(-0.17, -0.05, 5.384)
-        Radius = 0.305
+        Radius = 0.3
         Material = @{
             Color = @{R = 255; G = 255; B = 255}
         }
@@ -134,9 +134,9 @@ $sceneObjects = @(
         }
         RadiusSquared = 0.5 * 0.5
         Label = "Sleeve Right"
-    }
+    }#>
 )
-
+<#
 $hairObject = $sceneObjects | Where-Object { $_.Label -eq "Hair" }
 $lastObject = $null
 for($i = 0; $i -lt 25; $i++) {
@@ -246,20 +246,46 @@ for($i = 0; $i -lt 30; $i++) {
     $lastObject = $sceneObject
     $sceneObjects += $sceneObject
 }
+#>
 
-for($i = 0; $i -lt 40; $i++) {
-    $radius = 0.04
+function ConvertFrom-DegreesToRadians {
+    param (
+        [float] $Degrees
+    )
+    return ([Math]::PI / 180) * $Degrees
+}
+
+$center = [System.Numerics.Vector3]::new(0, 0, 5)
+$radius = 0.66
+$startYaw = ConvertFrom-DegreesToRadians 0
+$startPitch = ConvertFrom-DegreesToRadians 0
+$endYaw = ConvertFrom-DegreesToRadians 25
+$endPitch = ConvertFrom-DegreesToRadians 45
+$pivotPoint = [System.Numerics.Vector3]::new($center.X, $center.Y, $center.Z)
+$startPoint = [System.Numerics.Vector3]::new($center.X, $center.Y, $center.Z + $radius)
+$direction = $startPoint - $pivotPoint
+$resolution = 25
+for($step = 1; $step -lt $resolution; $step++) {
+    $percent = $step / $resolution
+    $currentYaw = $startYaw + (($endYaw - $startYaw) * $percent)
+    $currentPitch = $startPitch + (($endPitch - $startPitch) * $percent)
+    $quaternion = [System.Numerics.Quaternion]::CreateFromYawPitchRoll($currentYaw, $currentPitch, 0)
+    $newDir = [System.Numerics.Vector3]::Transform($direction, $quaternion)
+    $newPoint = $newDir + $pivotPoint
+    $red = [int](255 * (1 - $percent))
+    $green = [int](255 * $percent)
     $sceneObject = @{
-        Center = [System.Numerics.Vector3]::new(0.15 - (0.012 * $i), -0.3 - (0.004 * $i), 5.683)
-        Radius = $radius
+        Center = $newPoint
+        Radius = 0.08
         Material = @{
-            Color = @{R = 255; G = 255; B = 255}
+            Color = @{R = $red; G = $green; B = 0}
         }
-        RadiusSquared = $radius * $radius
-        Label = "Symbol"
     }
     $sceneObjects += $sceneObject
 }
+
+#}
+# to camera x, y, z <1, 0, 1>
 
 $scene = @{
     Camera = @{

@@ -1,3053 +1,404 @@
 {
   "Camera": {
+    "SamplesPerPixel": 40,
+    "MaxRayRecursionDepth": 50,
+    "ImageWidth": 100,
+    "AspectRatio": "26:9",
+    "CameraUp": {
+      "X": 0.0,
+      "Y": 1.0,
+      "Z": 0.0
+    },
     "LookFrom": {
       "X": 0.0,
       "Y": 0.0,
       "Z": 10.0
     },
-    "FieldOfView": 20,
-    "AspectRatio": "26:9",
-    "MaxRayRecursionDepth": 50,
+    "Aperture": 0.1,
     "LookAt": {
       "X": 0.0,
       "Y": 0.0,
       "Z": 0.0
     },
     "FocusDistance": 5.0,
-    "Aperture": 0.1,
-    "ImageWidth": 100,
-    "CameraUp": {
-      "X": 0.0,
-      "Y": 1.0,
-      "Z": 0.0
-    },
-    "SamplesPerPixel": 40
+    "FieldOfView": 20
   },
   "Objects": [
     {
-      "Radius": 1000.0,
-      "Material": {
-        "Color": {
-          "B": 129,
-          "G": 19,
-          "R": 209
-        }
-      },
-      "Label": "Bigger background purple sphere",
-      "RadiusSquared": 1000000.0,
-      "Center": {
-        "X": 0.0,
-        "Y": -1.0,
-        "Z": -1000.0
-      }
-    },
-    {
-      "Radius": 15.0,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Hidden diffuse",
-      "RadiusSquared": 225.0,
-      "Center": {
-        "X": 9.559,
-        "Y": -7.759,
-        "Z": 22.759
-      }
-    },
-    {
       "Radius": 0.7,
-      "Material": {
-        "Color": {
-          "B": 249,
-          "G": 206,
-          "R": 88
-        }
-      },
-      "Label": "Face",
       "RadiusSquared": 0.48999999999999994,
       "Center": {
         "X": 0.0,
         "Y": 0.0,
         "Z": 5.0
-      }
-    },
-    {
-      "Radius": 0.45,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
       },
-      "Label": "Hair",
-      "RadiusSquared": 0.2025,
-      "Center": {
-        "X": 0.0,
-        "Y": 0.597,
-        "Z": 5.39
-      }
-    },
-    {
-      "Radius": 0.3,
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Left Eye",
-      "RadiusSquared": 0.09,
-      "Center": {
-        "X": 0.17,
-        "Y": -0.05,
-        "Z": 5.384
-      }
-    },
-    {
-      "Radius": 0.305,
-      "Material": {
-        "Color": {
-          "B": 249,
           "G": 206,
-          "R": 88
+          "R": 88,
+          "B": 249
         }
       },
-      "Label": "Left Eyelid",
-      "RadiusSquared": 0.09,
-      "Center": {
-        "X": 0.162,
-        "Y": -0.02,
-        "Z": 5.384
-      }
-    },
-    {
-      "Radius": 0.305,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Right Eye",
-      "RadiusSquared": 0.09,
-      "Center": {
-        "X": -0.17,
-        "Y": -0.05,
-        "Z": 5.384
-      }
-    },
-    {
-      "Radius": 0.3,
-      "Material": {
-        "Color": {
-          "B": 249,
-          "G": 206,
-          "R": 88
-        }
-      },
-      "Label": "Right Eyelid",
-      "RadiusSquared": 0.09,
-      "Center": {
-        "X": -0.162,
-        "Y": -0.02,
-        "Z": 5.384
-      }
-    },
-    {
-      "Radius": 1.0,
-      "Material": {
-        "Color": {
-          "B": 225,
-          "G": 225,
-          "R": 225
-        }
-      },
-      "Label": "Collar Left",
-      "RadiusSquared": 1.0,
-      "Center": {
-        "X": -0.238,
-        "Y": -0.45,
-        "Z": 4.064
-      }
-    },
-    {
-      "Radius": 1.0,
-      "Material": {
-        "Color": {
-          "B": 225,
-          "G": 225,
-          "R": 225
-        }
-      },
-      "Label": "Collar Right",
-      "RadiusSquared": 1.0,
-      "Center": {
-        "X": 0.238,
-        "Y": -0.45,
-        "Z": 4.064
-      }
-    },
-    {
-      "Radius": 0.7,
-      "Material": {
-        "Color": {
-          "B": 225,
-          "G": 225,
-          "R": 225
-        }
-      },
-      "Label": "Inner Collar Left",
-      "RadiusSquared": 0.48999999999999994,
-      "Center": {
-        "X": -0.285,
-        "Y": -0.604,
-        "Z": 4.493
-      }
-    },
-    {
-      "Radius": 0.7,
-      "Material": {
-        "Color": {
-          "B": 225,
-          "G": 225,
-          "R": 225
-        }
-      },
-      "Label": "Inner Collar Right",
-      "RadiusSquared": 0.48999999999999994,
-      "Center": {
-        "X": 0.285,
-        "Y": -0.604,
-        "Z": 4.493
-      }
-    },
-    {
-      "Radius": 1.0,
-      "Material": {
-        "Color": {
-          "B": 97,
-          "G": 32,
-          "R": 10
-        }
-      },
-      "Label": "Shirt",
-      "RadiusSquared": 1.0,
-      "Center": {
-        "X": 0.0,
-        "Y": -1.146,
-        "Z": 4.414
-      }
-    },
-    {
-      "Radius": 0.5,
-      "Material": {
-        "Color": {
-          "B": 18,
-          "G": 3,
-          "R": 4
-        }
-      },
-      "Label": "Sleeve Left",
-      "RadiusSquared": 0.25,
-      "Center": {
-        "X": -1.067,
-        "Y": -0.968,
-        "Z": 4.649
-      }
-    },
-    {
-      "Radius": 0.5,
-      "Material": {
-        "Color": {
-          "B": 18,
-          "G": 3,
-          "R": 4
-        }
-      },
-      "Label": "Sleeve Right",
-      "RadiusSquared": 0.25,
-      "Center": {
-        "X": 1.067,
-        "Y": -0.968,
-        "Z": 4.649
-      }
-    },
-    {
-      "Radius": 0.45,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 0",
-      "RadiusSquared": 0.2025,
-      "Center": {
-        "X": 0.0,
-        "Y": 0.597,
-        "Z": 5.39
-      }
-    },
-    {
-      "Radius": 0.449,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 1",
-      "RadiusSquared": 0.201601,
-      "Center": {
-        "X": -0.03,
-        "Y": 0.557,
-        "Z": 5.3599997
-      }
-    },
-    {
-      "Radius": 0.448,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 2",
-      "RadiusSquared": 0.20070400000000002,
-      "Center": {
-        "X": -0.06,
-        "Y": 0.517,
-        "Z": 5.33
-      }
-    },
-    {
-      "Radius": 0.447,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 3",
-      "RadiusSquared": 0.19980900000000001,
-      "Center": {
-        "X": -0.09,
-        "Y": 0.477,
-        "Z": 5.2999997
-      }
-    },
-    {
-      "Radius": 0.446,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 4",
-      "RadiusSquared": 0.198916,
-      "Center": {
-        "X": -0.12,
-        "Y": 0.437,
-        "Z": 5.27
-      }
-    },
-    {
-      "Radius": 0.445,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 5",
-      "RadiusSquared": 0.198025,
-      "Center": {
-        "X": -0.15,
-        "Y": 0.397,
-        "Z": 5.24
-      }
-    },
-    {
-      "Radius": 0.444,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 6",
-      "RadiusSquared": 0.197136,
-      "Center": {
-        "X": -0.18,
-        "Y": 0.357,
-        "Z": 5.21
-      }
-    },
-    {
-      "Radius": 0.443,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 7",
-      "RadiusSquared": 0.196249,
-      "Center": {
-        "X": -0.21,
-        "Y": 0.317,
-        "Z": 5.18
-      }
-    },
-    {
-      "Radius": 0.442,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 8",
-      "RadiusSquared": 0.195364,
-      "Center": {
-        "X": -0.24,
-        "Y": 0.277,
-        "Z": 5.15
-      }
-    },
-    {
-      "Radius": 0.441,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 9",
-      "RadiusSquared": 0.19448100000000001,
-      "Center": {
-        "X": -0.27,
-        "Y": 0.237,
-        "Z": 5.12
-      }
-    },
-    {
-      "Radius": 0.44,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 10",
-      "RadiusSquared": 0.1936,
-      "Center": {
-        "X": -0.3,
-        "Y": 0.197,
-        "Z": 5.0899997
-      }
-    },
-    {
-      "Radius": 0.439,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 11",
-      "RadiusSquared": 0.192721,
-      "Center": {
-        "X": -0.33,
-        "Y": 0.157,
-        "Z": 5.06
-      }
-    },
-    {
-      "Radius": 0.438,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 12",
-      "RadiusSquared": 0.191844,
-      "Center": {
-        "X": -0.36,
-        "Y": 0.117000006,
-        "Z": 5.0299997
-      }
-    },
-    {
-      "Radius": 0.437,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 13",
-      "RadiusSquared": 0.190969,
-      "Center": {
-        "X": -0.39,
-        "Y": 0.077,
-        "Z": 5.0
-      }
-    },
-    {
-      "Radius": 0.436,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 14",
-      "RadiusSquared": 0.190096,
-      "Center": {
-        "X": -0.42,
-        "Y": 0.037000004,
-        "Z": 4.97
-      }
-    },
-    {
-      "Radius": 0.435,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 15",
-      "RadiusSquared": 0.189225,
-      "Center": {
-        "X": -0.45,
-        "Y": -0.0029999972,
-        "Z": 4.94
-      }
-    },
-    {
-      "Radius": 0.434,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 16",
-      "RadiusSquared": 0.188356,
-      "Center": {
-        "X": -0.48,
-        "Y": -0.042999998,
-        "Z": 4.91
-      }
-    },
-    {
-      "Radius": 0.433,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 17",
-      "RadiusSquared": 0.187489,
-      "Center": {
-        "X": -0.51,
-        "Y": -0.083,
-        "Z": 4.8799996
-      }
-    },
-    {
-      "Radius": 0.432,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 18",
-      "RadiusSquared": 0.18662399999999998,
-      "Center": {
-        "X": -0.54,
-        "Y": -0.122999996,
-        "Z": 4.85
-      }
-    },
-    {
-      "Radius": 0.431,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 19",
-      "RadiusSquared": 0.18576099999999998,
-      "Center": {
-        "X": -0.57,
-        "Y": -0.163,
-        "Z": 4.8199997
-      }
-    },
-    {
-      "Radius": 0.43,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 20",
-      "RadiusSquared": 0.18489999999999998,
-      "Center": {
-        "X": -0.6,
-        "Y": -0.203,
-        "Z": 4.79
-      }
-    },
-    {
-      "Radius": 0.429,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 21",
-      "RadiusSquared": 0.18404099999999998,
-      "Center": {
-        "X": -0.63,
-        "Y": -0.243,
-        "Z": 4.7599998
-      }
-    },
-    {
-      "Radius": 0.428,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 22",
-      "RadiusSquared": 0.18318399999999999,
-      "Center": {
-        "X": -0.66,
-        "Y": -0.283,
-        "Z": 4.73
-      }
-    },
-    {
-      "Radius": 0.427,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 23",
-      "RadiusSquared": 0.182329,
-      "Center": {
-        "X": -0.69,
-        "Y": -0.32299998,
-        "Z": 4.7
-      }
-    },
-    {
-      "Radius": 0.426,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 24",
-      "RadiusSquared": 0.181476,
-      "Center": {
-        "X": -0.72,
-        "Y": -0.363,
-        "Z": 4.67
-      }
-    },
-    {
-      "Radius": 0.426,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair Shrinking 0",
-      "RadiusSquared": 0.181476,
-      "Center": {
-        "X": -0.72,
-        "Y": -0.363,
-        "Z": 4.67
-      }
-    },
-    {
-      "Radius": 0.386,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair Shrinking 1",
-      "RadiusSquared": 0.14899600000000002,
-      "Center": {
-        "X": -0.69000006,
-        "Y": -0.41300002,
-        "Z": 4.73
-      }
-    },
-    {
-      "Radius": 0.346,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair Shrinking 2",
-      "RadiusSquared": 0.11971599999999999,
-      "Center": {
-        "X": -0.66,
-        "Y": -0.463,
-        "Z": 4.79
-      }
-    },
-    {
-      "Radius": 0.306,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair Shrinking 3",
-      "RadiusSquared": 0.093636,
-      "Center": {
-        "X": -0.63000005,
-        "Y": -0.513,
-        "Z": 4.85
-      }
-    },
-    {
-      "Radius": 0.266,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair Shrinking 4",
-      "RadiusSquared": 0.07075600000000001,
-      "Center": {
-        "X": -0.6,
-        "Y": -0.563,
-        "Z": 4.91
-      }
-    },
-    {
-      "Radius": 0.22599999999999998,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair Shrinking 5",
-      "RadiusSquared": 0.05107599999999999,
-      "Center": {
-        "X": -0.57000005,
-        "Y": -0.61300004,
-        "Z": 4.9700003
-      }
-    },
-    {
-      "Radius": 0.186,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair Shrinking 6",
-      "RadiusSquared": 0.034596,
-      "Center": {
-        "X": -0.54,
-        "Y": -0.663,
-        "Z": 5.03
-      }
-    },
-    {
-      "Radius": 0.14599999999999996,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair Shrinking 7",
-      "RadiusSquared": 0.021315999999999988,
-      "Center": {
-        "X": -0.51000005,
-        "Y": -0.713,
-        "Z": 5.09
-      }
-    },
-    {
-      "Radius": 0.10599999999999998,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair Shrinking 8",
-      "RadiusSquared": 0.011235999999999996,
-      "Center": {
-        "X": -0.48000002,
-        "Y": -0.763,
-        "Z": 5.15
-      }
-    },
-    {
-      "Radius": 0.066,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair Shrinking 9",
-      "RadiusSquared": 0.0043560000000000005,
-      "Center": {
-        "X": -0.45000002,
-        "Y": -0.813,
-        "Z": 5.21
-      }
-    },
-    {
-      "Radius": 0.025999999999999968,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair Shrinking 10",
-      "RadiusSquared": 0.0006759999999999983,
-      "Center": {
-        "X": -0.42000002,
-        "Y": -0.86300004,
-        "Z": 5.27
-      }
-    },
-    {
-      "Radius": 0.0,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair Shrinking 11",
-      "RadiusSquared": 0.0,
-      "Center": {
-        "X": -0.39000002,
-        "Y": -0.913,
-        "Z": 5.33
-      }
-    },
-    {
-      "Radius": 0.0,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair Shrinking 12",
-      "RadiusSquared": 0.0,
-      "Center": {
-        "X": -0.36,
-        "Y": -0.963,
-        "Z": 5.39
-      }
-    },
-    {
-      "Radius": 0.0,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair Shrinking 13",
-      "RadiusSquared": 0.0,
-      "Center": {
-        "X": -0.33000004,
-        "Y": -1.013,
-        "Z": 5.4500003
-      }
-    },
-    {
-      "Radius": 0.0,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair Shrinking 14",
-      "RadiusSquared": 0.0,
-      "Center": {
-        "X": -0.30000004,
-        "Y": -1.063,
-        "Z": 5.51
-      }
-    },
-    {
-      "Radius": 0.41000000000000003,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 2 0",
-      "RadiusSquared": 0.16810000000000003,
-      "Center": {
-        "X": 0.0,
-        "Y": 0.507,
-        "Z": 5.0699997
-      }
-    },
-    {
-      "Radius": 0.41000000000000003,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 2 1",
-      "RadiusSquared": 0.16810000000000003,
-      "Center": {
-        "X": -0.03,
-        "Y": 0.507,
-        "Z": 5.0699997
-      }
-    },
-    {
-      "Radius": 0.41000000000000003,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 2 2",
-      "RadiusSquared": 0.16810000000000003,
-      "Center": {
-        "X": -0.06,
-        "Y": 0.507,
-        "Z": 5.0699997
-      }
-    },
-    {
-      "Radius": 0.41000000000000003,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 2 3",
-      "RadiusSquared": 0.16810000000000003,
-      "Center": {
-        "X": -0.09,
-        "Y": 0.507,
-        "Z": 5.0699997
-      }
-    },
-    {
-      "Radius": 0.41000000000000003,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 2 4",
-      "RadiusSquared": 0.16810000000000003,
-      "Center": {
-        "X": -0.12,
-        "Y": 0.507,
-        "Z": 5.0699997
-      }
-    },
-    {
-      "Radius": 0.41000000000000003,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 2 5",
-      "RadiusSquared": 0.16810000000000003,
-      "Center": {
-        "X": -0.15,
-        "Y": 0.507,
-        "Z": 5.0699997
-      }
-    },
-    {
-      "Radius": 0.41000000000000003,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 2 6",
-      "RadiusSquared": 0.16810000000000003,
-      "Center": {
-        "X": -0.18,
-        "Y": 0.507,
-        "Z": 5.0699997
-      }
-    },
-    {
-      "Radius": 0.41000000000000003,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 2 7",
-      "RadiusSquared": 0.16810000000000003,
-      "Center": {
-        "X": -0.21,
-        "Y": 0.507,
-        "Z": 5.0699997
-      }
-    },
-    {
-      "Radius": 0.41000000000000003,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 2 8",
-      "RadiusSquared": 0.16810000000000003,
-      "Center": {
-        "X": -0.24,
-        "Y": 0.507,
-        "Z": 5.0699997
-      }
-    },
-    {
-      "Radius": 0.41000000000000003,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 2 9",
-      "RadiusSquared": 0.16810000000000003,
-      "Center": {
-        "X": -0.27,
-        "Y": 0.507,
-        "Z": 5.0699997
-      }
-    },
-    {
-      "Radius": 0.41000000000000003,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 2 10",
-      "RadiusSquared": 0.16810000000000003,
-      "Center": {
-        "X": -0.3,
-        "Y": 0.507,
-        "Z": 5.0699997
-      }
-    },
-    {
-      "Radius": 0.41000000000000003,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 2 11",
-      "RadiusSquared": 0.16810000000000003,
-      "Center": {
-        "X": -0.33,
-        "Y": 0.507,
-        "Z": 5.0699997
-      }
-    },
-    {
-      "Radius": 0.41000000000000003,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 2 12",
-      "RadiusSquared": 0.16810000000000003,
-      "Center": {
-        "X": -0.36,
-        "Y": 0.507,
-        "Z": 5.0699997
-      }
-    },
-    {
-      "Radius": 0.41000000000000003,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 2 13",
-      "RadiusSquared": 0.16810000000000003,
-      "Center": {
-        "X": -0.39,
-        "Y": 0.507,
-        "Z": 5.0699997
-      }
-    },
-    {
-      "Radius": 0.41000000000000003,
-      "Material": {
-        "Color": {
-          "B": 91,
-          "G": 32,
-          "R": 94
-        }
-      },
-      "Label": "Hair 2 14",
-      "RadiusSquared": 0.16810000000000003,
-      "Center": {
-        "X": -0.42,
-        "Y": 0.507,
-        "Z": 5.0699997
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.161,
-        "Y": -0.04,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.18,
-        "Y": -0.0365,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.199,
-        "Y": -0.033,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.218,
-        "Y": -0.0295,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.237,
-        "Y": -0.026,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.256,
-        "Y": -0.0225,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.275,
-        "Y": -0.019,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.294,
-        "Y": -0.0155,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.313,
-        "Y": -0.012,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.332,
-        "Y": -0.0085,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.351,
-        "Y": -0.005,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.37,
-        "Y": -0.0015,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.389,
-        "Y": 0.002,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.408,
-        "Y": 0.0055,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.427,
-        "Y": 0.009,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left 2",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.427,
-        "Y": 0.009,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left 2",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.427,
-        "Y": -0.0010000004,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left 2",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.427,
-        "Y": -0.011,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Left 2",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": -0.427,
-        "Y": -0.021,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.161,
-        "Y": -0.04,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.18,
-        "Y": -0.0365,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.199,
-        "Y": -0.033,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.218,
-        "Y": -0.0295,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.237,
-        "Y": -0.026,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.256,
-        "Y": -0.0225,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.275,
-        "Y": -0.019,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.294,
-        "Y": -0.0155,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.313,
-        "Y": -0.012,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.332,
-        "Y": -0.0085,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.351,
-        "Y": -0.005,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.37,
-        "Y": -0.0015,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.389,
-        "Y": 0.002,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.408,
-        "Y": 0.0055,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.427,
-        "Y": 0.009,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right 2",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.427,
-        "Y": 0.009,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right 2",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.427,
-        "Y": -0.0010000004,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right 2",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.427,
-        "Y": -0.011,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.02,
-      "Material": {
-        "Color": {
-          "B": 15,
-          "G": 1,
-          "R": 1
-        }
-      },
-      "Label": "Eyeliner Right 2",
-      "RadiusSquared": 0.0004,
-      "Center": {
-        "X": 0.427,
-        "Y": -0.021,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.45,
-        "Y": 0.2,
-        "Z": 5.523
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.431,
-        "Y": 0.196,
-        "Z": 5.53
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.412,
-        "Y": 0.192,
-        "Z": 5.537
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.393,
-        "Y": 0.188,
-        "Z": 5.544
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.374,
-        "Y": 0.184,
-        "Z": 5.551
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.355,
-        "Y": 0.18,
-        "Z": 5.558
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.336,
-        "Y": 0.176,
-        "Z": 5.565
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.317,
-        "Y": 0.172,
-        "Z": 5.572
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.298,
-        "Y": 0.168,
-        "Z": 5.579
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.279,
-        "Y": 0.164,
-        "Z": 5.586
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.26,
-        "Y": 0.16,
-        "Z": 5.593
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.241,
-        "Y": 0.156,
-        "Z": 5.6
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.222,
-        "Y": 0.152,
-        "Z": 5.607
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.203,
-        "Y": 0.148,
-        "Z": 5.614
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.184,
-        "Y": 0.144,
-        "Z": 5.621
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.165,
-        "Y": 0.14,
-        "Z": 5.628
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.146,
-        "Y": 0.136,
-        "Z": 5.635
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.127,
-        "Y": 0.132,
-        "Z": 5.642
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.108,
-        "Y": 0.128,
-        "Z": 5.649
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.089,
-        "Y": 0.124,
-        "Z": 5.656
-      }
+      "Label": "Face"
     },
     {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
+      "Radius": 0.08,
       "Center": {
-        "X": -0.07,
-        "Y": 0.12,
-        "Z": 5.663
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
+        "X": 0.011512901,
+        "Y": -0.020731095,
+        "Z": 5.6595736
       },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.051,
-        "Y": 0.116,
-        "Z": 5.67
-      }
-    },
-    {
-      "Radius": 0.04,
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 10,
+          "R": 245,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.032,
-        "Y": 0.112,
-        "Z": 5.677
       }
     },
     {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
+      "Radius": 0.08,
       "Center": {
-        "X": -0.013,
-        "Y": 0.108,
-        "Z": 5.684
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
+        "X": 0.022988208,
+        "Y": -0.041441735,
+        "Z": 5.658296
       },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": 0.006,
-        "Y": 0.104,
-        "Z": 5.691
-      }
-    },
-    {
-      "Radius": 0.04,
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 20,
+          "R": 235,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": 0.025,
-        "Y": 0.1,
-        "Z": 5.698
       }
     },
     {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
+      "Radius": 0.08,
       "Center": {
-        "X": 0.044,
-        "Y": 0.096,
-        "Z": 5.705
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
+        "X": 0.034388427,
+        "Y": -0.06211147,
+        "Z": 5.6561704
       },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": 0.063,
-        "Y": 0.092,
-        "Z": 5.712
-      }
-    },
-    {
-      "Radius": 0.04,
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 31,
+          "R": 224,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": 0.082,
-        "Y": 0.088,
-        "Z": 5.719
       }
     },
     {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
+      "Radius": 0.08,
       "Center": {
-        "X": 0.101,
-        "Y": 0.084,
-        "Z": 5.726
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
+        "X": 0.045676228,
+        "Y": -0.082719915,
+        "Z": 5.6532006
       },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": 0.15,
-        "Y": -0.3,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 41,
+          "R": 214,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": 0.138,
-        "Y": -0.304,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
+      "Radius": 0.08,
       "Center": {
-        "X": 0.126,
-        "Y": -0.308,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
+        "X": 0.05681457,
+        "Y": -0.10324672,
+        "Z": 5.6493936
       },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": 0.114,
-        "Y": -0.312,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 51,
+          "R": 204,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": 0.102,
-        "Y": -0.316,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
+      "Radius": 0.08,
       "Center": {
-        "X": 0.09,
-        "Y": -0.32,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
+        "X": 0.06776679,
+        "Y": -0.12367163,
+        "Z": 5.6447577
       },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": 0.078,
-        "Y": -0.324,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 61,
+          "R": 194,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": 0.066,
-        "Y": -0.328,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
+      "Radius": 0.08,
       "Center": {
-        "X": 0.054,
-        "Y": -0.332,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
+        "X": 0.07849665,
+        "Y": -0.14397451,
+        "Z": 5.6393037
       },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": 0.042,
-        "Y": -0.336,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 71,
+          "R": 184,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": 0.03,
-        "Y": -0.34,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
+      "Radius": 0.08,
       "Center": {
-        "X": 0.018,
-        "Y": -0.344,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
+        "X": 0.088968456,
+        "Y": -0.1641353,
+        "Z": 5.6330433
       },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": 0.006,
-        "Y": -0.348,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 82,
+          "R": 173,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.006,
-        "Y": -0.352,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
+      "Radius": 0.08,
       "Center": {
-        "X": -0.018,
-        "Y": -0.356,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
+        "X": 0.09914718,
+        "Y": -0.18413407,
+        "Z": 5.625991
       },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.03,
-        "Y": -0.36,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 92,
+          "R": 163,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.042,
-        "Y": -0.364,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
+      "Radius": 0.08,
       "Center": {
-        "X": -0.054,
-        "Y": -0.368,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
+        "X": 0.10899846,
+        "Y": -0.2039512,
+        "Z": 5.618161
       },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.066,
-        "Y": -0.372,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 102,
+          "R": 153,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.078,
-        "Y": -0.376,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
+      "Radius": 0.08,
       "Center": {
-        "X": -0.09,
-        "Y": -0.38,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
+        "X": 0.11848879,
+        "Y": -0.22356695,
+        "Z": 5.609572
       },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.102,
-        "Y": -0.384,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 112,
+          "R": 143,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.114,
-        "Y": -0.388,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
+      "Radius": 0.08,
       "Center": {
-        "X": -0.126,
-        "Y": -0.392,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
+        "X": 0.12758549,
+        "Y": -0.24296214,
+        "Z": 5.6002426
       },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.138,
-        "Y": -0.396,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 122,
+          "R": 133,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.15,
-        "Y": -0.4,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
+      "Radius": 0.08,
       "Center": {
-        "X": -0.162,
-        "Y": -0.404,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
-      "Material": {
-        "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
-        }
+        "X": 0.13625689,
+        "Y": -0.26211756,
+        "Z": 5.5901933
       },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.174,
-        "Y": -0.408,
-        "Z": 5.683
-      }
-    },
-    {
-      "Radius": 0.04,
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 133,
+          "R": 122,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.186,
-        "Y": -0.412,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
+      "Radius": 0.08,
+      "Center": {
+        "X": 0.14447232,
+        "Y": -0.28101423,
+        "Z": 5.579447
+      },
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 143,
+          "R": 112,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.198,
-        "Y": -0.416,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
+      "Radius": 0.08,
+      "Center": {
+        "X": 0.1522022,
+        "Y": -0.29963368,
+        "Z": 5.5680265
+      },
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 153,
+          "R": 102,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.21,
-        "Y": -0.42,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
+      "Radius": 0.08,
+      "Center": {
+        "X": 0.15941826,
+        "Y": -0.3179574,
+        "Z": 5.5559573
+      },
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 163,
+          "R": 92,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.222,
-        "Y": -0.424,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
+      "Radius": 0.08,
+      "Center": {
+        "X": 0.16609332,
+        "Y": -0.3359672,
+        "Z": 5.543267
+      },
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 173,
+          "R": 82,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.234,
-        "Y": -0.428,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
+      "Radius": 0.08,
+      "Center": {
+        "X": 0.17220171,
+        "Y": -0.3536456,
+        "Z": 5.529982
+      },
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 184,
+          "R": 71,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.246,
-        "Y": -0.432,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
+      "Radius": 0.08,
+      "Center": {
+        "X": 0.1777189,
+        "Y": -0.370975,
+        "Z": 5.5161333
+      },
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 194,
+          "R": 61,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.258,
-        "Y": -0.436,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
+      "Radius": 0.08,
+      "Center": {
+        "X": 0.18262205,
+        "Y": -0.3879382,
+        "Z": 5.50175
+      },
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 204,
+          "R": 51,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.27,
-        "Y": -0.44,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
+      "Radius": 0.08,
+      "Center": {
+        "X": 0.18688966,
+        "Y": -0.40451857,
+        "Z": 5.486864
+      },
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 214,
+          "R": 41,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.282,
-        "Y": -0.444,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
+      "Radius": 0.08,
+      "Center": {
+        "X": 0.19050191,
+        "Y": -0.42069966,
+        "Z": 5.471509
+      },
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 224,
+          "R": 31,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.294,
-        "Y": -0.448,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
+      "Radius": 0.08,
+      "Center": {
+        "X": 0.19344051,
+        "Y": -0.43646574,
+        "Z": 5.455717
+      },
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 235,
+          "R": 20,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.306,
-        "Y": -0.452,
-        "Z": 5.683
       }
     },
     {
-      "Radius": 0.04,
+      "Radius": 0.08,
+      "Center": {
+        "X": 0.19568881,
+        "Y": -0.45180097,
+        "Z": 5.439524
+      },
       "Material": {
         "Color": {
-          "B": 255,
-          "G": 255,
-          "R": 255
+          "G": 245,
+          "R": 10,
+          "B": 0
         }
-      },
-      "Label": "Symbol",
-      "RadiusSquared": 0.0016,
-      "Center": {
-        "X": -0.318,
-        "Y": -0.456,
-        "Z": 5.683
       }
     }
   ]

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset=utf-8>
+  <title>Reference</title>
+  </head>
+  <body style="margin: 0;">
+  <script src="three.module.js"></script>
+    <script type="module">
+
+        import * as THREE from './three.module.js';
+        let sceneData = await (await fetch('../../scenes/PowerShellHero.json')).json();
+        let camera, scene, renderer, effect, pointLight;
+        let sphere, plane;
+        let pointLightAnimation = {
+            x: 0,
+            y: 0,
+            z: 0,
+            direction: "positive"
+        };
+        const start = Date.now();
+
+        init();
+        animate();
+
+        function init() {
+
+            let scale = 15;
+            let aspectRatioComponents = sceneData.Camera.AspectRatio.split(":");
+            let aspectRatio = aspectRatioComponents[0] / aspectRatioComponents[1];
+            camera = new THREE.PerspectiveCamera(sceneData.Camera.FieldOfView, aspectRatio, 1, 2000 );
+            camera.position.x = sceneData.Camera.LookFrom.X;
+            camera.position.y = sceneData.Camera.LookFrom.Y;
+            camera.position.z = sceneData.Camera.LookFrom.Z;
+            camera.lookAt(
+                sceneData.Camera.LookAt.X,
+                sceneData.Camera.LookAt.Y,
+                sceneData.Camera.LookAt.Z
+            );
+            
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color( 0.8, 0.8, 0.8 );
+
+            pointLightAnimation.x = camera.position.x + 1;
+            pointLightAnimation.y = camera.position.y + 3;
+            pointLightAnimation.z = camera.position.z + 5;
+
+            pointLight = new THREE.PointLight( 0xffffff );
+            pointLight.position.set(pointLightAnimation.x, pointLightAnimation.y, pointLightAnimation.z);
+            pointLight.castShadow = true;
+            pointLight.shadow.camera.near = 0.1;
+            pointLight.shadow.camera.far = 100;
+            pointLight.shadow.mapSize.width = 2048;
+            pointLight.shadow.mapSize.height = 2048;
+            scene.add( pointLight );
+            
+            sceneData.Objects.forEach(element => {
+                
+                sphere = new THREE.Mesh(
+                    new THREE.SphereGeometry( element.Radius, 50, 50 ),
+                    new THREE.MeshPhongMaterial( {
+                        flatShading: true,
+                        color: (new THREE.Color( `rgb(${parseInt(element.Material.Color.R)}, ${parseInt(element.Material.Color.G)}, ${parseInt(element.Material.Color.B)})` ))
+                    } )
+                );
+                sphere.position.x = element.Center.X
+                sphere.position.y = element.Center.Y
+                sphere.position.z = element.Center.Z
+                sphere.castShadow = true;
+                sphere.receiveShadow = true;
+                scene.add( sphere );
+            });
+
+            renderer = new THREE.WebGLRenderer();
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.setSize( scale * sceneData.Camera.ImageWidth, scale * sceneData.Camera.ImageWidth / aspectRatio );
+            document.body.appendChild( renderer.domElement );
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+        }
+
+        function animate() {
+            requestAnimationFrame( animate );
+            renderer.render(scene, camera);
+        }
+
+    </script>
+  </body>
+</html>
