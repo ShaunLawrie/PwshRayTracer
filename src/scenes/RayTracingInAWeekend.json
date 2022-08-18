@@ -1,27 +1,27 @@
 {
   "Camera": {
-    "ImageWidth": 64,
-    "LookAt": {
-      "X": 0.0,
-      "Y": 0.0,
-      "Z": 0.0
-    },
-    "SamplesPerPixel": 3,
-    "FieldOfView": 20,
-    "Aperture": 0.1,
     "AspectRatio": "16:9",
-    "FocusDistance": 10.0,
     "CameraUp": {
       "X": 0.0,
       "Y": 1.0,
       "Z": 0.0
     },
-    "MaxRayRecursionDepth": 50,
+    "Aperture": 0.1,
+    "SamplesPerPixel": 15,
+    "LookAt": {
+      "X": 0.0,
+      "Y": 0.0,
+      "Z": 0.0
+    },
+    "FocusDistance": 10.0,
+    "FieldOfView": 20,
+    "ImageWidth": 100,
     "LookFrom": {
       "X": 13.0,
       "Y": 2.0,
       "Z": 3.0
-    }
+    },
+    "MaxRayRecursionDepth": 50
   },
   "Objects": [
     {
@@ -30,16 +30,16 @@
         "Y": -1000.0,
         "Z": 0.0
       },
-      "RadiusSquared": 1000000.0,
-      "Label": "Ground",
       "Radius": 1000.0,
       "Material": {
         "Color": {
           "R": 128,
-          "B": 128,
-          "G": 128
+          "G": 128,
+          "B": 128
         }
-      }
+      },
+      "Label": "Ground",
+      "RadiusSquared": 1000000.0
     },
     {
       "Center": {
@@ -47,18 +47,18 @@
         "Y": 1.0,
         "Z": 0.0
       },
-      "RadiusSquared": 1.0,
-      "Label": "Glass",
       "Radius": 1.0,
       "Material": {
-        "Refractive": true,
-        "RefractiveIndex": 1.5,
         "Color": {
           "R": 128,
-          "B": 128,
-          "G": 145
-        }
-      }
+          "G": 145,
+          "B": 128
+        },
+        "Refractive": true,
+        "RefractiveIndex": 1.5
+      },
+      "Label": "Glass",
+      "RadiusSquared": 1.0
     },
     {
       "Center": {
@@ -66,16 +66,16 @@
         "Y": 1.0,
         "Z": 0.0
       },
-      "RadiusSquared": 1.0,
-      "Label": "Colored",
       "Radius": 1.0,
       "Material": {
         "Color": {
           "R": 102,
-          "B": 26,
-          "G": 51
+          "G": 51,
+          "B": 26
         }
-      }
+      },
+      "Label": "Colored",
+      "RadiusSquared": 1.0
     },
     {
       "Center": {
@@ -83,18 +83,18 @@
         "Y": 1.0,
         "Z": 0.0
       },
-      "RadiusSquared": 1.0,
-      "Label": "Mirror",
       "Radius": 1.0,
       "Material": {
         "Reflective": true,
-        "Fuzz": 0.05,
         "Color": {
           "R": 179,
-          "B": 128,
-          "G": 153
-        }
-      }
+          "G": 153,
+          "B": 128
+        },
+        "Fuzz": 0.05
+      },
+      "Label": "Mirror",
+      "RadiusSquared": 1.0
     },
     {
       "Center": {
@@ -102,16 +102,16 @@
         "Y": 0.21,
         "Z": 3.871
       },
-      "RadiusSquared": 0.04409999999999999,
-      "Label": "Random Diffuse",
       "Radius": 0.21,
       "Material": {
         "Color": {
           "R": 79.2,
-          "B": 33.0,
-          "G": 107.8
+          "G": 107.8,
+          "B": 33.0
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.04409999999999999
     },
     {
       "Center": {
@@ -119,18 +119,18 @@
         "Y": 0.24,
         "Z": 0.821
       },
-      "RadiusSquared": 0.0576,
-      "Label": "Random Reflective",
       "Radius": 0.24,
       "Material": {
         "Reflective": true,
-        "Fuzz": 0.05,
         "Color": {
           "R": 76.5,
-          "B": 252.45,
-          "G": 252.45
-        }
-      }
+          "G": 252.45,
+          "B": 252.45
+        },
+        "Fuzz": 0.05
+      },
+      "Label": "Random Reflective",
+      "RadiusSquared": 0.0576
     },
     {
       "Center": {
@@ -138,18 +138,18 @@
         "Y": 0.17,
         "Z": 7.765
       },
-      "RadiusSquared": 0.028900000000000006,
-      "Label": "Random Reflective",
       "Radius": 0.17,
       "Material": {
         "Reflective": true,
-        "Fuzz": 0.05,
         "Color": {
           "R": 214.2,
-          "B": 163.20000000000002,
-          "G": 89.25
-        }
-      }
+          "G": 89.25,
+          "B": 163.20000000000002
+        },
+        "Fuzz": 0.05
+      },
+      "Label": "Random Reflective",
+      "RadiusSquared": 0.028900000000000006
     },
     {
       "Center": {
@@ -157,18 +157,18 @@
         "Y": 0.25,
         "Z": -1.179
       },
-      "RadiusSquared": 0.0625,
-      "Label": "Random Refractive",
       "Radius": 0.25,
       "Material": {
-        "Refractive": true,
-        "RefractiveIndex": 1.5,
         "Color": {
           "R": 136.4,
-          "B": 129.79999999999998,
-          "G": 217.8
-        }
-      }
+          "G": 217.8,
+          "B": 129.79999999999998
+        },
+        "Refractive": true,
+        "RefractiveIndex": 1.5
+      },
+      "Label": "Random Refractive",
+      "RadiusSquared": 0.0625
     },
     {
       "Center": {
@@ -176,16 +176,16 @@
         "Y": 0.18,
         "Z": 4.189
       },
-      "RadiusSquared": 0.0324,
-      "Label": "Random Diffuse",
       "Radius": 0.18,
       "Material": {
         "Color": {
           "R": 74.80000000000001,
-          "B": 138.6,
-          "G": 200.20000000000002
+          "G": 200.20000000000002,
+          "B": 138.6
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0324
     },
     {
       "Center": {
@@ -193,16 +193,16 @@
         "Y": 0.17,
         "Z": 6.478
       },
-      "RadiusSquared": 0.028900000000000006,
-      "Label": "Random Diffuse",
       "Radius": 0.17,
       "Material": {
         "Color": {
           "R": 41.8,
-          "B": 48.4,
-          "G": 180.39999999999998
+          "G": 180.39999999999998,
+          "B": 48.4
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.028900000000000006
     },
     {
       "Center": {
@@ -210,16 +210,16 @@
         "Y": 0.22,
         "Z": 2.237
       },
-      "RadiusSquared": 0.0484,
-      "Label": "Random Diffuse",
       "Radius": 0.22,
       "Material": {
         "Color": {
           "R": 160.6,
-          "B": 50.6,
-          "G": 6.6
+          "G": 6.6,
+          "B": 50.6
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0484
     },
     {
       "Center": {
@@ -227,16 +227,16 @@
         "Y": 0.2,
         "Z": 6.738
       },
-      "RadiusSquared": 0.04000000000000001,
-      "Label": "Random Diffuse",
       "Radius": 0.2,
       "Material": {
         "Color": {
           "R": 204.60000000000002,
-          "B": 123.20000000000002,
-          "G": 48.4
+          "G": 48.4,
+          "B": 123.20000000000002
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.04000000000000001
     },
     {
       "Center": {
@@ -244,16 +244,16 @@
         "Y": 0.24,
         "Z": 14.821
       },
-      "RadiusSquared": 0.0576,
-      "Label": "Random Diffuse",
       "Radius": 0.24,
       "Material": {
         "Color": {
           "R": 134.2,
-          "B": 6.6,
-          "G": 217.8
+          "G": 217.8,
+          "B": 6.6
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0576
     },
     {
       "Center": {
@@ -261,16 +261,16 @@
         "Y": 0.19,
         "Z": -5.366
       },
-      "RadiusSquared": 0.0361,
-      "Label": "Random Diffuse",
       "Radius": 0.19,
       "Material": {
         "Color": {
           "R": 209.0,
-          "B": 116.60000000000001,
-          "G": 101.2
+          "G": 101.2,
+          "B": 116.60000000000001
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0361
     },
     {
       "Center": {
@@ -278,18 +278,18 @@
         "Y": 0.15,
         "Z": 4.031
       },
-      "RadiusSquared": 0.0225,
-      "Label": "Random Refractive",
       "Radius": 0.15,
       "Material": {
-        "Refractive": true,
-        "RefractiveIndex": 1.5,
         "Color": {
           "R": 211.2,
-          "B": 57.2,
-          "G": 195.8
-        }
-      }
+          "G": 195.8,
+          "B": 57.2
+        },
+        "Refractive": true,
+        "RefractiveIndex": 1.5
+      },
+      "Label": "Random Refractive",
+      "RadiusSquared": 0.0225
     },
     {
       "Center": {
@@ -297,16 +297,16 @@
         "Y": 0.27,
         "Z": 12.767
       },
-      "RadiusSquared": 0.0729,
-      "Label": "Random Diffuse",
       "Radius": 0.27,
       "Material": {
         "Color": {
           "R": 189.2,
-          "B": 134.2,
-          "G": 160.6
+          "G": 160.6,
+          "B": 134.2
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0729
     },
     {
       "Center": {
@@ -314,16 +314,16 @@
         "Y": 0.25,
         "Z": 4.844
       },
-      "RadiusSquared": 0.0625,
-      "Label": "Random Diffuse",
       "Radius": 0.25,
       "Material": {
         "Color": {
           "R": 30.800000000000004,
-          "B": 158.4,
-          "G": 79.2
+          "G": 79.2,
+          "B": 158.4
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0625
     },
     {
       "Center": {
@@ -331,16 +331,16 @@
         "Y": 0.25,
         "Z": -0.574
       },
-      "RadiusSquared": 0.0625,
-      "Label": "Random Diffuse",
       "Radius": 0.25,
       "Material": {
         "Color": {
           "R": 26.4,
-          "B": 44.0,
-          "G": 206.79999999999998
+          "G": 206.79999999999998,
+          "B": 44.0
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0625
     },
     {
       "Center": {
@@ -348,16 +348,16 @@
         "Y": 0.23,
         "Z": -2.813
       },
-      "RadiusSquared": 0.0529,
-      "Label": "Random Diffuse",
       "Radius": 0.23,
       "Material": {
         "Color": {
           "R": 13.2,
-          "B": 160.6,
-          "G": 116.60000000000001
+          "G": 116.60000000000001,
+          "B": 160.6
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0529
     },
     {
       "Center": {
@@ -365,16 +365,16 @@
         "Y": 0.2,
         "Z": 11.37
       },
-      "RadiusSquared": 0.04000000000000001,
-      "Label": "Random Diffuse",
       "Radius": 0.2,
       "Material": {
         "Color": {
           "R": 178.20000000000002,
-          "B": 77.0,
-          "G": 66.0
+          "G": 66.0,
+          "B": 77.0
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.04000000000000001
     },
     {
       "Center": {
@@ -382,16 +382,16 @@
         "Y": 0.18,
         "Z": -2.47
       },
-      "RadiusSquared": 0.0324,
-      "Label": "Random Diffuse",
       "Radius": 0.18,
       "Material": {
         "Color": {
           "R": 28.6,
-          "B": 8.8,
-          "G": 154.0
+          "G": 154.0,
+          "B": 8.8
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0324
     },
     {
       "Center": {
@@ -399,16 +399,16 @@
         "Y": 0.24,
         "Z": -2.179
       },
-      "RadiusSquared": 0.0576,
-      "Label": "Random Diffuse",
       "Radius": 0.24,
       "Material": {
         "Color": {
           "R": 4.4,
-          "B": 156.2,
-          "G": 217.8
+          "G": 217.8,
+          "B": 156.2
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0576
     },
     {
       "Center": {
@@ -416,16 +416,16 @@
         "Y": 0.25,
         "Z": 9.189
       },
-      "RadiusSquared": 0.0625,
-      "Label": "Random Diffuse",
       "Radius": 0.25,
       "Material": {
         "Color": {
           "R": 15.400000000000002,
-          "B": 138.6,
-          "G": 200.20000000000002
+          "G": 200.20000000000002,
+          "B": 138.6
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0625
     },
     {
       "Center": {
@@ -433,16 +433,16 @@
         "Y": 0.19,
         "Z": -9.289
       },
-      "RadiusSquared": 0.0361,
-      "Label": "Random Diffuse",
       "Radius": 0.19,
       "Material": {
         "Color": {
           "R": 96.8,
-          "B": 39.6,
-          "G": 19.8
+          "G": 19.8,
+          "B": 39.6
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0361
     },
     {
       "Center": {
@@ -450,16 +450,16 @@
         "Y": 0.27,
         "Z": -0.842
       },
-      "RadiusSquared": 0.0729,
-      "Label": "Random Diffuse",
       "Radius": 0.27,
       "Material": {
         "Color": {
           "R": 48.4,
-          "B": 129.79999999999998,
-          "G": 4.4
+          "G": 4.4,
+          "B": 129.79999999999998
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0729
     },
     {
       "Center": {
@@ -467,16 +467,16 @@
         "Y": 0.22,
         "Z": 6.054
       },
-      "RadiusSquared": 0.0484,
-      "Label": "Random Diffuse",
       "Radius": 0.22,
       "Material": {
         "Color": {
           "R": 209.0,
-          "B": 81.4,
-          "G": 57.2
+          "G": 57.2,
+          "B": 81.4
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0484
     },
     {
       "Center": {
@@ -484,18 +484,18 @@
         "Y": 0.24,
         "Z": -9.341
       },
-      "RadiusSquared": 0.0576,
-      "Label": "Random Reflective",
       "Radius": 0.24,
       "Material": {
         "Reflective": true,
-        "Fuzz": 0.05,
         "Color": {
           "R": 43.35,
-          "B": 81.60000000000001,
-          "G": 53.55
-        }
-      }
+          "G": 53.55,
+          "B": 81.60000000000001
+        },
+        "Fuzz": 0.05
+      },
+      "Label": "Random Reflective",
+      "RadiusSquared": 0.0576
     },
     {
       "Center": {
@@ -503,16 +503,16 @@
         "Y": 0.17,
         "Z": -5.26
       },
-      "RadiusSquared": 0.028900000000000006,
-      "Label": "Random Diffuse",
       "Radius": 0.17,
       "Material": {
         "Color": {
           "R": 176.0,
-          "B": 105.6,
-          "G": 132.0
+          "G": 132.0,
+          "B": 105.6
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.028900000000000006
     },
     {
       "Center": {
@@ -520,18 +520,18 @@
         "Y": 0.17,
         "Z": -5.761
       },
-      "RadiusSquared": 0.028900000000000006,
-      "Label": "Random Reflective",
       "Radius": 0.17,
       "Material": {
         "Reflective": true,
-        "Fuzz": 0.05,
         "Color": {
           "R": 109.64999999999999,
-          "B": 130.05,
-          "G": 104.55
-        }
-      }
+          "G": 104.55,
+          "B": 130.05
+        },
+        "Fuzz": 0.05
+      },
+      "Label": "Random Reflective",
+      "RadiusSquared": 0.028900000000000006
     },
     {
       "Center": {
@@ -539,16 +539,16 @@
         "Y": 0.22,
         "Z": 1.478
       },
-      "RadiusSquared": 0.0484,
-      "Label": "Random Diffuse",
       "Radius": 0.22,
       "Material": {
         "Color": {
           "R": 13.2,
-          "B": 6.6,
-          "G": 180.39999999999998
+          "G": 180.39999999999998,
+          "B": 6.6
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0484
     },
     {
       "Center": {
@@ -556,16 +556,16 @@
         "Y": 0.21,
         "Z": 3.031
       },
-      "RadiusSquared": 0.04409999999999999,
-      "Label": "Random Diffuse",
       "Radius": 0.21,
       "Material": {
         "Color": {
           "R": 33.0,
-          "B": 41.8,
-          "G": 195.8
+          "G": 195.8,
+          "B": 41.8
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.04409999999999999
     },
     {
       "Center": {
@@ -573,16 +573,16 @@
         "Y": 0.24,
         "Z": 1.345
       },
-      "RadiusSquared": 0.0576,
-      "Label": "Random Diffuse",
       "Radius": 0.24,
       "Material": {
         "Color": {
           "R": 55.0,
-          "B": 6.6,
-          "G": 121.00000000000001
+          "G": 121.00000000000001,
+          "B": 6.6
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0576
     },
     {
       "Center": {
@@ -590,16 +590,16 @@
         "Y": 0.18,
         "Z": 2.449
       },
-      "RadiusSquared": 0.0324,
-      "Label": "Random Diffuse",
       "Radius": 0.18,
       "Material": {
         "Color": {
           "R": 90.19999999999999,
-          "B": 187.0,
-          "G": 68.2
+          "G": 68.2,
+          "B": 187.0
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0324
     },
     {
       "Center": {
@@ -607,16 +607,16 @@
         "Y": 0.17,
         "Z": 4.158
       },
-      "RadiusSquared": 0.028900000000000006,
-      "Label": "Random Diffuse",
       "Radius": 0.17,
       "Material": {
         "Color": {
           "R": 70.4,
-          "B": 213.4,
-          "G": 4.4
+          "G": 4.4,
+          "B": 213.4
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.028900000000000006
     },
     {
       "Center": {
@@ -624,16 +624,16 @@
         "Y": 0.17,
         "Z": -6.023
       },
-      "RadiusSquared": 0.028900000000000006,
-      "Label": "Random Diffuse",
       "Radius": 0.17,
       "Material": {
         "Color": {
           "R": 121.00000000000001,
-          "B": 101.2,
-          "G": 138.6
+          "G": 138.6,
+          "B": 101.2
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.028900000000000006
     },
     {
       "Center": {
@@ -641,18 +641,18 @@
         "Y": 0.22,
         "Z": 6.742
       },
-      "RadiusSquared": 0.0484,
-      "Label": "Random Refractive",
       "Radius": 0.22,
       "Material": {
-        "Refractive": true,
-        "RefractiveIndex": 1.5,
         "Color": {
           "R": 110.0,
-          "B": 151.79999999999998,
-          "G": 215.6
-        }
-      }
+          "G": 215.6,
+          "B": 151.79999999999998
+        },
+        "Refractive": true,
+        "RefractiveIndex": 1.5
+      },
+      "Label": "Random Refractive",
+      "RadiusSquared": 0.0484
     },
     {
       "Center": {
@@ -660,16 +660,16 @@
         "Y": 0.25,
         "Z": 13.399
       },
-      "RadiusSquared": 0.0625,
-      "Label": "Random Diffuse",
       "Radius": 0.25,
       "Material": {
         "Color": {
           "R": 48.4,
-          "B": 215.6,
-          "G": 178.20000000000002
+          "G": 178.20000000000002,
+          "B": 215.6
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0625
     },
     {
       "Center": {
@@ -677,16 +677,16 @@
         "Y": 0.27,
         "Z": -1.84
       },
-      "RadiusSquared": 0.0729,
-      "Label": "Random Diffuse",
       "Radius": 0.27,
       "Material": {
         "Color": {
           "R": 156.2,
-          "B": 167.2,
-          "G": 88.0
+          "G": 88.0,
+          "B": 167.2
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0729
     },
     {
       "Center": {
@@ -694,16 +694,16 @@
         "Y": 0.25,
         "Z": 1.555
       },
-      "RadiusSquared": 0.0625,
-      "Label": "Random Diffuse",
       "Radius": 0.25,
       "Material": {
         "Color": {
           "R": 136.4,
-          "B": 11.0,
-          "G": 99.0
+          "G": 99.0,
+          "B": 11.0
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0625
     },
     {
       "Center": {
@@ -711,16 +711,16 @@
         "Y": 0.16,
         "Z": 7.53
       },
-      "RadiusSquared": 0.0256,
-      "Label": "Random Diffuse",
       "Radius": 0.16,
       "Material": {
         "Color": {
           "R": 143.0,
-          "B": 121.00000000000001,
-          "G": 154.0
+          "G": 154.0,
+          "B": 121.00000000000001
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0256
     },
     {
       "Center": {
@@ -728,18 +728,18 @@
         "Y": 0.17,
         "Z": 11.871
       },
-      "RadiusSquared": 0.028900000000000006,
-      "Label": "Random Refractive",
       "Radius": 0.17,
       "Material": {
-        "Refractive": true,
-        "RefractiveIndex": 1.5,
         "Color": {
           "R": 101.2,
-          "B": 173.8,
-          "G": 107.8
-        }
-      }
+          "G": 107.8,
+          "B": 173.8
+        },
+        "Refractive": true,
+        "RefractiveIndex": 1.5
+      },
+      "Label": "Random Refractive",
+      "RadiusSquared": 0.028900000000000006
     },
     {
       "Center": {
@@ -747,16 +747,16 @@
         "Y": 0.15,
         "Z": 0.896
       },
-      "RadiusSquared": 0.0225,
-      "Label": "Random Diffuse",
       "Radius": 0.15,
       "Material": {
         "Color": {
           "R": 28.6,
-          "B": 178.20000000000002,
-          "G": 52.8
+          "G": 52.8,
+          "B": 178.20000000000002
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0225
     },
     {
       "Center": {
@@ -764,16 +764,16 @@
         "Y": 0.22,
         "Z": 1.659
       },
-      "RadiusSquared": 0.0484,
-      "Label": "Random Diffuse",
       "Radius": 0.22,
       "Material": {
         "Color": {
           "R": 136.4,
-          "B": 22.0,
-          "G": 46.199999999999996
+          "G": 46.199999999999996,
+          "B": 22.0
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0484
     },
     {
       "Center": {
@@ -781,16 +781,16 @@
         "Y": 0.19,
         "Z": 4.133
       },
-      "RadiusSquared": 0.0361,
-      "Label": "Random Diffuse",
       "Radius": 0.19,
       "Material": {
         "Color": {
           "R": 26.4,
-          "B": 72.60000000000001,
-          "G": 59.400000000000006
+          "G": 59.400000000000006,
+          "B": 72.60000000000001
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0361
     },
     {
       "Center": {
@@ -798,16 +798,16 @@
         "Y": 0.23,
         "Z": 10.632
       },
-      "RadiusSquared": 0.0529,
-      "Label": "Random Diffuse",
       "Radius": 0.23,
       "Material": {
         "Color": {
           "R": 48.4,
-          "B": 187.0,
-          "G": 17.6
+          "G": 17.6,
+          "B": 187.0
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0529
     },
     {
       "Center": {
@@ -815,18 +815,18 @@
         "Y": 0.15,
         "Z": -0.285
       },
-      "RadiusSquared": 0.0225,
-      "Label": "Random Reflective",
       "Radius": 0.15,
       "Material": {
         "Reflective": true,
-        "Fuzz": 0.05,
         "Color": {
           "R": 51.0,
-          "B": 5.1000000000000005,
-          "G": 216.75
-        }
-      }
+          "G": 216.75,
+          "B": 5.1000000000000005
+        },
+        "Fuzz": 0.05
+      },
+      "Label": "Random Reflective",
+      "RadiusSquared": 0.0225
     },
     {
       "Center": {
@@ -834,16 +834,16 @@
         "Y": 0.17,
         "Z": -1.341
       },
-      "RadiusSquared": 0.028900000000000006,
-      "Label": "Random Diffuse",
       "Radius": 0.17,
       "Material": {
         "Color": {
           "R": 143.0,
-          "B": 72.60000000000001,
-          "G": 46.199999999999996
+          "G": 46.199999999999996,
+          "B": 72.60000000000001
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.028900000000000006
     },
     {
       "Center": {
@@ -851,16 +851,16 @@
         "Y": 0.22,
         "Z": 5.399
       },
-      "RadiusSquared": 0.0484,
-      "Label": "Random Diffuse",
       "Radius": 0.22,
       "Material": {
         "Color": {
           "R": 41.8,
-          "B": 125.39999999999999,
-          "G": 178.20000000000002
+          "G": 178.20000000000002,
+          "B": 125.39999999999999
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0484
     },
     {
       "Center": {
@@ -868,18 +868,18 @@
         "Y": 0.19,
         "Z": 10.239
       },
-      "RadiusSquared": 0.0361,
-      "Label": "Random Refractive",
       "Radius": 0.19,
       "Material": {
-        "Refractive": true,
-        "RefractiveIndex": 1.5,
         "Color": {
           "R": 88.0,
-          "B": 134.2,
-          "G": 90.19999999999999
-        }
-      }
+          "G": 90.19999999999999,
+          "B": 134.2
+        },
+        "Refractive": true,
+        "RefractiveIndex": 1.5
+      },
+      "Label": "Random Refractive",
+      "RadiusSquared": 0.0361
     },
     {
       "Center": {
@@ -887,18 +887,18 @@
         "Y": 0.27,
         "Z": -5.761
       },
-      "RadiusSquared": 0.0729,
-      "Label": "Random Refractive",
       "Radius": 0.27,
       "Material": {
-        "Refractive": true,
-        "RefractiveIndex": 1.5,
         "Color": {
           "R": 217.8,
-          "B": 68.2,
-          "G": 90.19999999999999
-        }
-      }
+          "G": 90.19999999999999,
+          "B": 68.2
+        },
+        "Refractive": true,
+        "RefractiveIndex": 1.5
+      },
+      "Label": "Random Refractive",
+      "RadiusSquared": 0.0729
     },
     {
       "Center": {
@@ -906,16 +906,16 @@
         "Y": 0.15,
         "Z": -6.973
       },
-      "RadiusSquared": 0.0225,
-      "Label": "Random Diffuse",
       "Radius": 0.15,
       "Material": {
         "Color": {
           "R": 41.8,
-          "B": 112.2,
-          "G": 28.6
+          "G": 28.6,
+          "B": 112.2
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0225
     },
     {
       "Center": {
@@ -923,16 +923,16 @@
         "Y": 0.15,
         "Z": -4.472
       },
-      "RadiusSquared": 0.0225,
-      "Label": "Random Diffuse",
       "Radius": 0.15,
       "Material": {
         "Color": {
           "R": 74.80000000000001,
-          "B": 2.2,
-          "G": 70.4
+          "G": 70.4,
+          "B": 2.2
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0225
     },
     {
       "Center": {
@@ -940,16 +940,16 @@
         "Y": 0.21,
         "Z": -1.023
       },
-      "RadiusSquared": 0.04409999999999999,
-      "Label": "Random Diffuse",
       "Radius": 0.21,
       "Material": {
         "Color": {
           "R": 154.0,
-          "B": 72.60000000000001,
-          "G": 138.6
+          "G": 138.6,
+          "B": 72.60000000000001
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.04409999999999999
     },
     {
       "Center": {
@@ -957,16 +957,16 @@
         "Y": 0.24,
         "Z": 4.189
       },
-      "RadiusSquared": 0.0576,
-      "Label": "Random Diffuse",
       "Radius": 0.24,
       "Material": {
         "Color": {
           "R": 209.0,
-          "B": 66.0,
-          "G": 200.20000000000002
+          "G": 200.20000000000002,
+          "B": 66.0
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0576
     },
     {
       "Center": {
@@ -974,16 +974,16 @@
         "Y": 0.25,
         "Z": 8.898
       },
-      "RadiusSquared": 0.0625,
-      "Label": "Random Diffuse",
       "Radius": 0.25,
       "Material": {
         "Color": {
           "R": 156.2,
-          "B": 15.400000000000002,
-          "G": 136.4
+          "G": 136.4,
+          "B": 15.400000000000002
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0625
     },
     {
       "Center": {
@@ -991,16 +991,16 @@
         "Y": 0.2,
         "Z": 12.505
       },
-      "RadiusSquared": 0.04000000000000001,
-      "Label": "Random Diffuse",
       "Radius": 0.2,
       "Material": {
         "Color": {
           "R": 57.2,
-          "B": 30.800000000000004,
-          "G": 209.0
+          "G": 209.0,
+          "B": 30.800000000000004
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.04000000000000001
     },
     {
       "Center": {
@@ -1008,16 +1008,16 @@
         "Y": 0.19,
         "Z": 6.158
       },
-      "RadiusSquared": 0.0361,
-      "Label": "Random Diffuse",
       "Radius": 0.19,
       "Material": {
         "Color": {
           "R": 22.0,
-          "B": 173.8,
-          "G": 4.4
+          "G": 4.4,
+          "B": 173.8
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0361
     },
     {
       "Center": {
@@ -1025,16 +1025,16 @@
         "Y": 0.25,
         "Z": 3.185
       },
-      "RadiusSquared": 0.0625,
-      "Label": "Random Diffuse",
       "Radius": 0.25,
       "Material": {
         "Color": {
           "R": 72.60000000000001,
-          "B": 94.6,
-          "G": 33.0
+          "G": 33.0,
+          "B": 94.6
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0625
     },
     {
       "Center": {
@@ -1042,16 +1042,16 @@
         "Y": 0.15,
         "Z": -5.944
       },
-      "RadiusSquared": 0.0225,
-      "Label": "Random Diffuse",
       "Radius": 0.15,
       "Material": {
         "Color": {
           "R": 44.0,
-          "B": 149.60000000000002,
-          "G": 140.8
+          "G": 140.8,
+          "B": 149.60000000000002
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0225
     },
     {
       "Center": {
@@ -1059,16 +1059,16 @@
         "Y": 0.17,
         "Z": 0.95
       },
-      "RadiusSquared": 0.028900000000000006,
-      "Label": "Random Diffuse",
       "Radius": 0.17,
       "Material": {
         "Color": {
           "R": 143.0,
-          "B": 193.6,
-          "G": 110.0
+          "G": 110.0,
+          "B": 193.6
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.028900000000000006
     },
     {
       "Center": {
@@ -1076,16 +1076,16 @@
         "Y": 0.25,
         "Z": 13.32
       },
-      "RadiusSquared": 0.0625,
-      "Label": "Random Diffuse",
       "Radius": 0.25,
       "Material": {
         "Color": {
           "R": 35.2,
-          "B": 116.60000000000001,
-          "G": 176.0
+          "G": 176.0,
+          "B": 116.60000000000001
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0625
     },
     {
       "Center": {
@@ -1093,16 +1093,16 @@
         "Y": 0.26,
         "Z": 12.266
       },
-      "RadiusSquared": 0.06760000000000001,
-      "Label": "Random Diffuse",
       "Radius": 0.26,
       "Material": {
         "Color": {
           "R": 72.60000000000001,
-          "B": 63.8,
-          "G": 118.80000000000001
+          "G": 118.80000000000001,
+          "B": 63.8
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.06760000000000001
     },
     {
       "Center": {
@@ -1110,16 +1110,16 @@
         "Y": 0.21,
         "Z": 16.426
       },
-      "RadiusSquared": 0.04409999999999999,
-      "Label": "Random Diffuse",
       "Radius": 0.21,
       "Material": {
         "Color": {
           "R": 147.4,
-          "B": 105.6,
-          "G": 206.79999999999998
+          "G": 206.79999999999998,
+          "B": 105.6
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.04409999999999999
     },
     {
       "Center": {
@@ -1127,16 +1127,16 @@
         "Y": 0.24,
         "Z": -10.289
       },
-      "RadiusSquared": 0.0576,
-      "Label": "Random Diffuse",
       "Radius": 0.24,
       "Material": {
         "Color": {
           "R": 121.00000000000001,
-          "B": 74.80000000000001,
-          "G": 19.8
+          "G": 19.8,
+          "B": 74.80000000000001
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0576
     },
     {
       "Center": {
@@ -1144,16 +1144,16 @@
         "Y": 0.25,
         "Z": 1.237
       },
-      "RadiusSquared": 0.0625,
-      "Label": "Random Diffuse",
       "Radius": 0.25,
       "Material": {
         "Color": {
           "R": 17.6,
-          "B": 63.8,
-          "G": 6.6
+          "G": 6.6,
+          "B": 63.8
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0625
     },
     {
       "Center": {
@@ -1161,16 +1161,16 @@
         "Y": 0.26,
         "Z": 3.0
       },
-      "RadiusSquared": 0.06760000000000001,
-      "Label": "Random Diffuse",
       "Radius": 0.26,
       "Material": {
         "Color": {
           "R": 22.0,
-          "B": 217.8,
-          "G": 0.0
+          "G": 0.0,
+          "B": 217.8
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.06760000000000001
     },
     {
       "Center": {
@@ -1178,16 +1178,16 @@
         "Y": 0.25,
         "Z": 8.792
       },
-      "RadiusSquared": 0.0625,
-      "Label": "Random Diffuse",
       "Radius": 0.25,
       "Material": {
         "Color": {
           "R": 83.6,
-          "B": 180.39999999999998,
-          "G": 105.6
+          "G": 105.6,
+          "B": 180.39999999999998
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0625
     },
     {
       "Center": {
@@ -1195,16 +1195,16 @@
         "Y": 0.2,
         "Z": -1.786
       },
-      "RadiusSquared": 0.04000000000000001,
-      "Label": "Random Diffuse",
       "Radius": 0.2,
       "Material": {
         "Color": {
           "R": 189.2,
-          "B": 33.0,
-          "G": 145.20000000000002
+          "G": 145.20000000000002,
+          "B": 33.0
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.04000000000000001
     },
     {
       "Center": {
@@ -1212,16 +1212,16 @@
         "Y": 0.17,
         "Z": -0.684
       },
-      "RadiusSquared": 0.028900000000000006,
-      "Label": "Random Diffuse",
       "Radius": 0.17,
       "Material": {
         "Color": {
           "R": 178.20000000000002,
-          "B": 138.6,
-          "G": 8.8
+          "G": 8.8,
+          "B": 138.6
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.028900000000000006
     },
     {
       "Center": {
@@ -1229,16 +1229,16 @@
         "Y": 0.19,
         "Z": 7.002
       },
-      "RadiusSquared": 0.0361,
-      "Label": "Random Diffuse",
       "Radius": 0.19,
       "Material": {
         "Color": {
           "R": 30.800000000000004,
-          "B": 200.20000000000002,
-          "G": 83.6
+          "G": 83.6,
+          "B": 200.20000000000002
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0361
     },
     {
       "Center": {
@@ -1246,16 +1246,16 @@
         "Y": 0.22,
         "Z": -3.154
       },
-      "RadiusSquared": 0.0484,
-      "Label": "Random Diffuse",
       "Radius": 0.22,
       "Material": {
         "Color": {
           "R": 123.20000000000002,
-          "B": 35.2,
-          "G": 162.8
+          "G": 162.8,
+          "B": 35.2
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0484
     },
     {
       "Center": {
@@ -1263,18 +1263,18 @@
         "Y": 0.24,
         "Z": 1.239
       },
-      "RadiusSquared": 0.0576,
-      "Label": "Random Refractive",
       "Radius": 0.24,
       "Material": {
-        "Refractive": true,
-        "RefractiveIndex": 1.5,
         "Color": {
           "R": 195.8,
-          "B": 123.20000000000002,
-          "G": 90.19999999999999
-        }
-      }
+          "G": 90.19999999999999,
+          "B": 123.20000000000002
+        },
+        "Refractive": true,
+        "RefractiveIndex": 1.5
+      },
+      "Label": "Random Refractive",
+      "RadiusSquared": 0.0576
     },
     {
       "Center": {
@@ -1282,18 +1282,18 @@
         "Y": 0.17,
         "Z": 5.004
       },
-      "RadiusSquared": 0.028900000000000006,
-      "Label": "Random Reflective",
       "Radius": 0.17,
       "Material": {
         "Reflective": true,
-        "Fuzz": 0.05,
         "Color": {
           "R": 244.79999999999998,
-          "B": 183.6,
-          "G": 193.8
-        }
-      }
+          "G": 193.8,
+          "B": 183.6
+        },
+        "Fuzz": 0.05
+      },
+      "Label": "Random Reflective",
+      "RadiusSquared": 0.028900000000000006
     },
     {
       "Center": {
@@ -1301,18 +1301,18 @@
         "Y": 0.25,
         "Z": 7.821
       },
-      "RadiusSquared": 0.0625,
-      "Label": "Random Reflective",
       "Radius": 0.25,
       "Material": {
         "Reflective": true,
-        "Fuzz": 0.05,
         "Color": {
           "R": 216.75,
-          "B": 89.25,
-          "G": 252.45
-        }
-      }
+          "G": 252.45,
+          "B": 89.25
+        },
+        "Fuzz": 0.05
+      },
+      "Label": "Random Reflective",
+      "RadiusSquared": 0.0625
     },
     {
       "Center": {
@@ -1320,16 +1320,16 @@
         "Y": 0.25,
         "Z": 10.584
       },
-      "RadiusSquared": 0.0625,
-      "Label": "Random Diffuse",
       "Radius": 0.25,
       "Material": {
         "Color": {
           "R": 22.0,
-          "B": 149.60000000000002,
-          "G": 211.2
+          "G": 211.2,
+          "B": 149.60000000000002
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0625
     },
     {
       "Center": {
@@ -1337,16 +1337,16 @@
         "Y": 0.27,
         "Z": 9.607
       },
-      "RadiusSquared": 0.0729,
-      "Label": "Random Diffuse",
       "Radius": 0.27,
       "Material": {
         "Color": {
           "R": 8.8,
-          "B": 132.0,
-          "G": 72.60000000000001
+          "G": 72.60000000000001,
+          "B": 132.0
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0729
     },
     {
       "Center": {
@@ -1354,16 +1354,16 @@
         "Y": 0.15,
         "Z": 13.478
       },
-      "RadiusSquared": 0.0225,
-      "Label": "Random Diffuse",
       "Radius": 0.15,
       "Material": {
         "Color": {
           "R": 125.39999999999999,
-          "B": 169.4,
-          "G": 180.39999999999998
+          "G": 180.39999999999998,
+          "B": 169.4
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0225
     },
     {
       "Center": {
@@ -1371,16 +1371,16 @@
         "Y": 0.19,
         "Z": 10.158
       },
-      "RadiusSquared": 0.0361,
-      "Label": "Random Diffuse",
       "Radius": 0.19,
       "Material": {
         "Color": {
           "R": 33.0,
-          "B": 39.6,
-          "G": 4.4
+          "G": 4.4,
+          "B": 39.6
         }
-      }
+      },
+      "Label": "Random Diffuse",
+      "RadiusSquared": 0.0361
     },
     {
       "Center": {
@@ -1388,16 +1388,16 @@
         "Y": 0.7,
         "Z": 2.2
       },
-      "RadiusSquared": 0.16000000000000003,
-      "Label": "Tennis",
       "Radius": 0.4,
       "Material": {
         "Color": {
           "R": 255,
-          "B": 0,
-          "G": 255
+          "G": 255,
+          "B": 0
         }
-      }
+      },
+      "Label": "Tennis",
+      "RadiusSquared": 0.16000000000000003
     }
   ]
 }

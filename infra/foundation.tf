@@ -75,7 +75,7 @@ resource "aws_security_group" "pwshraytracer_sg" {
 }
 
 resource "aws_s3_bucket" "pwshraytracer_lambda_layers" {
-  bucket = "s3-pwshraytracer-layers"
+  bucket = "s3-pwshraytracer-layers-2"
   tags = {
     Name        = "PwshRaytracer Lambda Layers Bucket"
     Environment = var.environment_tag

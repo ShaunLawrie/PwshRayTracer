@@ -119,7 +119,7 @@ function Send-JobsToSNS {
         }
     } finally {
         [Console]::SetCursorPosition($currentPosition.X, $currentPosition.Y)
-        Write-Host -ForegroundColor DarkGray "$($sharedData["JobsSent"])/$($Jobs.Count)    "
+        Write-Host -ForegroundColor DarkGray "$($Jobs.Count)/$($Jobs.Count)    "
         [Console]::CursorVisible = $true
     }
 }
