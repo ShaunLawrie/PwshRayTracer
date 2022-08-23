@@ -1,5 +1,5 @@
 param (
-    [switch] $BuildRuntimeLayer
+    [switch] $SkipRuntimeLayer
 )
 
 $ErrorActionPreference = "Stop"
@@ -15,12 +15,12 @@ if(!(Test-Path "$PSScriptRoot/aws-lambda-powershell-runtime")) {
     git clone git@github.com:awslabs/aws-lambda-powershell-runtime.git "$PSScriptRoot/aws-lambda-powershell-runtime"
 }
 
-if($BuildRuntimeLayer) {
+if(!$SkipRuntimeLayer) {
     $pwshLayerLocation = "$PSScriptRoot/artifacts/pwsh_lambda_layer_payload.zip"
     if(Test-Path $pwshLayerLocation) {
         Remove-Item $pwshLayerLocation
     }
-    Write-Host "Build the layer (this downloads the microsoft provided powershell binaries into the layer source folder for the pws-runtime)"
+    Write-Host "Build the layer (this downloads the microsoft provided powershell binaries into the layer source folder for the pwsh-runtime)"
     & $PSScriptRoot\aws-lambda-powershell-runtime\powershell-runtime\build-PwshRuntimeLayer.ps1
     Write-Host "Build a zip for terraform to upload as a custom lambda layer for the powershell runtime"
     Compress-Archive -Path "$PSScriptRoot/aws-lambda-powershell-runtime/powershell-runtime/pwsh-runtime/*" -DestinationPath $pwshLayerLocation

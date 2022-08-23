@@ -18,10 +18,84 @@ function Resolve-SceneData {
     return $copy
 }
 
+function Invoke-RayTracer {
+    param (
+        [object] $Scene,
+        [int] $Line,
+        [int] $Start,
+        [int] $End
+    )
+
+    # Setup Image
+    $imageWidth = $Scene.Camera.ImageWidth
+    $aspectWidth = $Scene.Camera.AspectRatio.Split(":")[0]
+    $aspectHeight = $Scene.Camera.AspectRatio.Split(":")[1]
+    $aspectRatio = $aspectWidth / $aspectHeight
+    $imageHeight = [int]($imageWidth / $aspectRatio)
+
+    # Setup Camera
+    $theta = $Scene.Camera.FieldOfView * ([math]::PI / 180)
+    $h = [Math]::Tan($theta / 2.0)
+    $viewportHeight = 2.0 * $h
+    $viewportWidth = $aspectRatio * $viewportHeight
+    $cameraW = [System.Numerics.Vector3]::Normalize($Scene.Camera.LookFrom - $Scene.Camera.LookAt)
+    $cameraU = [System.Numerics.Vector3]::Normalize([System.Numerics.Vector3]::Cross($Scene.Camera.CameraUp, $cameraW))
+    $cameraV = [System.Numerics.Vector3]::Cross($cameraW, $cameraU)
+    $cameraOrigin = $Scene.Camera.LookFrom
+    $cameraHorizontal = $Scene.Camera.FocusDistance * $viewportWidth * $cameraU
+    $cameraVertical = $Scene.Camera.FocusDistance * $viewportHeight * $cameraV
+    $cameraLowerLeftCorner = $cameraOrigin - ($cameraHorizontal / 2.0) - ($cameraVertical / 2.0) - ($Scene.Camera.FocusDistance * $cameraW)
+    $cameraLensRadius = $Scene.Camera.Aperture / 2.0
+ 
+    # Trace
+    $localPixels = [System.Collections.ArrayList]::new()
+    
+    $j = $imageHeight - $Line
+    for ($i = $Start; $i -lt $End; $i++) {
+        $currentPixel = @{
+            R = 0
+            G = 0
+            B = 0
+        }
+        for ($sample = 0; $sample -lt $Scene.Camera.SamplesPerPixel; $sample++) {
+            $u = ($i + ($script:Random.Next(100) / 100.0)) / ($imageWidth - 1.0)
+            $v = ($j + ($script:Random.Next(100) / 100.0)) / ($imageHeight - 1.0)
+            $rd = $null
+            while($null -eq $rd) {
+                $x = ($script:Random.Next(200) - 100) / 100.0
+                $y = ($script:Random.Next(200) - 100) / 100.0
+                $p = [System.Numerics.Vector3]::new($x, $y, 0)
+                if($p.LengthSquared() -ge 1) {
+                    continue
+                }
+                $rd = $cameraLensRadius * $p
+            }
+            $offset = ($cameraU * $rd.X) + ($cameraV * $rd.Y)
+
+            $sampleColor = Get-RayColor -Scene $Scene.Objects -Point ($cameraOrigin + $offset) -Direction ($cameraLowerLeftCorner + ($u * $cameraHorizontal) + ($v * $cameraVertical) - $cameraOrigin - $offset) -Depth $Scene.Camera.MaxRayRecursionDepth
+            
+            $currentPixel.R += $sampleColor.R
+            $currentPixel.G += $sampleColor.G
+            $currentPixel.B += $sampleColor.B
+        }
+
+        $localPixels.Add(
+            @{
+                R = [Math]::Clamp($currentPixel.R / ($Scene.Camera.SamplesPerPixel - 1), 0, 255)
+                G = [Math]::Clamp($currentPixel.G / ($Scene.Camera.SamplesPerPixel - 1), 0, 255)
+                B = [Math]::Clamp($currentPixel.B / ($Scene.Camera.SamplesPerPixel - 1), 0, 255)
+            }
+        ) | Out-Null
+    }
+    
+    return $localPixels
+}
+
 function Get-RayColor {
     param (
-        $Point,
-        $Direction,
+        [object] $Scene,
+        [System.Numerics.Vector3] $Point,
+        [System.Numerics.Vector3] $Direction,
         [int] $Depth
     )
 
@@ -39,8 +113,8 @@ function Get-RayColor {
     $closestSoFar = ([float]::PositiveInfinity)
 
     $a = $Direction.LengthSquared()
-    <# THIS IS THE HOT PATH #>
-    foreach($object in $global:Scene) {
+    
+    foreach($object in $Scene) {
         $oc = $Point - $object.Center
         $halfB = [System.Numerics.Vector3]::Dot($oc, $Direction)
         $c = $oc.LengthSquared() - $object.RadiusSquared
@@ -49,7 +123,6 @@ function Get-RayColor {
         if($discriminant -lt 0) {
             continue
         }
-        <# THIS IS THE END OF THE HOT PATH #>
 
         $sqrtd = [Math]::Sqrt($discriminant)
 
@@ -78,7 +151,7 @@ function Get-RayColor {
         
         $closestSoFar = $root
     }
-
+    
     if($hitRecord) {
         $scatteredDirection = $null
         $scatteredAttenuationR = $null
@@ -168,7 +241,7 @@ function Get-RayColor {
             $scatteredAttenuationB = $hitRecordMaterialColor.B / 255.0
         }
         
-        $color = Get-RayColor -Point $hitRecord.HitPoint -Direction $scatteredDirection -Depth ($Depth - 1)
+        $color = Get-RayColor -Scene $Scene -Point $hitRecord.HitPoint -Direction $scatteredDirection -Depth ($Depth - 1)
         return @{
             R = [Math]::Min($scatteredAttenuationR * $color.R, 255)
             G = [Math]::Min($scatteredAttenuationG * $color.G, 255)
@@ -187,74 +260,4 @@ function Get-RayColor {
             B = [Math]::Min($startV + $endB, 255)
         }
     }
-}
-
-function Invoke-RayTracer {
-    param (
-        [object] $Scene,
-        [int] $Line
-    )
-    # Setup Image
-    $imageWidth = $Scene.Camera.ImageWidth
-    $aspectWidth = $Scene.Camera.AspectRatio.Split(":")[0]
-    $aspectHeight = $Scene.Camera.AspectRatio.Split(":")[1]
-    $aspectRatio = $aspectWidth / $aspectHeight
-    $imageHeight = [int]($imageWidth / $aspectRatio)
-
-    # Setup Camera
-    $theta = $Scene.Camera.FieldOfView * ([math]::PI / 180)
-    $h = [Math]::Tan($theta / 2.0)
-    $viewportHeight = 2.0 * $h
-    $viewportWidth = $aspectRatio * $viewportHeight
-    $cameraW = [System.Numerics.Vector3]::Normalize($Scene.Camera.LookFrom - $Scene.Camera.LookAt)
-    $cameraU = [System.Numerics.Vector3]::Normalize([System.Numerics.Vector3]::Cross($Scene.Camera.CameraUp, $cameraW))
-    $cameraV = [System.Numerics.Vector3]::Cross($cameraW, $cameraU)
-    $cameraOrigin = $Scene.Camera.LookFrom
-    $cameraHorizontal = $FocusDistance * $viewportWidth * $cameraU
-    $cameraVertical = $FocusDistance * $viewportHeight * $cameraV
-    $cameraLowerLeftCorner = $cameraOrigin - ($cameraHorizontal / 2.0) - ($cameraVertical / 2.0) - ($FocusDistance * $cameraW)
-    $cameraLensRadius = $Scene.Camera.Aperture / 2.0
- 
-    # Trace
-    $localPixels = [System.Collections.ArrayList]::new()
-    <#
-    $j = $Line
-    for ($i = 0; $i -le $imageWidth; $i++) {
-        $currentPixel = @{
-            R = 0
-            G = 0
-            B = 0
-        }
-        for ($sample = 0; $sample -lt $Scene.Camera.SamplesPerPixel; $sample++) {
-            $u = ($i + ($script:Random.Next(100) / 100.0)) / ($imageWidth - 1.0)
-            $v = ($j + ($script:Random.Next(100) / 100.0)) / ($imageHeight - 1.0)
-            $rd = $null
-            while($null -eq $rd) {
-                $x = ($script:Random.Next(200) - 100) / 100.0
-                $y = ($script:Random.Next(200) - 100) / 100.0
-                $p = [System.Numerics.Vector3]::new($x, $y, 0)
-                if($p.LengthSquared() -ge 1) {
-                    continue
-                }
-                $rd = $cameraLensRadius * $p
-            }
-            $offset = ($cameraU * $rd.X) + ($cameraV * $rd.Y)
-
-            $sampleColor = Get-RayColor -Point ($cameraOrigin + $offset) -Direction ($cameraLowerLeftCorner + ($u * $cameraHorizontal) + ($v * $cameraVertical) - $cameraOrigin - $offset) -Depth $Scene.Camera.MaxRayRecursionDepth
-            
-            $currentPixel.R += $sampleColor.R
-            $currentPixel.G += $sampleColor.G
-            $currentPixel.B += $sampleColor.B
-        }
-
-        $localPixels.Add(
-            @{
-                R = [Math]::Clamp($currentPixel.R / ($Scene.Camera.SamplesPerPixel - 1), 0, 255)
-                G = [Math]::Clamp($currentPixel.G / ($Scene.Camera.SamplesPerPixel - 1), 0, 255)
-                B = [Math]::Clamp($currentPixel.B / ($Scene.Camera.SamplesPerPixel - 1), 0, 255)
-            }
-        ) | Out-Null
-    }
-    #>
-    return $localPixels
 }
