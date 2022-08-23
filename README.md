@@ -43,7 +43,6 @@ RayTracer.psm1 Line Profiling
 - [56093ms, 65258, 001ms]  34:        $halfB = [System.Numerics.Vector3]::Dot($oc, $Direction)
 - [56117ms, 65258, 001ms]  35:        $c = $oc.LengthSquared() - ($object[1] * $object[1])
 - [56359ms, 65258, 001ms]  36:        $discriminant = ($halfB * $halfB) - ($a * $c)
-- [0000ms,  65258, 000ms]  37:
 - [56189ms, 65258, 001ms]  38:        if($discriminant -lt 0) {
 - [109092ms,65055, 002ms]  39:            continue
 - [0000ms,  65055, 000ms]  40:        }
