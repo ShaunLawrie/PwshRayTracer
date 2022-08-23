@@ -10,14 +10,18 @@
      ├─ SNS topic for distributing processed pixel payloads to lambda
      ├─ SQS queue for recieving processed pixel payloads
      ├─ Log group for cloudwatch lambda execution logging
-     └─ Resource group for viewing the resouces created by this project
+     ├─ Resource group for viewing the resouces created by this project
+     └─ Policies for cross account access if required
 
 */
 
 # S3 bucket (private) for lambda layers because they're rather large
+resource "random_id" "pwshraytracer_bucket_name" {
+  byte_length = 8
+}
 resource "aws_s3_bucket" "pwshraytracer_lambda_layers" {
   # Bucket names need to be globally unique
-  bucket = "s3-pwshraytracer-layers-${random_id.id.hex}"
+  bucket = "s3-pwshraytracer-layers-${random_id.pwshraytracer_bucket_name.hex}"
   tags = {
     Name        = "PwshRaytracer Lambda Layers Bucket"
     Environment = var.environment_tag
@@ -59,21 +63,19 @@ resource "aws_iam_role" "iam_for_pwshraytracer_lambda" {
   tags = {
     Environment = var.environment_tag
   }
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-EOF
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = "sts:AssumeRole",
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        },
+        Effect = "Allow",
+        Sid = ""
+      }
+    ]
+  })
 }
 
 # Lambda logging policy
@@ -82,21 +84,19 @@ resource "aws_iam_policy" "pwshraytracer_lambda_logging" {
   path        = "/"
   description = "IAM policy for logging from the lambda"
 
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
-      ],
-      "Resource": "${aws_cloudwatch_log_group.pwshraytracer_lambda_loggroup.arn}:*",
-      "Effect": "Allow"
-    }
-  ]
-}
-EOF
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        Resource = "${aws_cloudwatch_log_group.pwshraytracer_lambda_loggroup.arn}:*",
+        Effect = "Allow"
+      }
+    ]
+  })
   tags = {
     Environment = var.environment_tag
   }
@@ -112,20 +112,18 @@ resource "aws_iam_policy" "pwshraytracer_lambda_send_to_sqs" {
   path        = "/"
   description = "IAM policy for sending to SQS from the lambda"
 
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "sqs:SendMessage"
-      ],
-      "Resource": "${aws_sqs_queue.pwshraytracer_notifications_queue.arn}",
-      "Effect": "Allow"
-    }
-  ]
-}
-EOF
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "sqs:SendMessage"
+        ],
+        Resource = "${aws_sqs_queue.pwshraytracer_notifications_queue.arn}",
+        Effect = "Allow"
+      }
+    ]
+  })
   tags = {
     Environment = var.environment_tag
   }
@@ -154,16 +152,69 @@ resource "aws_sns_topic" "raytracing_jobs_topic" {
   }
 }
 
+resource "aws_sns_topic_policy" "default" {
+  arn = aws_sns_topic.raytracing_jobs_topic.arn
+  policy = data.aws_iam_policy_document.sns_topic_policy.json
+}
+
+data "aws_iam_policy_document" "sns_topic_policy" {
+  policy_id = "__default_policy_ID"
+
+  statement {
+    actions = [
+      "SNS:Publish"
+    ]
+
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = [var.iam_user_arn]
+    }
+
+    resources = [
+      aws_sns_topic.raytracing_jobs_topic.arn,
+    ]
+
+    sid = "__default_statement_ID"
+  }
+}
+
 # SQS queue for recieving processed pixel payloads
 resource "aws_sqs_queue" "pwshraytracer_notifications_queue" {
   name                      = "sqs-pwshraytracer-notifications"
   message_retention_seconds = 900
   receive_wait_time_seconds = 5
+  sqs_managed_sse_enabled   = true
 
   tags = {
     Name        = "PwshRaytracer SQS Notifications"
     Environment = var.environment_tag
   }
+}
+
+resource "aws_sqs_queue_policy" "pwshraytracer_notifications_queue_policy" {
+  queue_url = aws_sqs_queue.pwshraytracer_notifications_queue.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid = "First",
+        Effect = "Allow",
+        Principal = {
+          AWS = var.iam_user_arn
+        },
+        Action = [
+          "sqs:DeleteMessage",
+          "sqs:GetQueueUrl",
+          "sqs:PurgeQueue",
+          "sqs:ReceiveMessage"
+        ],
+        Resource: aws_sqs_queue.pwshraytracer_notifications_queue.arn
+      }
+    ]
+  })
 }
 
 # Log group for cloudwatch lambda execution logging
@@ -177,17 +228,15 @@ resource "aws_resourcegroups_group" "pwshraytracer_rg" {
   name = "rg-pwshraytracer"
 
   resource_query {
-    query = <<JSON
-{
-  "ResourceTypeFilters": ["AWS::AllSupported"],
-  "TagFilters": [
-    {
-      "Key": "Environment",
-      "Values": ["${var.environment_tag}"]
-    }
-  ]
-}
-JSON
+    query = jsonencode({
+      ResourceTypeFilters = ["AWS::AllSupported"],
+      TagFilters = [
+        {
+          Key = "Environment",
+          Values = ["${var.environment_tag}"]
+        }
+      ]
+    })
   }
   tags = {
     Name        = "PwshRayTracer Resource Group"

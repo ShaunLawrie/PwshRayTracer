@@ -17,11 +17,13 @@ try {
             Write-Host -ForegroundColor Green "Terraform init to get terraform ready"
             terraform init
         }
-        Write-Host -ForegroundColor Green "Terraform apply to deploy to a new VPC in AWS"
+        Write-Host -ForegroundColor Green "Terraform apply to deploy PwshRaytracer in AWS"
+        $userArn = Read-Host "Your AWS IAM User ARN is required for setting up the SQS/SNS policies that will allow you to publish and retrieve messages from the command line. Enter your ARN e.g. 'arn:aws:iam::1122334455:user/myusername'"
+
         if($Force) {
-            terraform apply -var="region=$Region" -auto-approve
+            terraform apply -var="region=$Region" -var="iam_user_arn=$userArn" -auto-approve
         } else {
-            terraform apply -var="region=$Region"
+            terraform apply -var="region=$Region" -var="iam_user_arn=$userArn"
         }
         if($LASTEXITCODE -ne 0) {
             Write-Error "Terraform apply failed"

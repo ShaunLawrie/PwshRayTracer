@@ -7,3 +7,7 @@ variable "environment_tag" {
   type    = string
   default = "pwshraytracer"
 }
+
+variable "iam_user_arn" {
+  type    = string
+}
