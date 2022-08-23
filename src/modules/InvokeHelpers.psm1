@@ -56,8 +56,6 @@ function Split-RenderingJobs {
         }
     }
 
-    Set-Content -Path "tracingjobs.json" -Value ($jobs | ConvertTo-Json -Depth 2 -WarningAction "SilentlyContinue")
-
     return $jobs
 }
 
