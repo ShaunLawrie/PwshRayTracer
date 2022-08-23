@@ -14,7 +14,7 @@
     },
     "AspectRatio": "16:9",
     "MaxRayRecursionDepth": 50,
-    "SamplesPerPixel": 5,
+    "SamplesPerPixel": 500,
     "Aperture": 0.1,
     "LookFrom": {
       "X": 13.0,

@@ -61,12 +61,13 @@ function Split-RenderingJobs {
 
 function Send-JobsToSNS {
     param (
-        [array] $Jobs
+        [array] $Jobs,
+        [string] $Region
     )
     Write-Host "Jobs Sent to SNS: "
     $currentPosition = @{ X = $Host.UI.RawUI.CursorPosition.X + 18; Y = $Host.UI.RawUI.CursorPosition.Y - 1 }
 
-    $snsTopicArn = Get-SNSTopic | Select-Object -ExpandProperty "TopicArn" | Where-Object { $_ -like "*raytracingjobs" }
+    $snsTopicArn = Get-SNSTopic -Region $Region | Select-Object -ExpandProperty "TopicArn" | Where-Object { $_ -like "*raytracingjobs" }
     if($null -eq $snsTopicArn -or $snsTopicArn -isnot [string]) {
         Write-Error "SNS topic for '*raytracingjobs' could not be found. Expected a single ARN but found '$snsTopicArn'"
     }
@@ -95,11 +96,11 @@ function Send-JobsToSNS {
                 }
                 try {
                     if($batch.Count -gt 0) {
-                        Publish-SNSBatch -TopicArn $using:snsTopicArn -PublishBatchRequestEntry $batch | Out-Null
+                        Publish-SNSBatch -TopicArn $using:snsTopicArn -Region $using:Region -PublishBatchRequestEntry $batch | Out-Null
                     }
                 } catch {
                     if($retries -lt $maxRetries) {
-                        Write-Warning "Publishing to SNS is failing, waiting 3 seconds before retry"
+                        Write-Warning "Publishing to SNS is failing, waiting 3 seconds before retry: $_"
                         Start-Sleep -Seconds 3
                         $data["JobsSent"] = $data["JobsSent"] - $batch.Count
                         $retries++
@@ -128,6 +129,7 @@ function Wait-ForLambdaResults {
         [switch] $LiveRender,
         [int] $ImageHeight,
         [int] $ImageWidth,
+        [string] $Region,
         [int] $TimeoutMinutes = 10
     )
 
@@ -160,7 +162,7 @@ function Wait-ForLambdaResults {
     $endPosition = $Host.UI.RawUI.CursorPosition
     $currentPosition = @{ X = $Host.UI.RawUI.CursorPosition.X + 28; Y = $Host.UI.RawUI.CursorPosition.Y - $yOffset }
     $canvasTopLeft = @{ X = $Host.UI.RawUI.CursorPosition.X + 8; Y = $Host.UI.RawUI.CursorPosition.Y - $yOffset + 1 }
-    $sqsQueueUrl = Get-SQSQueue | Where-Object { $_ -like "*/sqs-pwshraytracer-notifications" }
+    $sqsQueueUrl = Get-SQSQueue -Region $Region | Where-Object { $_ -like "*/sqs-pwshraytracer-notifications" }
     $timeout = (Get-Date).AddMinutes($TimeoutMinutes)
     $jobsReceived = 0
     
@@ -169,7 +171,7 @@ function Wait-ForLambdaResults {
             Write-Warning "Timed out waiting for all jobs to complete after $TimeoutMinutes minutes"
             break
         }
-        $messages = Receive-SQSMessage -QueueUrl $sqsQueueUrl -MessageCount 10 -VisibilityTimeout 600
+        $messages = Receive-SQSMessage -Region $Region -QueueUrl $sqsQueueUrl -MessageCount 10 -VisibilityTimeout 600
         if($messages) {
             foreach($message in $messages) {
                 $jobsReceived++

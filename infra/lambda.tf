@@ -3,7 +3,7 @@ resource "aws_lambda_function" "pwshraytracer_lambda" {
   filename         = "../artifacts/pwsh_lambda_function_payload.zip"
   handler          = "Handler.ps1::Invoke-Handler"
   function_name    = "lambda-pwshraytracer"
-  memory_size      = 128 # 5400 if you want 4 CPU cores
+  memory_size      = 1024 # 5400 if you want 4 CPU cores
   timeout          = 600
   role             = aws_iam_role.iam_for_pwshraytracer_lambda.arn
   source_code_hash = filebase64sha256("../artifacts/pwsh_lambda_function_payload.zip")

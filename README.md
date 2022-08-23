@@ -8,7 +8,9 @@ Because I've been learning a bit of serverless stuff I was curious as to how muc
  - Using Lambda with the default configuration I got ~ blah / sec
  - Using Lambda with a memory size of 5400MB to get 4 CPU cores = >250,000 camera rays per second (~62x my laptop speed but I also racked up a $200 bill over a couple of days 😅)
 
-The raytracer source is adapted from the tutorial [Ray Tracing in One Weekend by Peter Shirley](https://raytracing.github.io/books/RayTracingInOneWeekend.html) which is written in C++.  
+![Crappy Diagram](/artifacts/diagram.png)
+
+The raytracer source is adapted from the tutorial [Ray Tracing in One Weekend by Peter Shirley](https://raytracing.github.io/books/RayTracingInOneWeekend.html) and has been translated from C++ to PowerShell.  
 To run PowerShell natively on Lambda this uses the [AWS PowerShell Lambda Runtime λ](https://aws.amazon.com/blogs/compute/introducing-the-powershell-custom-runtime-for-aws-lambda/)
 
 ## Pre-requisites
@@ -18,14 +20,20 @@ To run PowerShell natively on Lambda this uses the [AWS PowerShell Lambda Runtim
  - [Installed Powershell AWS.Tools.SimpleNotificationService, AWS.Tools.SQS](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-getting-set-up-windows.html) for sending messages to SNS
 
 ## Run
-
 ```pwsh
 # Build the lambda powershell base layer
 .\Build.ps1
-# Deploy the lambda and the underlying infrastructure to a new VPC in ap-southeast-2 (Terraform will confirm before applying changes)
-.\Deploy.ps1
+# Deploy the lambda et. al to ap-southeast-2 with your default aws profile (terraform apply will request manual confirmation)
+.\Deploy.ps1 -Region "ap-southeast-2" -ProfileName "default"
 # Run a raytracer with the default scene from raytracing in a weekend
 .\Invoke.ps1
+```
+*If you are using a cross account role you need to add a policy statement to allow you to publish to the SNS topic because the default policy is to allow the account itself to publish*
+
+## Run Locally
+```pwsh
+# Run the local version of the ray tracer with no cloud magic
+.\src\local\Main.ps1
 ```
 
 ## To Go Faster
