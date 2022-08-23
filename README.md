@@ -1,6 +1,15 @@
 # Scale a PowerShell RayTracer on AWS Lambda
+A very slow raytracer in PowerShell that has been optimised from ~100 camera rays traced per second to 4000 rays per second on a 4GHz 6 core CPU with a few tricks:
+ - Multithreading ray processing by spreading batches across iterations of `Foreach-Object -Parallel` with varying degrees of parallelism depending on the cores available in the execution environment.
+ - Swapping custom powershell classes representing vectors with the [SIMD-accelerated Vector types in .NET](https://docs.microsoft.com/en-us/dotnet/standard/simd) to get more performance by processing calculations with hardware parallelism on the CPU where available.
+ - Inling all possible external function calls because this reduces parameter parsing overhead in PowerShell.
 
-https://aws.amazon.com/blogs/compute/introducing-the-powershell-custom-runtime-for-aws-lambda/
+Because I've been learning a bit of serverless stuff I was curious as to how much faster I could run this using PowerShell in a webscale™ setup by distributing the processing over as many concurrently running lambdas as I could get in my AWS account and by:  
+ - Using Lambda with the default configuration I got ~ blah / sec
+ - Using Lambda with a memory size of 5400MB to get 4 CPU cores = >250,000 camera rays per second (~62x my laptop speed but I also racked up a $200 bill over a couple of days 😅)
+
+The raytracer source is adapted from the tutorial [Ray Tracing in One Weekend by Peter Shirley](https://raytracing.github.io/books/RayTracingInOneWeekend.html) which is written in C++.  
+To run PowerShell natively on Lambda this uses the [AWS PowerShell Lambda Runtime λ](https://aws.amazon.com/blogs/compute/introducing-the-powershell-custom-runtime-for-aws-lambda/)
 
 ## Pre-requisites
  - Terraform installed and available in your PATH with version greater than or equal to 1.2
@@ -17,4 +26,27 @@ https://aws.amazon.com/blogs/compute/introducing-the-powershell-custom-runtime-f
 .\Deploy.ps1
 # Run a raytracer with the default scene from raytracing in a weekend
 .\Invoke.ps1
+```
+
+## To Go Faster
+To go faster the complexity of the ray tracing would need to be improved by using something like Octree Space Partitioning to reduce the number of calculations required for each collision check but I was really just interested in using PowerShell for something it wasn't designed for and I've had my fun so I'll probably leave the project at this. Using [Chronometer by Kevin Marquette](https://github.com/KevinMarquette/Chronometer) I was able to easily identify that the majority of the time spent in the raytracer is spent in this collision check section:
+```diff
+RayTracer.psm1 Line Profiling
+
+  [TotalMs, Count, AvgMs]  L#:    Line of code
+=============================================================================================
+  [0108ms,    134, 001ms]  29:    $closestSoFar = ([float]::PositiveInfinity)
+  [0000ms,    134, 000ms]  30:
+  [0099ms,    134, 001ms]  31:    $a = $Direction.LengthSquared()
+  [0246ms,    134, 002ms]  32:    foreach($object in $global:Scene) {
+- [56797ms, 65258, 001ms]  33:        $oc = $Point - $object[0]
+- [56093ms, 65258, 001ms]  34:        $halfB = [System.Numerics.Vector3]::Dot($oc, $Direction)
+- [56117ms, 65258, 001ms]  35:        $c = $oc.LengthSquared() - ($object[1] * $object[1])
+- [56359ms, 65258, 001ms]  36:        $discriminant = ($halfB * $halfB) - ($a * $c)
+- [0000ms,  65258, 000ms]  37:
+- [56189ms, 65258, 001ms]  38:        if($discriminant -lt 0) {
+- [109092ms,65055, 002ms]  39:            continue
+- [0000ms,  65055, 000ms]  40:        }
+  [0000ms,    203, 000ms]  41:
+  [0178ms,    203, 001ms]  42:        $sqrtd = [Math]::Sqrt($discriminant)
 ```
