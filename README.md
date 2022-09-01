@@ -16,6 +16,12 @@ _There isn't a great reason that SNS was used other than I wanted to practice us
 The raytracer source is adapted from the tutorial [Ray Tracing in One Weekend by Peter Shirley](https://raytracing.github.io/books/RayTracingInOneWeekend.html) and has been translated from C++ to PowerShell.  
 To run PowerShell natively on Lambda this uses the [AWS PowerShell Lambda Runtime λ](https://aws.amazon.com/blogs/compute/introducing-the-powershell-custom-runtime-for-aws-lambda/)
 
+## Run Locally
+```pwsh
+# Run the local version of the ray tracer with no cloud magic
+.\src\local\Main.ps1
+```
+
 ## Pre-requisites for Cloud
  - Terraform installed and available in your PATH with version greater than or equal to 1.2
  - Git installed and available in your PATH
@@ -35,12 +41,6 @@ To run PowerShell natively on Lambda this uses the [AWS PowerShell Lambda Runtim
 
 Once the Lambda has been deployed the AWS Lambda support gives you a basic IDE that properly supports PowerShell syntax.  
 ![image](https://user-images.githubusercontent.com/13159458/187941858-d2970ced-14a1-4067-9cd0-fafd017a8e7b.png)
-
-## Run Locally
-```pwsh
-# Run the local version of the ray tracer with no cloud magic
-.\src\local\Main.ps1
-```
 
 ## How Much Further Can You Go With Spheres?
 
