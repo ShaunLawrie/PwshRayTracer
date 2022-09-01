@@ -6,6 +6,7 @@ A very slow raytracer in PowerShell that has been optimised from ~100 camera ray
 
 Because I've been learning a bit of serverless stuff I was curious as to how much faster I could run this using PowerShell in a webscale™ setup by distributing the processing over as many concurrently running lambdas as I could get in my AWS account and by:  
  - Using Lambda with large memory sizes to get more cores (I had >250,000 camera rays per second ~62x my laptop speed but I also racked up a $200 bill over a couple of days 😅)
+ - Batching and sending messages across multiple threads because getting the workload delivered to lambda was the primary bottleneck.
 
 ![Crappy Diagram](/artifacts/diagram.png)
 
