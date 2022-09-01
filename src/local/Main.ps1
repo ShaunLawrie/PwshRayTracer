@@ -1,6 +1,6 @@
 #Requires -Version 7
 param (
-    [string] $Scene = "C:\Users\shaun\Dev\PwshRayTracerLambda\src\scenes\PowerShellHero.json"
+    [string] $Scene = "$PSScriptRoot\..\scenes\PowerShellHero.json"
 )
 
 function Invoke-Renderer {

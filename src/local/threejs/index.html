@@ -47,7 +47,7 @@
 
             pointLight = new THREE.PointLight( 0xffffff );
             pointLight.position.set(pointLightAnimation.x, pointLightAnimation.y, pointLightAnimation.z);
-            pointLight.castShadow = true;
+            pointLight.castShadow = false;
             pointLight.shadow.camera.near = 0.1;
             pointLight.shadow.camera.far = 100;
             pointLight.shadow.mapSize.width = 2048;
