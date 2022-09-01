@@ -4,9 +4,9 @@ A very slow raytracer in PowerShell that has been optimised from ~100 camera ray
  - Swapping custom powershell classes representing vectors with the [SIMD-accelerated Vector types in .NET](https://docs.microsoft.com/en-us/dotnet/standard/simd) to get more performance by processing calculations with hardware parallelism on the CPU where available.
  - Inlining all possible external function calls because this reduces parameter parsing overhead in PowerShell.
 
-Because I've been learning a bit of serverless stuff I was curious as to how much faster I could run this using PowerShell in a webscale™ setup by distributing the processing over as many concurrently running lambdas as I could get in my AWS account and by:  
- - Using Lambda with large memory sizes to get more cores (I had >250,000 camera rays per second ~62x my laptop speed but I also racked up a $200 bill over a couple of days 😅)
- - Batching and sending messages across multiple threads I was able to get past the primary bottleneck of the speed of sending messages to SNS.
+Because I've been learning a bit of serverless stuff I was curious as to how much faster I could run this using PowerShell in a webscale™ setup by distributing the processing over as many concurrently running lambdas as I could get in my AWS account:  
+ - By using Lambda with large memory sizes to get more cores I had >250,000 camera rays per second (~62x my laptop speed) but I managed to rack up a $200 bill over a couple of bad runs 😅
+ - Batching and sending messages across multiple threads I was able to get past the primary bottleneck of the speed of sending messages to SNS because that PowerShell commandlet can send 10 messages in a batch but the API round trip is pretty slow.
 
 _There isn't a great reason that SNS was used other than I wanted to practice using it._  
 ![Crappy Diagram](/artifacts/diagram.png)  
@@ -16,13 +16,13 @@ _There isn't a great reason that SNS was used other than I wanted to practice us
 The raytracer source is adapted from the tutorial [Ray Tracing in One Weekend by Peter Shirley](https://raytracing.github.io/books/RayTracingInOneWeekend.html) and has been translated from C++ to PowerShell.  
 To run PowerShell natively on Lambda this uses the [AWS PowerShell Lambda Runtime λ](https://aws.amazon.com/blogs/compute/introducing-the-powershell-custom-runtime-for-aws-lambda/)
 
-## Pre-requisites
+## Pre-requisites for Cloud
  - Terraform installed and available in your PATH with version greater than or equal to 1.2
  - Git installed and available in your PATH
  - AWS credentials configured for your current shell session via environment variables or default aws cli credential managers
  - [Installed Powershell AWS.Tools.SimpleNotificationService, AWS.Tools.SQS](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-getting-set-up-windows.html) for sending messages to SNS
 
-## Run
+## Run in the Cloud
 ```pwsh
 # Build the lambda powershell base layer
 .\Build.ps1
