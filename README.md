@@ -1,12 +1,12 @@
-# PowerShell RayTracing
+# PowerShell RayTracer
 A very slow raytracer in PowerShell that has been optimised from ~100 camera rays traced per second to 4000 rays per second on a 4GHz 6 core CPU with a few tricks:
  - Multithreading ray processing by spreading batches across iterations of `Foreach-Object -Parallel` with varying degrees of parallelism depending on the cores available in the execution environment.
  - Swapping custom powershell classes representing vectors with the [SIMD-accelerated Vector types in .NET](https://docs.microsoft.com/en-us/dotnet/standard/simd) to get more performance by processing calculations with hardware parallelism on the CPU where available.
  - Inlining all possible external function calls because this reduces parameter parsing overhead in PowerShell.
 
-Because I've been learning a bit of serverless stuff I was curious as to how much faster I could run this using PowerShell in a webscale™ setup by distributing the processing over as many concurrently running lambdas as I could get in my AWS account and by:  
- - Using Lambda with large memory sizes to get more cores (I had >250,000 camera rays per second ~62x my laptop speed but I also racked up a $200 bill over a couple of days 😅)
- - Batching and sending messages across multiple threads I was able to get past the primary bottleneck of the speed of sending messages to SNS.
+Because I've been learning a bit of serverless stuff I was curious as to how much faster I could run this using PowerShell in a webscale™ setup by distributing the processing over as many concurrently running lambdas as I could get in my AWS account:  
+ - By using Lambda with large memory sizes to get more cores I had >250,000 camera rays per second (~62x my laptop speed) but I managed to rack up a $200 bill over a couple of bad runs 😅
+ - Batching and sending messages across multiple threads I was able to get past the primary bottleneck of the speed of sending messages to SNS because that PowerShell commandlet can send 10 messages in a batch but the API round trip is pretty slow.
 
 _There isn't a great reason that SNS was used other than I wanted to practice using it._  
 ![Crappy Diagram](/artifacts/diagram.png)  
@@ -16,13 +16,19 @@ _There isn't a great reason that SNS was used other than I wanted to practice us
 The raytracer source is adapted from the tutorial [Ray Tracing in One Weekend by Peter Shirley](https://raytracing.github.io/books/RayTracingInOneWeekend.html) and has been translated from C++ to PowerShell.  
 To run PowerShell natively on Lambda this uses the [AWS PowerShell Lambda Runtime λ](https://aws.amazon.com/blogs/compute/introducing-the-powershell-custom-runtime-for-aws-lambda/)
 
-## Pre-requisites
+## Run Locally
+```pwsh
+# Run the local version of the ray tracer with no cloud magic
+.\src\local\Main.ps1
+```
+
+## Pre-requisites for Cloud
  - Terraform installed and available in your PATH with version greater than or equal to 1.2
  - Git installed and available in your PATH
  - AWS credentials configured for your current shell session via environment variables or default aws cli credential managers
- - [Installed Powershell AWS.Tools.SimpleNotificationService, AWS.Tools.SQS](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-getting-set-up-windows.html) for sending messages to SNS
+ - [Installed Powershell AWS.Tools.SimpleNotificationService, AWS.Tools.SQS, AWS.Tools.S3](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-getting-set-up-windows.html) for sending messages to SNS and S3
 
-## Run
+## Run in the Cloud
 ```pwsh
 # Build the lambda powershell base layer
 .\Build.ps1
@@ -31,18 +37,15 @@ To run PowerShell natively on Lambda this uses the [AWS PowerShell Lambda Runtim
 # Run a raytracer with the default scene from raytracing in a weekend
 .\Invoke.ps1
 ```
-*If you are using a cross account role you need to add a policy statement to allow you to publish to the SNS topic because the default policy is to allow the account itself to publish*
+*I got the script to explicitly add resource policies to allow this to work with assumed roles if you have a multi-account setup but I'm not 100% it's working...*
 
-## Run Locally
-```pwsh
-# Run the local version of the ray tracer with no cloud magic
-.\src\local\Main.ps1
-```
+Once the Lambda has been deployed the AWS Lambda support gives you a basic IDE that properly supports PowerShell syntax.  
+![image](https://user-images.githubusercontent.com/13159458/187941858-d2970ced-14a1-4067-9cd0-fafd017a8e7b.png)
 
 ## How Much Further Can You Go With Spheres?
 
 Using spheres and some math to move them around you can build some pretty complicated structures but it's obviously easier to handle triangles like in a real rendering engine.  
-In the past I've used matrix transformations to rotate objects in 3d space but after following the description of Quaternions here https://www.youtube.com/watch?v=3BR8tK-LuB0 I was able to use the center of large spheres as origin points and pivot other smaller spheres around them with the built in Quaternion functions in the .Net Numerics library e.g.  
+In the past I've used matrix transformations to rotate objects in 3d space but after following the description of Quaternions here https://www.youtube.com/watch?v=3BR8tK-LuB0 I was able to use the center of large spheres as origin points and pivot other smaller spheres around them with the built in Quaternion functions in the .NET Numerics library e.g.  
 [`PowerShellHero.ps1`](src/scenes/PowerShellHero.ps1)
 ```pwsh
 function New-CurveMadeOfSpheres {
