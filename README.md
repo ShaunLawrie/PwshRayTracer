@@ -8,7 +8,7 @@ Because I've been learning a bit of serverless stuff I was curious as to how muc
  - By using Lambda with large memory sizes to get more cores I had >250,000 camera rays per second (~62x my laptop speed) but I managed to rack up a $200 bill over a couple of bad runs 😅
  - Batching and sending messages across multiple threads I was able to get past the primary bottleneck of the speed of sending messages to SNS because that PowerShell commandlet can send 10 messages in a batch but the API round trip is pretty slow.
 
-_There isn't a great reason that SNS was used other than I wanted to practice using it._  
+_There isn't a great reason that SNS was used over SQS other than I wanted to practice using it._  
 ![Crappy Diagram](/artifacts/diagram.png)  
 
 ![Crappy Render](/artifacts/render.gif)
