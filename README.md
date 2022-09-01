@@ -31,7 +31,10 @@ To run PowerShell natively on Lambda this uses the [AWS PowerShell Lambda Runtim
 # Run a raytracer with the default scene from raytracing in a weekend
 .\Invoke.ps1
 ```
-*If you are using a cross account role you need to add a policy statement to allow you to publish to the SNS topic because the default policy is to allow the account itself to publish*
+*I got the script to explicitly add resource policies to allow this to work with assumed roles if you have a multi-account setup but I'm not 100% it's working...*
+
+Once the Lambda has been deployed the AWS Lambda support gives you a basic IDE that properly supports PowerShell syntax.  
+![image](https://user-images.githubusercontent.com/13159458/187941858-d2970ced-14a1-4067-9cd0-fafd017a8e7b.png)
 
 ## Run Locally
 ```pwsh
@@ -42,7 +45,7 @@ To run PowerShell natively on Lambda this uses the [AWS PowerShell Lambda Runtim
 ## How Much Further Can You Go With Spheres?
 
 Using spheres and some math to move them around you can build some pretty complicated structures but it's obviously easier to handle triangles like in a real rendering engine.  
-In the past I've used matrix transformations to rotate objects in 3d space but after following the description of Quaternions here https://www.youtube.com/watch?v=3BR8tK-LuB0 I was able to use the center of large spheres as origin points and pivot other smaller spheres around them with the built in Quaternion functions in the .Net Numerics library e.g.  
+In the past I've used matrix transformations to rotate objects in 3d space but after following the description of Quaternions here https://www.youtube.com/watch?v=3BR8tK-LuB0 I was able to use the center of large spheres as origin points and pivot other smaller spheres around them with the built in Quaternion functions in the .NET Numerics library e.g.  
 [`PowerShellHero.ps1`](src/scenes/PowerShellHero.ps1)
 ```pwsh
 function New-CurveMadeOfSpheres {
