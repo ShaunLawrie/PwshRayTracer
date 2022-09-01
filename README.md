@@ -1,4 +1,4 @@
-# PowerShell RayTracing
+# PowerShell RayTracer
 A very slow raytracer in PowerShell that has been optimised from ~100 camera rays traced per second to 4000 rays per second on a 4GHz 6 core CPU with a few tricks:
  - Multithreading ray processing by spreading batches across iterations of `Foreach-Object -Parallel` with varying degrees of parallelism depending on the cores available in the execution environment.
  - Swapping custom powershell classes representing vectors with the [SIMD-accelerated Vector types in .NET](https://docs.microsoft.com/en-us/dotnet/standard/simd) to get more performance by processing calculations with hardware parallelism on the CPU where available.
