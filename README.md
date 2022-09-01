@@ -20,7 +20,7 @@ To run PowerShell natively on Lambda this uses the [AWS PowerShell Lambda Runtim
  - Terraform installed and available in your PATH with version greater than or equal to 1.2
  - Git installed and available in your PATH
  - AWS credentials configured for your current shell session via environment variables or default aws cli credential managers
- - [Installed Powershell AWS.Tools.SimpleNotificationService, AWS.Tools.SQS](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-getting-set-up-windows.html) for sending messages to SNS
+ - [Installed Powershell AWS.Tools.SimpleNotificationService, AWS.Tools.SQS, AWS.Tools.S3](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-getting-set-up-windows.html) for sending messages to SNS and S3
 
 ## Run in the Cloud
 ```pwsh
