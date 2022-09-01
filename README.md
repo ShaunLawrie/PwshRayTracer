@@ -21,6 +21,13 @@ To run PowerShell natively on Lambda this uses the [AWS PowerShell Lambda Runtim
 # Run the local version of the ray tracer with no cloud magic
 .\src\local\Main.ps1
 ```
+The local runner uses two character wide "pixels" because it makes them kind of square but when I built the Lambda based script I realised I could double the perceived resolution by using [the ▄ lower half block character](https://en.wikipedia.org/wiki/Block_Elements) and setting the foreground and background to split a single character space into an upper and lower pixel.
+```pwsh
+Write-Host -ForegroundColor White -BackgroundColor DarkGray "▄" -NoNewline;
+Write-Host -ForegroundColor DarkGray -BackgroundColor White "▄" -NoNewline;
+Write-Host " Hello pixels"
+```
+![image](https://user-images.githubusercontent.com/13159458/187947761-a818b1de-f958-4adc-8d8e-8105dd0e666a.png)
 
 ## Pre-requisites for Cloud
  - Terraform installed and available in your PATH with version greater than or equal to 1.2
