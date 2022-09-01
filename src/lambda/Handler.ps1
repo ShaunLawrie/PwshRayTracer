@@ -22,10 +22,10 @@ function Invoke-Handler {
     }
 
     Import-Module "$PSScriptRoot/modules/RayTracer.psm1"
-
-    Copy-S3Object -BucketName $snsMessage.BucketName -Key $snsMessage.BucketKey -LocalFolder "/tmp"
+    
+    Copy-S3Object -BucketName $snsMessage.BucketName -Key $snsMessage.BucketKey -LocalFolder "/tmp" | Out-Null
     $sceneData = Get-Content -Raw "/tmp/$($snsMessage.BucketKey)"
-    $scene = Resolve-SceneData -Scene $sceneData
+    $scene = Resolve-SceneData -Scene ($sceneData | ConvertFrom-Json)
     
     $chunkSize = [Math]::Ceiling(($snsMessage.End - $snsMessage.Start) / $cores)
     $messages += "Chunk size is $chunkSize for $($snsMessage.Start) -> $($snsMessage.End)"
@@ -52,5 +52,5 @@ function Invoke-Handler {
         Messages = $messages
     }
 
-    Write-Output ($response | ConvertTo-Json -Depth 5)
+    Write-Output ($response | ConvertTo-Json -Depth 25)
 }
