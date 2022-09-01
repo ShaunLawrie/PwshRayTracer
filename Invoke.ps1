@@ -8,7 +8,7 @@ param (
 $ErrorActionPreference = "Stop"
 
 if(!(Get-Command "Get-SNSTopic" -ErrorAction "SilentlyContinue")) {
-    Write-Error "Required AWS Powershell Tools are missing [AWS.Tools.SimpleNotificationService, AWS.Tools.SQS]`nSee https://docs.aws.amazon.com/powershell/latest/userguide/pstools-getting-set-up-windows.html"
+    Write-Error "Required AWS Powershell Tools are missing [AWS.Tools.SimpleNotificationService, AWS.Tools.SQS, AWS.Tools.S3]`nSee https://docs.aws.amazon.com/powershell/latest/userguide/pstools-getting-set-up-windows.html"
 }
 
 Set-AWSCredential -ProfileName $ProfileName
@@ -24,7 +24,11 @@ Write-Host -ForegroundColor DarkGray ($data.Camera | ConvertTo-Json -Compress -D
 Write-Host -NoNewline "Objects: "
 Write-Host -ForegroundColor DarkGray ($data.Objects.Count)
 
-$jobs = Split-RenderingJobs -Scene $data
+# Upload scene data to s3
+$bucketName = (Get-S3Bucket | Where-Object { $_.BucketName -like "s3-pwshraytracer-*" }).BucketName
+$bucketKey = "scenes/$(Split-Path $Scene -Leaf)"
+Write-S3Object -BucketName $bucketName -Key $bucketKey -File $Scene
+$jobs = Split-RenderingJobs -Scene $data -BucketName $bucketName -BucketKey $bucketKey
 $start = Get-Date
 $imageHeight = Get-ImageHeight -Scene $data
 

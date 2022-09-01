@@ -16,11 +16,13 @@ function Get-ImageHeight {
 
 function Split-RenderingJobs {
     param (
-        [object] $Scene
+        [object] $Scene,
+        [string] $BucketName,
+        [string] $BucketKey
     )
 
     $minimumPixelsPerLambda = 8
-    $maximumConcurrentLambdas = 300
+    $maximumConcurrentLambdas = 600
 
     $imageWidth = $Scene.Camera.ImageWidth
     $imageHeight = Get-ImageHeight -Scene $Scene
@@ -51,7 +53,8 @@ function Split-RenderingJobs {
                 Line = $i
                 Start = $start
                 End = $end
-                Scene = $Scene
+                BucketName = $BucketName
+                BucketKey = $BucketKey
             }
         }
     }
@@ -80,7 +83,7 @@ function Send-JobsToSNS {
         @(0, 1) | ForEach-Object -Parallel {
             $data = $using:sharedData
             $jobs = $using:Jobs
-            $limit = 2
+            $limit = 8
             $retries = 0
             $maxRetries = 10
             for($i = 0; $i -lt $jobs.Count; $i += $limit) {

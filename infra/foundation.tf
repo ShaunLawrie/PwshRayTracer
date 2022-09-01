@@ -125,6 +125,62 @@ resource "aws_iam_role_policy_attachment" "pwshraytracer_lambda_logs" {
   policy_arn = aws_iam_policy.pwshraytracer_lambda_logging.arn
 }
 
+resource "aws_iam_policy" "pwshraytracer_lambda_s3" {
+  name        = "policy-pwshraytracer-lambda-s3"
+  path        = "/"
+  description = "IAM policy for s3 access from the lambda"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "s3:GetObject"
+        ],
+        Resource = "${aws_s3_bucket.pwshraytracer_lambda_layers.arn}/*",
+        Effect = "Allow"
+      }
+    ]
+  })
+  tags = {
+    Environment = var.environment_tag
+  }
+}
+resource "aws_iam_role_policy_attachment" "pwshraytracer_lambda_s3" {
+  role       = aws_iam_role.iam_for_pwshraytracer_lambda.name
+  policy_arn = aws_iam_policy.pwshraytracer_lambda_s3.arn
+}
+
+data "aws_iam_policy_document" "s3_bucket_policy" {
+  policy_id = "__default_policy_ID"
+
+  statement {
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:DeleteObject"
+    ]
+
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = [var.iam_user_arn]
+    }
+
+    resources = [
+      "${aws_s3_bucket.pwshraytracer_lambda_layers.arn}/*"
+    ]
+
+    sid = "__default_statement_ID"
+  }
+}
+
+resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
+  bucket = aws_s3_bucket.pwshraytracer_lambda_layers.id
+  policy = data.aws_iam_policy_document.s3_bucket_policy.json
+}
+
 # Lambda send to SQS policy
 resource "aws_iam_policy" "pwshraytracer_lambda_send_to_sqs" {
   name        = "policy-pwshraytracer-lambda-to-sqs"

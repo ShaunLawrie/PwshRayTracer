@@ -135,8 +135,6 @@ $sceneObjects = @(
         Center = [System.Numerics.Vector3]::new($eyeOffset.X, $eyeOffset.Y, $eyeOffset.Z)
         Radius = 0.3
         Material = @{
-            Reflective = $true
-            Fuzz = 0.05
             Color = @{R = 255; G = 255; B = 255}
         }
         RadiusSquared = 0.3 * 0.3
@@ -155,8 +153,6 @@ $sceneObjects = @(
         Center = [System.Numerics.Vector3]::new(-$eyeOffset.X, $eyeOffset.Y, $eyeOffset.Z)
         Radius = 0.3
         Material = @{
-            Reflective = $true
-            Fuzz = 0.05
             Color = @{R = 255; G = 255; B = 255}
         }
         RadiusSquared = 0.3 * 0.3
@@ -458,7 +454,7 @@ $scene = @{
         CameraUp = [System.Numerics.Vector3]::new(0, 1, 0)
         ImageWidth = 350
         AspectRatio = "26:9"
-        SamplesPerPixel = 120
+        SamplesPerPixel = 800
         MaxRayRecursionDepth = 50
         FieldOfView = 20
         Aperture = 0.1

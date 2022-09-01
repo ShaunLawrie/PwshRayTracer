@@ -1,4 +1,4 @@
-# Scale a PowerShell RayTracer on AWS Lambda
+# PowerShell RayTracing
 A very slow raytracer in PowerShell that has been optimised from ~100 camera rays traced per second to 4000 rays per second on a 4GHz 6 core CPU with a few tricks:
  - Multithreading ray processing by spreading batches across iterations of `Foreach-Object -Parallel` with varying degrees of parallelism depending on the cores available in the execution environment.
  - Swapping custom powershell classes representing vectors with the [SIMD-accelerated Vector types in .NET](https://docs.microsoft.com/en-us/dotnet/standard/simd) to get more performance by processing calculations with hardware parallelism on the CPU where available.
@@ -6,10 +6,10 @@ A very slow raytracer in PowerShell that has been optimised from ~100 camera ray
 
 Because I've been learning a bit of serverless stuff I was curious as to how much faster I could run this using PowerShell in a webscale™ setup by distributing the processing over as many concurrently running lambdas as I could get in my AWS account and by:  
  - Using Lambda with large memory sizes to get more cores (I had >250,000 camera rays per second ~62x my laptop speed but I also racked up a $200 bill over a couple of days 😅)
- - Batching and sending messages across multiple threads because getting the workload delivered to lambda was the primary bottleneck.
- - I could have used SQS on both sides of the Lambda but wanted to play with configuring SNS as well.
+ - Batching and sending messages across multiple threads I was able to get past the primary bottleneck of the speed of sending messages to SNS.
 
-![Crappy Diagram](/artifacts/diagram.png)
+_There isn't a great reason that SNS was used other than I wanted to practice using it._  
+![Crappy Diagram](/artifacts/diagram.png)  
 
 ![Crappy Render](/artifacts/render.gif)
 
@@ -38,6 +38,42 @@ To run PowerShell natively on Lambda this uses the [AWS PowerShell Lambda Runtim
 # Run the local version of the ray tracer with no cloud magic
 .\src\local\Main.ps1
 ```
+
+## How Much Further Can You Go With Spheres?
+
+Using spheres and some math to move them around you can build some pretty complicated structures but it's obviously easier to handle triangles like in a real rendering engine.  
+In the past I've used matrix transformations to rotate objects in 3d space but after following the description of Quaternions here https://www.youtube.com/watch?v=3BR8tK-LuB0 I was able to use the center of large spheres as origin points and pivot other smaller spheres around them with the built in Quaternion functions in the .Net Numerics library e.g.  
+[`PowerShellHero.ps1`](src/scenes/PowerShellHero.ps1)
+```pwsh
+function New-CurveMadeOfSpheres {
+    param ( ... )
+    ... # for the full context see the actual file
+    $startPoint = [System.Numerics.Vector3]::new($PivotPoint.X, $PivotPoint.Y, $PivotPoint.Z + $Radius)
+    $direction = $startPoint - $PivotPoint
+    for($step = 1; $step -le $Resolution; $step++) {
+        $percent = $step / $Resolution
+        $currentYaw = $StartYaw + (($EndYaw - $StartYaw) * $percent)
+        $currentPitch = $StartPitch + (($EndPitch - $StartPitch) * $percent)
+        $quaternion = [System.Numerics.Quaternion]::CreateFromYawPitchRoll($currentYaw, $currentPitch, 0)
+        $rotatedDirection = [System.Numerics.Vector3]::Transform($direction, $quaternion)
+        $newPoint = $pivotPoint + $rotatedDirection
+        $objects += ...
+    }
+    return $objects
+}
+
+# Build the left eyeliner
+$eyeObject = $sceneObjects | Where-Object { $_.Label -eq "Right eye" }
+$sceneObjects += New-CurveMadeOfSpheres `
+    -PivotPoint $eyeObject.Center `
+    -Radius $eyeObject.Radius `
+    -StartYaw -12 -EndYaw 90 `
+    -StartPitch 5 -EndPitch -12 `
+    -StartRadius 0.01 `
+    -EndRadius 0.05
+```
+
+![Crappy Diagram](/artifacts/pwshhero.png)  
 
 ## To Go Faster
 To go faster the complexity of the ray tracing would need to be improved by using something like Octree Space Partitioning to reduce the number of calculations required for each collision check but I was really just interested in using PowerShell for something it wasn't designed for and I've had my fun so I'll probably leave the project at this. Using [Chronometer by Kevin Marquette](https://github.com/KevinMarquette/Chronometer) I was able to easily identify that the majority of the time spent in the raytracer is spent in this collision check section:
