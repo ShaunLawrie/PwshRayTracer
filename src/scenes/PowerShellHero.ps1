@@ -15,8 +15,9 @@ function New-CurveMadeOfSpheres {
         [float] $EndPitch = 90,
         [int] $Resolution = 25,
         [float] $StartRadius = 0.02,
-        [float] $EndRadius = 0.02,
-        [hashtable] $Color = @{ R = 0;  G = 0; B = 0 }
+        [float] $EndRadius = $StartRadius,
+        [hashtable] $Color = @{ R = 0;  G = 0; B = 0 },
+        [switch] $Reflective
     )
 
     $StartYaw = ConvertFrom-DegreesToRadians $StartYaw
@@ -27,7 +28,7 @@ function New-CurveMadeOfSpheres {
     $objects = @()
     $startPoint = [System.Numerics.Vector3]::new($PivotPoint.X, $PivotPoint.Y, $PivotPoint.Z + $Radius)
     $direction = $startPoint - $PivotPoint
-    for($step = 1; $step -lt $Resolution; $step++) {
+    for($step = 1; $step -le $Resolution; $step++) {
         $percent = $step / $Resolution
         $currentYaw = $StartYaw + (($EndYaw - $StartYaw) * $percent)
         $currentPitch = $StartPitch + (($EndPitch - $StartPitch) * $percent)
@@ -44,6 +45,10 @@ function New-CurveMadeOfSpheres {
             RadiusSquared = $currentRadius * $currentRadius
             Label = "Curve of spheres"
         }
+        if($Reflective) {
+            $sceneObject.Material.Reflective = $true
+            $sceneObject.Material.Fuzz = (Get-Random -Minimum 0 -Maximum 100)/1000
+        }
         $objects += $sceneObject
     }
     return $objects
@@ -54,7 +59,7 @@ function New-LineMadeOfSpheres {
         [System.Numerics.Vector3] $StartPoint,
         [System.Numerics.Vector3] $Direction,
         [float] $StartRadius,
-        [float] $EndRadius,
+        [float] $EndRadius = $StartRadius,
         [int] $Resolution = 25,
         [hashtable] $Color = @{ R = 0;  G = 0; B = 0 },
         [string] $SizeChange = "linear"
@@ -130,6 +135,8 @@ $sceneObjects = @(
         Center = [System.Numerics.Vector3]::new($eyeOffset.X, $eyeOffset.Y, $eyeOffset.Z)
         Radius = 0.3
         Material = @{
+            Reflective = $true
+            Fuzz = 0.05
             Color = @{R = 255; G = 255; B = 255}
         }
         RadiusSquared = 0.3 * 0.3
@@ -148,6 +155,8 @@ $sceneObjects = @(
         Center = [System.Numerics.Vector3]::new(-$eyeOffset.X, $eyeOffset.Y, $eyeOffset.Z)
         Radius = 0.3
         Material = @{
+            Reflective = $true
+            Fuzz = 0.05
             Color = @{R = 255; G = 255; B = 255}
         }
         RadiusSquared = 0.3 * 0.3
@@ -197,15 +206,6 @@ $sceneObjects = @(
         }
         RadiusSquared = 0.5 * 0.5
         Label = "Sleeve left"
-    },
-    @{
-        Center = [System.Numerics.Vector3]::new(1.067, -0.968, 4.649)
-        Radius = 0.45
-        Material = @{
-            Color = @{R = 4; G = 3; B = 18}
-        }
-        RadiusSquared = 0.5 * 0.5
-        Label = "Sleeve right"
     },
     @{
         Center = [System.Numerics.Vector3]::new(1.067, -0.968, 4.649)
@@ -288,18 +288,16 @@ $faceShellSize = 0.17
 $sceneObjects += New-CurveMadeOfSpheres `
     -PivotPoint $faceObject.Center `
     -Radius $faceShellRadius `
-    -StartYaw -25 -EndYaw 15 `
-    -StartPitch -20 -EndPitch 3 `
+    -StartYaw -25 -EndYaw 14 `
+    -StartPitch -20 -EndPitch 2 `
     -StartRadius $faceShellSize `
-    -EndRadius $faceShellSize `
     -Color @{ R = 255; G = 255; B = 255; }
 $sceneObjects += New-CurveMadeOfSpheres `
     -PivotPoint $faceObject.Center `
     -Radius $faceShellRadius `
-    -StartYaw -65 -EndYaw 9 `
-    -StartPitch 43 -EndPitch 16 `
+    -StartYaw -65 -EndYaw 6 `
+    -StartPitch 43 -EndPitch 17 `
     -StartRadius $faceShellSize `
-    -EndRadius $faceShellSize `
     -Color @{ R = 255; G = 255; B = 255; }
 $sceneObjects += New-CurveMadeOfSpheres `
     -PivotPoint $faceObject.Center `
@@ -307,7 +305,6 @@ $sceneObjects += New-CurveMadeOfSpheres `
     -StartYaw 15 -EndYaw 90 `
     -StartPitch 35 -EndPitch 43 `
     -StartRadius $faceShellSize `
-    -EndRadius $faceShellSize `
     -Color @{ R = 255; G = 255; B = 255; }
 # Chin
 $sceneObjects += New-LineMadeOfSpheres -StartPoint $faceObject.Center `
@@ -352,7 +349,6 @@ $sceneObjects += New-CurveMadeOfSpheres `
     -StartYaw 46 -EndYaw 90 `
     -StartPitch -20 -EndPitch 0 `
     -StartRadius $rightHairSize `
-    -EndRadius $rightHairSize `
     -Color $hairHighlightsColor
 $sceneObjects += New-CurveMadeOfSpheres `
     -PivotPoint $faceObject.Center `
@@ -360,7 +356,6 @@ $sceneObjects += New-CurveMadeOfSpheres `
     -StartYaw 46 -EndYaw 90 `
     -StartPitch -20 -EndPitch -48 `
     -StartRadius $rightHairSize `
-    -EndRadius $rightHairSize `
     -Color $hairHighlightsColor
 $sceneObjects += New-CurveMadeOfSpheres `
     -PivotPoint $faceObject.Center `
@@ -368,7 +363,6 @@ $sceneObjects += New-CurveMadeOfSpheres `
     -StartYaw 46 -EndYaw 90 `
     -StartPitch -20 -EndPitch -29 `
     -StartRadius $rightHairSize `
-    -EndRadius $rightHairSize `
     -Color $hairHighlightsColor
 $sceneObjects += New-CurveMadeOfSpheres `
     -PivotPoint $faceObject.Center `
@@ -376,7 +370,6 @@ $sceneObjects += New-CurveMadeOfSpheres `
     -StartYaw 46 -EndYaw 90 `
     -StartPitch -20 -EndPitch -20 `
     -StartRadius $rightHairSize `
-    -EndRadius $rightHairSize `
     -Color $hairHighlightsColor
 $sceneObjects += New-CurveMadeOfSpheres `
     -PivotPoint $faceObject.Center `
@@ -384,17 +377,88 @@ $sceneObjects += New-CurveMadeOfSpheres `
     -StartYaw 46 -EndYaw 90 `
     -StartPitch -20 -EndPitch -12 `
     -StartRadius $rightHairSize `
-    -EndRadius $rightHairSize `
     -Color $hairHighlightsColor
+
+# Bigger shoulder pads
+$leftSleeveObject = $sceneObjects | Where-Object { $_.Label -eq "Sleeve left" }
+$sceneObjects += New-CurveMadeOfSpheres `
+    -PivotPoint $leftSleeveObject.Center `
+    -Radius $leftSleeveObject.Radius `
+    -StartYaw -50 -EndYaw 20 `
+    -StartPitch -40 -EndPitch 10 `
+    -StartRadius 0.12 `
+    -EndRadius 0.03 `
+    -Color @{R = 10; G = 32; B = 97}
+$sceneObjects += New-CurveMadeOfSpheres `
+    -PivotPoint $leftSleeveObject.Center `
+    -Radius $leftSleeveObject.Radius `
+    -StartYaw -50 -EndYaw 10 `
+    -StartPitch -40 -EndPitch -75 `
+    -StartRadius 0.12 `
+    -EndRadius 0 `
+    -Color @{R = 10; G = 32; B = 97}
+$rightSleeveObject = $sceneObjects | Where-Object { $_.Label -eq "Sleeve right" }
+$sceneObjects += New-CurveMadeOfSpheres `
+    -PivotPoint $rightSleeveObject.Center `
+    -Radius $rightSleeveObject.Radius `
+    -StartYaw -20 -EndYaw 50 `
+    -StartPitch 10 -EndPitch -40 `
+    -StartRadius 0.03 `
+    -EndRadius 0.12 `
+    -Color @{R = 10; G = 32; B = 97}
+$sceneObjects += New-CurveMadeOfSpheres `
+    -PivotPoint $rightSleeveObject.Center `
+    -Radius $rightSleeveObject.Radius `
+    -StartYaw -10 -EndYaw 50 `
+    -StartPitch -75 -EndPitch -40 `
+    -StartRadius 0 `
+    -EndRadius 0.12 `
+    -Color @{R = 10; G = 32; B = 97}
+
+# Floating spheres
+$hairObject = $sceneObjects | Where-Object { $_.Label -eq "Hair" }
+$sceneObjects += New-CurveMadeOfSpheres `
+    -PivotPoint $hairObject.Center `
+    -Radius ($hairObject.Radius + 2.0) `
+    -StartYaw 90 -EndYaw 270 `
+    -StartPitch -10 -EndPitch 20 `
+    -StartRadius 0.1 `
+    -EndRadius 0.3 `
+    -Color @{R = 255; G = 112; B = 222} `
+    -Resolution 7 `
+    -Reflective
+
+$sceneObjects += New-CurveMadeOfSpheres `
+    -PivotPoint $hairObject.Center `
+    -Radius ($hairObject.Radius + 3.3) `
+    -StartYaw 90 -EndYaw 260 `
+    -StartPitch 30 -EndPitch -10 `
+    -StartRadius 0.5 `
+    -EndRadius 0.1 `
+    -Color @{R = 255; G = 3; B = 133} `
+    -Resolution 8 `
+    -Reflective
+
+$faceObject = $sceneObjects | Where-Object { $_.Label -eq "Face" }
+$sceneObjects += New-CurveMadeOfSpheres `
+    -PivotPoint @{ X = $faceObject.Center.X;  Y = $faceObject.Center.Y; Z = $faceObject.Center.Z - 1.5 } `
+    -Radius ($faceObject.Radius + 3.7) `
+    -StartYaw 90 -EndYaw 260 `
+    -StartPitch -4 -EndPitch 0 `
+    -StartRadius 0.4 `
+    -EndRadius 0.01 `
+    -Color @{R = 28; G = 172; B = 255} `
+    -Resolution 9 `
+    -Reflective
 
 $scene = @{
     Camera = @{
         LookFrom = [System.Numerics.Vector3]::new(0, 0, 10)
         LookAt = [System.Numerics.Vector3]::new(0, 0, 0)
         CameraUp = [System.Numerics.Vector3]::new(0, 1, 0)
-        ImageWidth = 150
+        ImageWidth = 350
         AspectRatio = "26:9"
-        SamplesPerPixel = 40
+        SamplesPerPixel = 120
         MaxRayRecursionDepth = 50
         FieldOfView = 20
         Aperture = 0.1
@@ -403,4 +467,4 @@ $scene = @{
     Objects = $sceneObjects
 }
 
-Set-Content -Path "$PSScriptRoot/PowerShellHero.json" -Value (ConvertTo-Json $scene -Depth 25) -NoNewline
+Set-Content -Path "$PSScriptRoot/PowerShellHero.json" -Value (ConvertTo-Json $scene -Depth 25 -Compress) -NoNewline

@@ -20,7 +20,7 @@ function Split-RenderingJobs {
     )
 
     $minimumPixelsPerLambda = 8
-    $maximumConcurrentLambdas = 600
+    $maximumConcurrentLambdas = 300
 
     $imageWidth = $Scene.Camera.ImageWidth
     $imageHeight = Get-ImageHeight -Scene $Scene
@@ -80,7 +80,7 @@ function Send-JobsToSNS {
         @(0, 1) | ForEach-Object -Parallel {
             $data = $using:sharedData
             $jobs = $using:Jobs
-            $limit = 8
+            $limit = 2
             $retries = 0
             $maxRetries = 10
             for($i = 0; $i -lt $jobs.Count; $i += $limit) {

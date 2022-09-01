@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "pwshraytracer_lambda" {
-  layers           = [aws_lambda_layer_version.pwsh_lambda_layer.arn]
+  layers           = [aws_lambda_layer_version.pwsh_lambda_layer.arn, aws_lambda_layer_version.pwsh_tools_lambda_layer.arn]
   filename         = "../artifacts/pwsh_lambda_function_payload.zip"
   handler          = "Handler.ps1::Invoke-Handler"
   function_name    = "lambda-pwshraytracer"

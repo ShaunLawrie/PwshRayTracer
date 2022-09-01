@@ -1,6 +1,6 @@
 #Requires -Version 7
 param (
-    [string] $Scene = "$PSScriptRoot\..\scenes\RayTracingInAWeekend.json"
+    [string] $Scene = "$PSScriptRoot\..\scenes\PowerShellHero.json"
 )
 
 function Invoke-Renderer {
@@ -34,7 +34,7 @@ function Invoke-Renderer {
 
     # Left terminal padding
     $leftPadding = [int](([Console]::WindowWidth / 2) - $ImageWidth)
-    $title = "Powershell Ray Tracer 0.1a (speed)"
+    $title = "Powershell Ray Tracer 0.1a"
 
     Write-Host "$(' ' * $LeftPadding) $title"
 

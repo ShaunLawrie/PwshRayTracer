@@ -59,7 +59,7 @@
                 sphere = new THREE.Mesh(
                     new THREE.SphereGeometry( element.Radius, 50, 50 ),
                     new THREE.MeshPhongMaterial( {
-                        flatShading: true,
+                        flatShading: false,
                         color: (new THREE.Color( `rgb(${parseInt(element.Material.Color.R)}, ${parseInt(element.Material.Color.G)}, ${parseInt(element.Material.Color.B)})` ))
                     } )
                 );

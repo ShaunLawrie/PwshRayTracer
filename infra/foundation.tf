@@ -2,10 +2,11 @@
 
     AWS Account (existing account)
      ├─ S3 bucket (private) for lambda layers because they're rather large
-     |   └─ Lambda Layer for the custom PowerShell runtime
+     |   ├─ Lambda Layer for the custom PowerShell runtime
+     |   └─ Lambda Layer for the AWS PowerShell tools
      ├─ IAM role for lambda execution
-     |    ├─ Lambda logging policy
-     |    └─ Lambda send to SQS policy
+     |   ├─ Lambda logging policy
+     |   └─ Lambda send to SQS policy
      ├─ Lambda permission to allow SNS to trigger executions
      ├─ SNS topic for distributing processed pixel payloads to lambda
      ├─ SQS queue for recieving processed pixel payloads
@@ -35,16 +36,13 @@ resource "aws_s3_bucket_acl" "pwshraytracer_lambda_layers_acl" {
 
 # Lambda Layer for the custom PowerShell runtime
 resource "aws_s3_object" "pwsh_custom_runtime_layer" {
-  bucket = aws_s3_bucket.pwshraytracer_lambda_layers.id
-  key    = "pwsh_lambda_layer_payload.zip"
-  source = "../artifacts/pwsh_lambda_layer_payload.zip"
-  etag   = filemd5("../artifacts/pwsh_lambda_layer_payload.zip")
+  bucket      = aws_s3_bucket.pwshraytracer_lambda_layers.id
+  key         = "pwsh_lambda_layer_payload.zip"
+  source      = "../artifacts/pwsh_lambda_layer_payload.zip"
+  source_hash = filemd5("../artifacts/pwsh_lambda_layer_payload.zip")
   tags = {
     Name        = "PwshRaytracer Lambda Layer for Powershell Runtime"
     Environment = var.environment_tag
-  }
-  lifecycle {
-    ignore_changes = [etag]
   }
 }
 
@@ -52,6 +50,27 @@ resource "aws_lambda_layer_version" "pwsh_lambda_layer" {
   s3_bucket                = aws_s3_object.pwsh_custom_runtime_layer.bucket
   s3_key                   = aws_s3_object.pwsh_custom_runtime_layer.key
   layer_name               = "runtime-pwsh"
+  compatible_architectures = ["x86_64"]
+  compatible_runtimes      = ["provided.al2"]
+  description              = var.environment_tag
+}
+
+# Lambda Layer for the AWS PowerShell tools
+resource "aws_s3_object" "pwsh_custom_tools_layer" {
+  bucket      = aws_s3_bucket.pwshraytracer_lambda_layers.id
+  key         = "pwsh_lambda_tools_layer_payload.zip"
+  source      = "../artifacts/pwsh_lambda_tools_layer_payload.zip"
+  source_hash = filemd5("../artifacts/pwsh_lambda_tools_layer_payload.zip")
+  tags = {
+    Name        = "PwshRaytracer Lambda Layer for Powershell Runtime"
+    Environment = var.environment_tag
+  }
+}
+
+resource "aws_lambda_layer_version" "pwsh_tools_lambda_layer" {
+  s3_bucket                = aws_s3_object.pwsh_custom_tools_layer.bucket
+  s3_key                   = aws_s3_object.pwsh_custom_tools_layer.key
+  layer_name               = "tools-pwsh"
   compatible_architectures = ["x86_64"]
   compatible_runtimes      = ["provided.al2"]
   description              = var.environment_tag
