@@ -1,6 +1,6 @@
 #Requires -Version 7
 param (
-    [string] $Scene = "$PSScriptRoot\..\scenes\PowerShellHero.json"
+    [string] $Scene = "$PSScriptRoot\..\scenes\RayTracingInAWeekend.json"
 )
 
 function Invoke-Renderer {
@@ -421,27 +421,18 @@ function Resolve-SceneData {
 [Console]::CursorVisible = $false
 Clear-Host
 $startCursorPosition = $Host.UI.RawUI.CursorPosition
-$lastRender = $null
-while($true) {
-    if((Get-ItemProperty -Path $Scene).LastWriteTime -le $lastRender) {
-        Start-Sleep -Seconds 5
-        continue
-    }
-    $lastRender = Get-Date
-    $sceneData = Resolve-SceneData -Scene (Get-Content $Scene | ConvertFrom-Json)
-    [Console]::SetCursorPosition($startCursorPosition.X, $startCursorPosition.Y)
-    Invoke-Renderer -ImageWidth $sceneData.Camera.ImageWidth `
-        -Scene $sceneData.Objects `
-        -AspectRatio $sceneData.Camera.AspectRatio `
-        -SamplesPerPixel $sceneData.Camera.SamplesPerPixel `
-        -MaxRayRecursionDepth $sceneData.Camera.MaxRayRecursionDepth `
-        -LookFrom $sceneData.Camera.LookFrom `
-        -LookAt $sceneData.Camera.LookAt `
-        -FieldOfView $sceneData.Camera.FieldOfView `
-        -Aperture $sceneData.Camera.Aperture `
-        -FocusDistance $sceneData.Camera.FocusDistance `
-        -CameraUp $sceneData.Camera.CameraUp
-    
-    Start-Sleep -Seconds 5
-}
+$sceneData = Resolve-SceneData -Scene (Get-Content $Scene | ConvertFrom-Json)
+[Console]::SetCursorPosition($startCursorPosition.X, $startCursorPosition.Y)
+Invoke-Renderer -ImageWidth $sceneData.Camera.ImageWidth `
+    -Scene $sceneData.Objects `
+    -AspectRatio $sceneData.Camera.AspectRatio `
+    -SamplesPerPixel $sceneData.Camera.SamplesPerPixel `
+    -MaxRayRecursionDepth $sceneData.Camera.MaxRayRecursionDepth `
+    -LookFrom $sceneData.Camera.LookFrom `
+    -LookAt $sceneData.Camera.LookAt `
+    -FieldOfView $sceneData.Camera.FieldOfView `
+    -Aperture $sceneData.Camera.Aperture `
+    -FocusDistance $sceneData.Camera.FocusDistance `
+    -CameraUp $sceneData.Camera.CameraUp
+
 [Console]::CursorVisible = $true

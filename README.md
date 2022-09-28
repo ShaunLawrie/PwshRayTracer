@@ -4,6 +4,12 @@ A very slow raytracer in PowerShell that has been optimised from ~100 camera ray
  - Swapping custom powershell classes representing vectors with the [SIMD-accelerated Vector types in .NET](https://docs.microsoft.com/en-us/dotnet/standard/simd) to get more performance by processing calculations with hardware parallelism on the CPU where available.
  - Inlining all possible external function calls because this reduces parameter parsing overhead in PowerShell.
 
+## Run Locally 👀
+```pwsh
+# Run the local version of the ray tracer with no cloud magic
+.\src\local\Main.ps1
+```
+
 Because I've been learning a bit of serverless stuff I was curious as to how much faster I could run this using PowerShell in a webscale™ setup by distributing the processing over as many concurrently running lambdas as I could get in my AWS account:  
  - By using Lambda with large memory sizes to get more cores I had >250,000 camera rays per second (~62x my laptop speed) but I managed to rack up a $200 bill over a couple of bad runs 😅
  - Batching and sending messages across multiple threads I was able to get past the primary bottleneck of the speed of sending messages to SNS because that PowerShell commandlet can send 10 messages in a batch but the API round trip is pretty slow.
